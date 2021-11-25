@@ -1,0 +1,14 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body{
+  background-image: url("./IMG/Dashboard\ Login.jpg") ;
+  background-size: cover;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  
+}
