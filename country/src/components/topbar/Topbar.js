@@ -1,13 +1,23 @@
 import "./Topbar.css"
 
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import React from 'react';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 function Topbar() {
     return (
         <div className="topbarContainer">
             <div className="topbar-flex">
-                    <h1>izquierda</h1>
-                    <h1>derecha </h1>
+
+                    <div>
+                        <NotificationsIcon color="disabled"/>
+                        <ArrowDropDownIcon/>
+                    </div>
+                    <div>
+                        <SettingsIcon color="disabled"/>
+                        <ArrowDropDownIcon/>
+                    </div>
                 </div>            
         </div>
     )

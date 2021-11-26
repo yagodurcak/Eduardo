@@ -1,15 +1,18 @@
 .topbarContainer{
-    background-color: lightblue;
-    width: 100%;
+    /* background-color: lightblue; */
+    flex: 4;
     height: 50px;
     display: grid;
-    padding: 0px 50px;
+    padding: 20px 30px;
     position: sticky
 }
 
 .topbar-flex{
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
 }
 
+.topbar-flex div{
+  padding: 0px 10px;
+}

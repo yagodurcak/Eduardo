@@ -10,27 +10,14 @@
 
 
 
-.inputstyle{
-    height: 70px;
-    width: 500px;
-    background-color: transparent;
-    border: 1px solid white;
-    border-radius: 10px;
-    padding-left: 10px;
-    color: white;
-    font-size: 20px;
-    text-align: center;  
-    /* background-image: url("../IMG/usericonuser.png"); */
-    /* background-repeat: no-repeat;
-    background-size: 57px;
-    background-position-y: 10px; */
-}
+
 form {
     max-width: 450px;
     margin: auto;
  }
 .inputContainer i {
     position: absolute;
+
     
  }
  .inputContainer {
@@ -40,7 +27,7 @@ form {
 
  }
  .icon {
-    padding: 40px;
+    padding: 30px;
    color: white;
    width: 70px;
    text-align: left;
@@ -63,6 +50,10 @@ form {
     font-family: 'Montserrat', sans-serif;
     text-align: center;  
  }
+ .Field::placeholder {
+    color: white;
+    /* font-size: 1.5em; */
+ }
 
  .boton{
      margin-top: 20px;
@@ -76,8 +67,21 @@ form {
      color: #317143;
  }
 
+ .ForgotContainer{
+     margin-top: 20px;
+     display: flex;
+     justify-content: end;
+   
+ }
+ .ForgotContainer a{
+    text-decoration: none;
+   
+ }
+
  .forgot{
      font-size: 20px;
      font-family: 'Montserrat', sans-serif;
-     font-weight: 500;
+     font-weight: 400;
+     color: white;
+     text-decoration: none;
  }

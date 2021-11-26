@@ -1,7 +1,4 @@
-/* ./src/index.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 *{
   font-family: 'Montserrat', sans-serif;
@@ -10,6 +7,8 @@
 
 
 .container{
-    height: 100vh;
+    /* height: 100vh; */
+    background-color: #faf8f8;
+
     display: flex
 }
