@@ -1,0 +1,15 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+
+.container{
+    height: 100vh;
+    display: flex
+}

@@ -1,3 +1,14 @@
+.Containers{
+    background-image: url("../IMG/Dashboard\ Login.jpg");
+    background-size: cover;
+ height: 100vh;
+ width: 100vw;
+ display: grid;
+ justify-content: center;
+ align-items: center;
+}
+
+
 
 .inputstyle{
     height: 70px;

@@ -1,23 +1,17 @@
+import "./App.css"
+
 import Login from "./components/Login";
+import Sidebar from "./components/sidebar/Sidebar";
+import Topbar from "./components/topbar/Topbar";
 import styled from '@emotion/styled';
-
-const Container = styled.div `
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-  /* background-color: wheat; */
-
-`
-
 
 function App() {
   return (
-    <Container>
-   
-      <Login/>
-    </Container>
+    <div className="container">
+      <Sidebar/>
+      <Topbar/>
+      {/* <Login/> */}
+    </div>
   );
 }
 
