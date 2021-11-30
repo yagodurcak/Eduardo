@@ -7,7 +7,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 function Topbar() {
     return (
-        <div className="topbarContainer">
+        <div>
             <div className="topbar-flex">
 
                     <div>

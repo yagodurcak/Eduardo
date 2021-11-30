@@ -77,3 +77,10 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.listahover.active,
+.listahover:hover{
+    background-color: #39804d;
+
+    cursor: pointer;
+}

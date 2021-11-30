@@ -32,7 +32,7 @@ function Sidebar() {
             <div className="linea"></div>
             <div className='lista'>
                 <ul className='lista1'>
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={dashnoard} alt="" className='logo1' />
@@ -42,7 +42,7 @@ function Sidebar() {
                         </div>
                     </li>
                    
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={users} alt="" className='logo1' />
@@ -52,7 +52,7 @@ function Sidebar() {
                         </div>
                     </li>
                    
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={personal} alt="" className='logo1' />
@@ -62,7 +62,7 @@ function Sidebar() {
                         </div>
                     </li>
                    
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={espacio} alt="" className='logo1' />
@@ -72,7 +72,7 @@ function Sidebar() {
                         </div>
                     </li>
                    
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={visitas} alt="" className='logo1' />
@@ -82,7 +82,7 @@ function Sidebar() {
                         </div>
                     </li>
                    
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={noticias} alt="" className='logo1' />
@@ -92,7 +92,7 @@ function Sidebar() {
                         </div>
                     </li>
                    
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={informacion} alt="" className='logo1' />
@@ -102,7 +102,7 @@ function Sidebar() {
                         </div>
                     </li>
                    
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={tramites} alt="" className='logo1' />
@@ -112,7 +112,7 @@ function Sidebar() {
                         </div>
                     </li>
                    
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={quejas} alt="" className='logo1' />
@@ -121,7 +121,7 @@ function Sidebar() {
 
                         </div>
                     </li>
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={gastos} alt="" className='logo1' />
@@ -130,7 +130,7 @@ function Sidebar() {
 
                         </div>
                     </li>
-                    <li>
+                    <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={calendario} alt="" className='logo1' />
