@@ -1,5 +1,8 @@
 import "./Sidebar.css";
 
+import {
+    Link,
+} from "react-router-dom";
 import React from 'react';
 import calendario from "../../IMG/CalendarioActividades 1calendario.svg"
 import dashnoard from "../../IMG/dashboard.svg"
@@ -32,25 +35,32 @@ function Sidebar() {
             <div className="linea"></div>
             <div className='lista'>
                 <ul className='lista1'>
+                    <Link to="/" style={{ textDecoration: 'none' }}>
                     <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={dashnoard} alt="" className='logo1' />
-                            <h1 className="title1">Dashboard</h1>
+                                <h1 className="title1">Dashboards</h1>
+                           
+                            
                             <a href=""><img src={down} alt="" className='logo2' /></a>
 
                         </div>
                     </li>
+                    </Link>
                    
+                            <Link to="/Users" style={{ textDecoration: 'none' }}>
                     <li className='listahover'>
                         <div className="logoContainter1">
 
                             <img src={users} alt="" className='logo1' />
-                            <h1 className="title1">Usuarios</h1>
+                                <h1 className="title1">Usuarios</h1>
+                            
                             <a href=""><img src={down} alt="" className='logo2' /></a>
 
                         </div>
                     </li>
+                                </Link>
                    
                     <li className='listahover'>
                         <div className="logoContainter1">
@@ -71,7 +81,7 @@ function Sidebar() {
 
                         </div>
                     </li>
-                   
+                    <Link to="/Visitas" style={{ textDecoration: 'none' }}>
                     <li className='listahover'>
                         <div className="logoContainter1">
 
@@ -81,6 +91,7 @@ function Sidebar() {
 
                         </div>
                     </li>
+                    </Link>
                    
                     <li className='listahover'>
                         <div className="logoContainter1">

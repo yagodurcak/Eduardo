@@ -37,6 +37,9 @@
     text-align: center;
     font-size: 25px;
     padding: 0px 30px;
+    color: white;
+    text-decoration: none;
+    
 }
 
 
@@ -63,6 +66,7 @@
 }
 .lista1 li{
     margin-top: 20px;
+    
 }
 
 
