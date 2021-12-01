@@ -7,7 +7,7 @@ import TitlePage from '../../components/pageComponents/TitlePage';
 function Home() {
     return (    
         <div className='homeContainer'>        
-            <TitlePage titulo="Dashboard"/>
+            <TitlePage titulo="Dashboards"/>
             <Featured/>
             
         </div>

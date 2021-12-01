@@ -12,14 +12,15 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 
-    tableContainer: {
-        // borderRadius: 15,  
-        margin: '10px 10px',
-         backgroundColor: "transparent",
-         borderBottom: "none",
-        //  border: "none"
+    // tableContainer: {
+    //     // borderRadius: 15,  
+    //     margin: '10px 10px',
+    //      backgroundColor: "transparent",
+    //      borderBottom: "none",
+
+        
        
-    },
+    // },
     tableHeaderCell: {
         // fontWeight: 'bold',
         fontSize: 20,
@@ -36,23 +37,7 @@ const useStyles = makeStyles((theme) => ({
         // backgroundColor: theme.palette.primary.dark,
        
     },
-    avatar: {
-        backgroundColor: theme.palette.primary.light,
-        color: theme.palette.getContrastText(theme.palette.primary.light)
-    },
-    name: {
-        fontWeight: 'bold',
-        color: theme.palette.secondary.dark
-    },
-    status: {
-        fontWeight: 'bold',
-        fontSize: '0.75rem',
-        color: 'white',
-        backgroundColor: 'grey',
-        borderRadius: 8,
-        padding: '3px 10px',
-        display: 'inline-block'
-    }
+
   }));
 
 function createData(name, calories, fat, carbs, protein, acciones) {
@@ -75,19 +60,19 @@ function Visitas() {
     return (
       <div>
 
-        <TitlePage titulo="Visitas" />
-        <div className='Container'>
+        <div className='Container bg-white'>
+          <TitlePage titulo="Visitas" />
           <div className="btnContainer">
             <button className="btn">
               Agregar
             </button>
 
           </div>
-          <TableContainer component={Paper} className={classes.tableContainer}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
+          <TableContainer component={Paper} className="mt-10 border-0" >
+            <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+              <TableHead >
                 <TableRow>
-                  <TableCell className={classes.tableHeaderCell} >Tipo de Visita</TableCell>
+                  <TableCell className={classes.tableHeaderCell} >Tipo de Visitas</TableCell>
                   <TableCell className={classes.tableHeaderCell} align="right">Descripción</TableCell>
                   <TableCell className={classes.tableHeaderCell} align="right">Max. Personas</TableCell>
                   <TableCell className={classes.tableHeaderCell} align="right">Rango Horario</TableCell>
