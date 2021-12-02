@@ -1,0 +1,26 @@
+.tabla{
+    width: 100%;
+    text-align: justify;
+    color: gray;
+    font-size: 20px;
+    font-weight: 500;
+
+}
+
+.Thead{
+    font-weight: 500;
+    padding: 20px 0px;
+    /* font-family: 'Times New Roman', Times, serif; */
+}
+
+.Tbody{
+    padding-top:10px;
+    /* color: red; */
+    row-gap: 20px;
+}
+
+th,
+td {
+    text-transform: capitalize;
+    padding: 15px 0px;
+}

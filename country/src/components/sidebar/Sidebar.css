@@ -74,6 +74,7 @@
     height: 15px;
     width: 15px;
 }
+
 .logoContainter1{
     /* background-color: mediumblue; */
     width: 100%;
@@ -84,7 +85,11 @@
 
 .listahover.active,
 .listahover:hover{
-    background-color: #39804d;
+    background-color: #F88703;
 
     cursor: pointer;
+}
+
+.listahover{
+    padding: 5px 10px;
 }

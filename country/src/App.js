@@ -25,7 +25,7 @@ function App() {
         <Sidebar/>
         <Switch>
         <div  className="topbarContainer" >
-          <Topbar/>
+          <Topbar/> 
           <Route exact path="/">
             <Home />
           </Route>
