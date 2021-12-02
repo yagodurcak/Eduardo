@@ -4,17 +4,19 @@ import React, {useState} from 'react'
 
 const Table = props => {
 
-    const initDataShow = props.limit && props.bodyInfo ? props.bodyInfo.slice(0, Number(props.limit)) : props.bodyInfo
+    const initDataShow = props.limit && props.bodyData ? props.bodyData.slice(0, Number(props.limit)) : props.bodyData
 
     const [dataShow, setDataShow] = useState(initDataShow)
+    
+    console.log(props.limit);
 
     let pages = 1
 
     let range = []
 
     if (props.limit !== undefined) {
-        let page = Math.floor(props.bodyInfo.length / Number(props.limit))
-        pages = props.bodyInfo.length % Number(props.limit) === 0 ? page : page + 1
+        let page = Math.floor(props.bodyData.length / Number(props.limit))
+        pages = props.bodyData.length % Number(props.limit) === 0 ? page : page + 1
         range = [...Array(pages).keys()]
     }
 
@@ -24,65 +26,53 @@ const Table = props => {
         const start = Number(props.limit) * page
         const end = start + Number(props.limit)
 
-        setDataShow(props.bodyInfo.slice(start, end))
+        setDataShow(props.bodyData.slice(start, end))
 
         setCurrPage(page)
     }
+
     return (
-        <div >
-            <table className="tabla">
+        <div>
+        <div className="table-wrapper">
+            <table>
                 {
-                    props.headerTitle ? (
-                        <thead >
+                    props.headData && props.renderHead ? (
+                        <thead>
                             <tr>
                                 {
-                                    props.headerTitle.map((item, index) => (
-                                        <th key={index} className="Thead">
-                                            {item}
-                                        </th>
-                                    ))
+                                    props.headData.map((item, index) => props.renderHead(item, index))
                                 }
                             </tr>
-
                         </thead>
-                    ) : null}
+                    ) : null
+                }
                 {
-                    props.bodyInfo ? (
+                    props.bodyData && props.renderBody ? (
                         <tbody>
                             {
-                                props.bodyInfo.map((item, index) => (
-                                    <tr key={index} className="Tbody">
-                                        {/* <td>{item.id}</td> */}
-                                        <td>{item.name}</td>
-                                        <td>{item.email}</td>
-                                        <td>{item.phone}</td>
-                                        <td>{item.total_orders}</td>
-                                        <td>{item.total_spend}</td>
-                                        <td>{item.location}</td>
-                                    </tr>
-                                ))
-
+                                dataShow.map((item, index) => props.renderBody(item, index))
                             }
-
+                  
+                           
                         </tbody>
                     ) : null
                 }
-
             </table>
-            {
-                pages > 1 ? (
-                    <div className="table__pagination">
-                        {
-                            range.map((item, index) => (
-                                <div key={index} className={`table__pagination-item ${currPage === index ? 'active' : ''}`} onClick={() => selectPage(index)}>
-                                    {item + 1}
-                                </div>
-                            ))
-                        }
-                    </div>
-                ) : null
-            }
         </div>
+        {
+            pages > 1 ? (
+                <div className="table__pagination">
+                    {
+                        range.map((item, index) => (
+                            <div key={index} className={`table__pagination-item ${currPage === index ? 'active' : ''}`} onClick={() => selectPage(index)}>
+                                {item + 1}
+                            </div>
+                        ))
+                    }
+                </div>
+            ) : null
+        }
+    </div>
     )
 }
 
