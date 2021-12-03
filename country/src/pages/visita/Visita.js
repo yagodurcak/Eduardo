@@ -1,4 +1,4 @@
-import './Users.css'
+import '../users/Users.css'
 
 import React,{useEffect, useState}  from 'react';
 
@@ -7,47 +7,35 @@ import TitlePage from '../../components/pageComponents/TitlePage';
 
 const customerTableHead = [
     {
-        title:"Id",
-        field: "id",       
+        title:"Tipo de visita",
+        field: "Type",       
        
     },
     {
-        title:"Nombres",
-        field: "name"
+        title:"Descripción",
+        field: "description"
     },
     {
-        title:"Apellidos",
-        field: "lastname"
+        title:"Max. personas",
+        field: "max"
     },
     {
-        title:"Doc. de Identidad",
-        field: "dni"
+        title:"Rango de horario",
+        field: "hs"
     },
     {
-        title:"Teléfono",
-        field: "phone"
+        title:"D[as disponibles",
+        field: "days"
     },
-    {
-        title:"Mz.",
-        field: "mza"
-    },
-    {
-        title:"Lte.",
-        field: "lte"
-    },
-    {
-        title:"Correo",
-        field: "email"
-    }
 ]
 
 
-function Users() {
+function Visita() {
 
     const [data, setdata] = useState([]);
 
     const traerFrase = async () => {
-        const api = await fetch("http://localhost:3001/Users");
+        const api = await fetch("http://localhost:3001/Visita");
         const frase = await api.json()
         console.log(frase[0]);
         setdata(frase)
@@ -60,7 +48,7 @@ function Users() {
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Usuarios Propietarios" />
+                <TitlePage titulo="Personal de servicio" />
                 <div className="flex justify-end ">
                     <button className="btn">
                         Agregar
@@ -103,4 +91,4 @@ function Users() {
     )
 }
 
-export default Users
+export default Visita

@@ -1,4 +1,4 @@
-import './Users.css'
+import '../users/Users.css'
 
 import React,{useEffect, useState}  from 'react';
 
@@ -7,47 +7,35 @@ import TitlePage from '../../components/pageComponents/TitlePage';
 
 const customerTableHead = [
     {
-        title:"Id",
-        field: "id",       
+        title:"Tipo de espacio",
+        field: "Type",       
        
     },
     {
-        title:"Nombres",
-        field: "name"
+        title:"Descripción",
+        field: "description"
     },
     {
-        title:"Apellidos",
-        field: "lastname"
+        title:"N° o Nombre",
+        field: "Number"
     },
     {
-        title:"Doc. de Identidad",
-        field: "dni"
+        title:"Tiempo previo para reservar",
+        field: "time-reserve"
     },
     {
-        title:"Teléfono",
-        field: "phone"
+        title:"Horas máximas al mes",
+        field: "max-hs"
     },
-    {
-        title:"Mz.",
-        field: "mza"
-    },
-    {
-        title:"Lte.",
-        field: "lte"
-    },
-    {
-        title:"Correo",
-        field: "email"
-    }
 ]
 
 
-function Users() {
+function Espacio() {
 
     const [data, setdata] = useState([]);
 
     const traerFrase = async () => {
-        const api = await fetch("http://localhost:3001/Users");
+        const api = await fetch("http://localhost:3001/Espacios");
         const frase = await api.json()
         console.log(frase[0]);
         setdata(frase)
@@ -60,7 +48,7 @@ function Users() {
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Usuarios Propietarios" />
+                <TitlePage titulo="Personal de servicio" />
                 <div className="flex justify-end ">
                     <button className="btn">
                         Agregar
@@ -103,4 +91,4 @@ function Users() {
     )
 }
 
-export default Users
+export default Espacio

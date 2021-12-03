@@ -6,11 +6,15 @@ import {
   Switch
 } from "react-router-dom";
 
+import Espacio from "./pages/espacio/Espacio";
 import Home from "./pages/home/Home";
 import Login from "./components/Login"
+import Noticias from "./pages/noticias/noticias";
+import Personal from "./pages/personal/Personal";
 import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import Users from "./pages/users/Users"
+import Visita from "./pages/visita/Visita";
 import Visitas from "./pages/visitas/Visitas";
 
 function App() {
@@ -32,8 +36,17 @@ function App() {
           <Route path="/Users">
           <Users/>
           </Route>
-          <Route path="/Visitas">
-          <Visitas/>
+          <Route path="/Personal">
+          <Personal/>
+          </Route>
+          <Route path="/Espacio">
+          <Espacio/>
+          </Route>
+          <Route path="/Visita">
+          <Visita/>
+          </Route>
+          <Route path="/Noticias">
+          <Noticias/>
           </Route>
     
           </div>

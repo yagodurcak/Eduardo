@@ -1,4 +1,4 @@
-import './Users.css'
+import '../users/Users.css'
 
 import React,{useEffect, useState}  from 'react';
 
@@ -22,32 +22,16 @@ const customerTableHead = [
     {
         title:"Doc. de Identidad",
         field: "dni"
-    },
-    {
-        title:"Teléfono",
-        field: "phone"
-    },
-    {
-        title:"Mz.",
-        field: "mza"
-    },
-    {
-        title:"Lte.",
-        field: "lte"
-    },
-    {
-        title:"Correo",
-        field: "email"
     }
 ]
 
 
-function Users() {
+function Personal() {
 
     const [data, setdata] = useState([]);
 
     const traerFrase = async () => {
-        const api = await fetch("http://localhost:3001/Users");
+        const api = await fetch("http://localhost:3001/Personal");
         const frase = await api.json()
         console.log(frase[0]);
         setdata(frase)
@@ -60,7 +44,7 @@ function Users() {
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Usuarios Propietarios" />
+                <TitlePage titulo="Personal de servicio" />
                 <div className="flex justify-end ">
                     <button className="btn">
                         Agregar
@@ -103,4 +87,4 @@ function Users() {
     )
 }
 
-export default Users
+export default Personal
