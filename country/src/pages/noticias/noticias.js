@@ -39,7 +39,7 @@ function Noticias() {
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Personal de servicio" />
+                <TitlePage titulo="Noticias" />
                 <div className="flex justify-end ">
                     <button className="btn">
                         Agregar

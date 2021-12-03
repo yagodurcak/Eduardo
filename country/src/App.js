@@ -11,11 +11,12 @@ import Home from "./pages/home/Home";
 import Login from "./components/Login"
 import Noticias from "./pages/noticias/noticias";
 import Personal from "./pages/personal/Personal";
+import Quejas from "./pages/quejas/Quejas";
 import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
+import Tramites from "./pages/tramites/Tramites";
 import Users from "./pages/users/Users"
 import Visita from "./pages/visita/Visita";
-import Visitas from "./pages/visitas/Visitas";
 
 function App() {
   return (
@@ -47,6 +48,12 @@ function App() {
           </Route>
           <Route path="/Noticias">
           <Noticias/>
+          </Route>
+          <Route path="/Tramites">
+          <Tramites/>
+          </Route>
+          <Route path="/Quejas">
+          <Quejas/>
           </Route>
     
           </div>

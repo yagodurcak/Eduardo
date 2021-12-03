@@ -6,36 +6,40 @@ import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 
 const customerTableHead = [
+
     {
-        title:"Tipo de visita",
-        field: "Type",       
-       
+        title:"Fecha",
+        field: "date"
     },
     {
-        title:"Descripción",
-        field: "description"
+        title:"Tipo",
+        field: "Type"
     },
     {
-        title:"Max. personas",
-        field: "max"
+        title:"Asunto",
+        field: "asunto"
     },
     {
-        title:"Rango de horario",
-        field: "hs"
+        title:"Propietario",
+        field: "propietario"
     },
     {
-        title:"D[as disponibles",
-        field: "days"
+        title:"Estado",
+        field: "estado"
     },
+    {
+        title:"Actualiz.",
+        field: "update"
+    }
 ]
 
 
-function Visita() {
+function Quejas() {
 
     const [data, setdata] = useState([]);
 
     const traerFrase = async () => {
-        const api = await fetch("http://localhost:3001/Visita");
+        const api = await fetch("http://localhost:3001/Quejas");
         const frase = await api.json()
         console.log(frase[0]);
         setdata(frase)
@@ -48,7 +52,7 @@ function Visita() {
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Visitas" />
+                <TitlePage titulo="Quejas y Reclamos" />
                 <div className="flex justify-end ">
                     <button className="btn">
                         Agregar
@@ -91,4 +95,4 @@ function Visita() {
     )
 }
 
-export default Visita
+export default Quejas

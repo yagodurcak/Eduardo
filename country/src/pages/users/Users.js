@@ -2,6 +2,7 @@ import './Users.css'
 
 import React,{useEffect, useState}  from 'react';
 
+import Search from '@material-ui/icons/Search';
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 
@@ -66,34 +67,27 @@ function Users() {
                         Agregar
                     </button>
                 </div>
-  
-                {/* <div className="mt-10">
 
-
-                    <Table
-                     limit='10'
-                     headData={customerTableHead}
-                     renderHead={(item, index) => renderHead(item, index)}
-                     bodyData={customerList}
-                     renderBody={(item, index) => renderBody(item, index)}
-
-
-                    />
-                </div> */}
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
                  data={data}
                  actions= {[
+                     
                     {
                         icon:"edit",
                         tooltip:"Editar",
                         onClick: (event, rowdata) => alert("¿Quiere editar al usuario?")   
                     },
                     {
-                        icon:"delete",
+                        icon:() => <span class="material-icons md-18">face</span>,
                         tooltip:"Eliminar",
                         onClick: (event, rowdata) => alert("¿Quiere eliminar al usuario:  " + rowdata.artista + "?")   
+                    },
+                    {
+                        icon:() => <span class="material-icons md-18">face</span> ,
+                        tooltip:"detaile",
+                        onClick: (event, rowdata) => alert("¿Quiere detalle:  " + rowdata.artista + "?")   
                     }
                 ] }
 

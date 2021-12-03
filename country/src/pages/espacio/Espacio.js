@@ -1,9 +1,11 @@
 import '../users/Users.css'
 
+import {Button, Modal, TextField} from '@material-ui/core';
 import React,{useEffect, useState}  from 'react';
 
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
+import {makeStyles} from '@material-ui/core/styles';
 
 const customerTableHead = [
     {
@@ -21,17 +23,47 @@ const customerTableHead = [
     },
     {
         title:"Tiempo previo para reservar",
-        field: "time-reserve"
+        field: "timereserve"
     },
     {
         title:"Horas máximas al mes",
-        field: "max-hs"
+        field: "maxhs"
     },
 ]
 
+const useStyles = makeStyles((theme) => ({
+    modal: {
+      position: 'absolute',
+      width: 400,
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)'
+    },
+    iconos:{
+      cursor: 'pointer'
+    }, 
+    inputMaterial:{
+      width: '100%'
+    }
+  }));
+
 
 function Espacio() {
-
+    const styles= useStyles();
+    const [modalInsertar, setModalInsertar]= useState(false);
+    const [modalEditar, setModalEditar]= useState(false);
+    const [modalEliminar, setModalEliminar]= useState(false);
+    const [artistaSeleccionado, setArtistaSeleccionado]=useState({
+        Type: "",
+        Description: "",
+        Number: "",
+        timereserve: "",
+        maxhs: "",
+    })
     const [data, setdata] = useState([]);
 
     const traerFrase = async () => {
@@ -48,7 +80,7 @@ function Espacio() {
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Personal de servicio" />
+                <TitlePage titulo="Espacios" />
                 <div className="flex justify-end ">
                     <button className="btn">
                         Agregar

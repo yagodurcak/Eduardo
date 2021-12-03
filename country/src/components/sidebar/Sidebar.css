@@ -28,7 +28,7 @@
 
 .linea{
     border: 1px solid lightgray;
-    margin: 30px 0px;
+    margin: 10px 0px;
 }
 
 .title1{
@@ -88,8 +88,4 @@
     background-color: #F88703;
 
     cursor: pointer;
-}
-
-.listahover{
-    padding: 5px 10px;
 }

@@ -107,7 +107,6 @@ function Sidebar() {
                         </div>
                     </li>
                     </Link>
-                   
                     <li className='listahover'>
                         <div className="logoContainter1">
 
@@ -117,7 +116,7 @@ function Sidebar() {
 
                         </div>
                     </li>
-                   
+                    <Link to="/Tramites" style={{ textDecoration: 'none' }}>
                     <li className='listahover'>
                         <div className="logoContainter1">
 
@@ -127,7 +126,8 @@ function Sidebar() {
 
                         </div>
                     </li>
-                   
+                    </Link>
+                    <Link to="/Quejas" style={{ textDecoration: 'none' }}>
                     <li className='listahover'>
                         <div className="logoContainter1">
 
@@ -137,6 +137,7 @@ function Sidebar() {
 
                         </div>
                     </li>
+                    </Link>
                     <li className='listahover'>
                         <div className="logoContainter1">
 
