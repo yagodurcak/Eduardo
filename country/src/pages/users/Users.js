@@ -2,9 +2,11 @@ import './Users.css'
 
 import React,{useEffect, useState}  from 'react';
 
+import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
+import axios from "axios"
 
 const customerTableHead = [
     {
@@ -14,7 +16,7 @@ const customerTableHead = [
     },
     {
         title:"Nombres",
-        field: "name"
+        field: "names"
     },
     {
         title:"Apellidos",
@@ -47,19 +49,26 @@ function Users() {
 
     const [data, setdata] = useState([]);
     const [showModalInsertar, setShowModalInsertar] = useState(false);
+    const [showModalEditar, setShowModalEditar] = useState(false);
     const [info, setInfo] = useState({
         dni: "",
         email: "",
         lastname: "",
         lte: "",
         mza: "",
-        name: "",
+        names: "",
         phone: ""
     })
-   
-    console.log(data);
 
+    const [error, setError] = useState(false)
+   
+
+    const{dni, lastname, lte, mza, phone, names} = info;
+  
+    const baseUrl="http://localhost:3001/Users";
     const handleChangeInsert = (e) => {
+
+        
         
         setInfo({
             ...info,
@@ -67,12 +76,92 @@ function Users() {
         })
     }
 
+    // const handleChangeEdit = (e) => {
+    //         setInfo({
+    //         ...info,
+    //         [e.target.name]: e.target.value
+    //     })
+    // }
+
+    const seleccionarUser=(user, caso)=>{
+        setInfo(user);
+        (caso==="Editar")&&abrirCerrarModalEditar()
+        console.log(user);
+ 
+      }
+
     const traerFrase = async () => {
-        const api = await fetch("http://localhost:3001/Users");
+        const api = await fetch(baseUrl);
         const frase = await api.json()
         console.log(frase[0]);
         setdata(frase)
     }
+
+    const peticionPost=async()=>{
+        await axios.post(baseUrl, info)
+        .then(response=>{
+          setdata(data.concat(response.data));
+          abrirCerrarModalInsertar();
+        }).catch(error=>{
+          console.log(error);
+        })
+      }
+
+      const peticionPut=async()=>{
+        await axios.put(baseUrl+"/"+info.id, info)
+        .then(response=>{
+          var dataNueva= data;
+          dataNueva.map(artista=>{
+            if(artista.id===info.id){
+              artista.names=info.names;
+              artista.lastname=info.lastname;
+              artista.dni=info.dni;
+              artista.lte=info.lte;
+              artista.mza=info.mza;
+              artista.email=info.email;
+              artista.phone=info.phone;
+  
+            }
+          });
+          setdata(dataNueva);
+          abrirCerrarModalEditar();
+        }).catch(error=>{
+          console.log(error);
+        })
+      }
+
+    const onSubmitInsertar = (e) => {
+
+        e.preventDefault();
+
+        if (dni.trim() === "" || lastname.trim() === "" ||names.trim() === "" ||lte.trim() === "" ||mza.trim() === "" ) {
+        
+         setError(true);
+         return
+        }else {
+            setError(false);
+
+            peticionPost()
+            setInfo({
+                dni: "",
+                email: "",
+                lastname: "",
+                lte: "",
+                mza: "",
+                names: "",
+                phone: ""
+            });
+            // abrirCerrarModalInsertar()
+        }
+        
+    }
+    const onSubmitEditar = () => {
+
+            peticionPut()
+           
+        }
+        
+    
     
     useEffect(() => {
         traerFrase()
@@ -82,6 +171,10 @@ function Users() {
     const abrirCerrarModalInsertar = () => {
           
         setShowModalInsertar(!showModalInsertar)
+      }
+
+      const abrirCerrarModalEditar=()=>{
+        setShowModalEditar(!showModalEditar);
       }
 
     return (
@@ -103,7 +196,7 @@ function Users() {
                             {
                         icon:() => <i class="material-icons edit">edit</i>,
                         tooltip:"Editar",
-                        onClick: (event, rowdata) => alert("¿Quiere editar al usuario?")   
+                        onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
                     },
                     {
                         icon:() => <i class="material-icons delete">highlight_off</i>,
@@ -119,6 +212,19 @@ function Users() {
             showmodalInsertar={showModalInsertar}
             functionShow= {abrirCerrarModalInsertar}
             handleChangeInsert={handleChangeInsert}
+            onSubmitInsertar={onSubmitInsertar}
+            error={error}
+           
+            
+            />
+            <ModalEditar
+            showModalEditar={showModalEditar}
+            functionShow= {abrirCerrarModalEditar}
+            handleChangeInsert={handleChangeInsert}
+            onSubmitEditar={onSubmitEditar}
+            // error={error}
+           
+            
             />
         </div>
     )
