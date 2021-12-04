@@ -24,3 +24,21 @@
   padding: 20px 30px;
   position: sticky
 }
+
+.delete{
+  /* background-color: aqua; */
+  color: red;
+}
+.edit{
+  /* background-color: aqua; */
+  color: #317143;
+}
+
+.switch{
+  /* background-color: aqua; */
+  /* border: 1px solid gray; */
+  color: "red";
+  border-radius: 30px;
+  padding: 1px;
+  
+}
