@@ -23,7 +23,10 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const ModalEditar = (props)=> {
+  const ModalEditar = (props)=> {
+    
+    
+    console.log(props.info);
 
     
 
@@ -48,7 +51,7 @@ const ModalEditar = (props)=> {
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Editar</Button>
-              <Button onClick= {props.functionShow}> Cancelar</Button>
+              <Button onClick= {()=>props.functionShow()}> Cancelar</Button>
             </div>
           </div>
         </form>

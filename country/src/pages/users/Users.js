@@ -3,6 +3,7 @@ import './Users.css'
 import React,{useEffect, useState}  from 'react';
 
 import ModalEditar from '../../components/pageComponents/ModalEditar';
+import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
@@ -50,6 +51,8 @@ function Users() {
     const [data, setdata] = useState([]);
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
+    const [showModalEliminar, setShowModalEliminar] = useState(false);
+    
     const [info, setInfo] = useState({
         dni: "",
         email: "",
@@ -85,9 +88,9 @@ function Users() {
 
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
-        (caso==="Editar")&&abrirCerrarModalEditar()
-        console.log(user);
- 
+        (caso==="Editar")?abrirCerrarModalEditar()
+        : 
+        abrirCerrarModalEliminar() 
       }
 
     const traerFrase = async () => {
@@ -102,6 +105,16 @@ function Users() {
         .then(response=>{
           setdata(data.concat(response.data));
           abrirCerrarModalInsertar();
+        }).catch(error=>{
+          console.log(error);
+        })
+      }
+
+      const peticionDelete=async()=>{
+        await axios.delete(baseUrl+"/"+info.id, info)
+        .then(response=>{
+          setdata(data.filter(artista=>artista.id!==info.id));
+          abrirCerrarModalEliminar();
         }).catch(error=>{
           console.log(error);
         })
@@ -176,6 +189,9 @@ function Users() {
       const abrirCerrarModalEditar=()=>{
         setShowModalEditar(!showModalEditar);
       }
+      const abrirCerrarModalEliminar=()=>{
+        setShowModalEliminar(!showModalEliminar);
+      }
 
     return (
         <div>
@@ -201,7 +217,8 @@ function Users() {
                     {
                         icon:() => <i class="material-icons delete">highlight_off</i>,
                         tooltip:"Eliminar",
-                        onClick: (event, rowdata) => alert("¿Quiere eliminar al usuario:  " + rowdata.artista + "?")   
+                        // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
+                        onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
                     }
           
                 ] }
@@ -222,9 +239,14 @@ function Users() {
             functionShow= {abrirCerrarModalEditar}
             handleChangeInsert={handleChangeInsert}
             onSubmitEditar={onSubmitEditar}
-            // error={error}
-           
-            
+            info={info}
+            />
+            <ModalEliminar
+            showModalEliminar={showModalEliminar}
+            abrirCerrarModalEliminar= {abrirCerrarModalEliminar}
+            onSubmitEditar={onSubmitEditar}
+            info={info}
+            peticionDelete={peticionDelete}
             />
         </div>
     )
