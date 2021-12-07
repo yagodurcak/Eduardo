@@ -12,6 +12,7 @@ import Login from "./components/Login"
 import Noticias from "./pages/noticias/noticias";
 import Personal from "./pages/personal/Personal";
 import Quejas from "./pages/quejas/Quejas";
+import Seguridad from "./pages/seguridad/Seguridad";
 import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import Tramites from "./pages/tramites/Tramites";
@@ -54,6 +55,9 @@ function App() {
           </Route>
           <Route path="/Quejas">
           <Quejas/>
+          </Route>
+          <Route path="/Seguridad">
+          <Seguridad/>
           </Route>
     
           </div>

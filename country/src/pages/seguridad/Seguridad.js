@@ -1,4 +1,4 @@
-import './Users.css'
+import "../users/Users.css"
 
 import {Button, Modal, TextField} from '@material-ui/core';
 import React,{useEffect, useState}  from 'react';
@@ -6,7 +6,6 @@ import React,{useEffect, useState}  from 'react';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
-import Switch from '@mui/material/Switch';
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
@@ -34,8 +33,6 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
- 
-
 
 const customerTableHead = [
     {
@@ -54,52 +51,31 @@ const customerTableHead = [
     {
         title:"Doc. de Identidad",
         field: "dni"
-    },
-    {
-        title:"Teléfono",
-        field: "phone"
-    },
-    {
-        title:"Mz.",
-        field: "mza"
-    },
-    {
-        title:"Lte.",
-        field: "lte"
-    },
-    {
-        title:"Correo",
-        field: "email"
     }
 ]
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-function Users() {
+function Seguridad() {
 
     const [data, setdata] = useState([]);
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
-    const [switchOn, setSwitchOn] = useState(true)
+    const [error, setError] = useState(false)
+ 
     
     const [info, setInfo] = useState({
         dni: "",
-        email: "",
         lastname: "",
-        lte: "",
-        mza: "",
-        names: "",
-        area:"",
-        phone: ""
+        names: ""
     })
 
-    const [error, setError] = useState(false)
    
 
-    const{dni, lastname, lte, mza, phone, names, area, email} = info;
+    const{dni, lastname,  names} = info;
   
-    const baseUrl="http://localhost:3001/Users";
+    const baseUrl="http://localhost:3001/Seguridad";
     const handleChangeInsert = (e) => {
 
         setInfo({
@@ -150,11 +126,7 @@ function Users() {
             if(artista.id===info.id){
               artista.names=info.names;
               artista.lastname=info.lastname;
-              artista.dni=info.dni;
-              artista.lte=info.lte;
-              artista.mza=info.mza;
-              artista.email=info.email;
-              artista.phone=info.phone;
+              artista.dni=info.dni
   
             }
           });
@@ -165,16 +137,13 @@ function Users() {
         })
       }
 
-      const handleChangeSwitch = () => {
-          setSwitchOn(!switchOn)
-        
-      }
+ 
 
     const onSubmitInsertar = (e) => {
 
         e.preventDefault();
 
-        if (dni.trim() === "" || lastname.trim() === "" ||names.trim() === "" ||lte.trim() === "" ||mza.trim() === "" ||email.trim() === "" ||area.trim() === "" ) {
+        if (dni.trim() === "" || lastname.trim() === "" ||names.trim() === ""  ) {
         
          setError(true);
          return
@@ -184,13 +153,11 @@ function Users() {
             peticionPost()
             setInfo({
                 dni: "",
-                email: "",
+           
                 lastname: "",
-                lte: "",
-                mza: "",
+            
                 names: "",
-                area: "",
-                phone: ""
+        
             });
             // abrirCerrarModalInsertar()
         }
@@ -231,11 +198,7 @@ function Users() {
               <br />
               <TextField className={styles.inputMaterial} name="dni" onChange={handleChangeInsert}  label="Doc. de Identidad*" />
             <br />
-              <TextField className={styles.inputMaterial} name="mza" onChange={handleChangeInsert}  label="Manzana*" />
-              <TextField className={styles.inputMaterial} name="lte" onChange={handleChangeInsert}  label="Lote*" />
-              <TextField className={styles.inputMaterial} name="area" onChange={handleChangeInsert}  label="Area (m2)*" />
-              <TextField className={styles.inputMaterial} name="email" onChange={handleChangeInsert}  label="Correo*" />
-              <TextField className={styles.inputMaterial} name="phone" onChange={handleChangeInsert} label="Teléfono" />
+
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>
@@ -246,49 +209,43 @@ function Users() {
       )
 
 
-
       const bodyEditar=(
-          <form action="" onSubmit={onSubmitEditar}>
-            <div className={styles.modal}>
-              <h3 className="my-5">Editar Usuario</h3>
-              { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
-              <TextField className={styles.inputMaterial} name="names" onChange={handleChangeInsert} value= {info&&info.names} label="Nombre" />
+        <form action="" onSubmit={onSubmitEditar}>
+          <div className={styles.modal}>
+            <h3 className="my-5">Registrar usuario nuevo</h3>
+            { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
+            <TextField className={styles.inputMaterial} name="names" onChange={handleChangeInsert} value= {info&&info.names} label="Nombre" />
+            <br />
+            <TextField className={styles.inputMaterial} name="lastname" onChange={handleChangeInsert} value= {info&&info.lastname} label="Apellido" />          
               <br />
-              <TextField className={styles.inputMaterial} name="lastname" onChange={handleChangeInsert} value= {info&&info.lastname} label="Apellido" />          
-                <br />
-                <TextField className={styles.inputMaterial} name="dni" onChange={handleChangeInsert} value= {info&&info.dni} label="Doc. de Identidad" />
-              <br />
-                <TextField className={styles.inputMaterial} name="phone" onChange={handleChangeInsert} value= {info&&info.phone} label="Teléfono" />
-                <TextField className={styles.inputMaterial} name="mza" onChange={handleChangeInsert} value= {info&&info.mza} label="Mz." />
-                <TextField className={styles.inputMaterial} name="lte" onChange={handleChangeInsert} value= {info&&info.lte} label="Lte." />
-                <TextField className={styles.inputMaterial} name="email" onChange={handleChangeInsert} value= {info&&info.email} label="Correo" />
-              <br /><br />
-              <div align="right">
-                <Button color="primary" type="submit" >Editar</Button>
-                <Button onClick= {()=>abrirCerrarModalEditar()}> Cancelar</Button>
-              </div>
+              <TextField className={styles.inputMaterial} name="dni" onChange={handleChangeInsert} value= {info&&info.dni} label="Doc. de Identidad" />
+            <br />
+     
+            <br /><br />
+            <div align="right">
+              <Button color="primary" type="submit" >Editar</Button>
+              <Button onClick= {()=>abrirCerrarModalEditar()}> Cancelar</Button>
             </div>
-          </form>
-        )
+          </div>
+        </form>
+      )
 
-        
-
-        const bodyEliminar=(
-            <div className={styles.modal}>
-              <p>Estás seguro que deseas eliminar  <b>{info&&info.names}</b>? </p>
-              <div align="right">
-                <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
-                <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
-        
-              </div>
-        
-            </div>
-          )
+      const bodyEliminar=(
+        <div className={styles.modal}>
+          <p>Estás seguro que deseas eliminar  <b>{info&&info.names}</b>? </p>
+          <div align="right">
+            <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
+            <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
+    
+          </div>
+    
+        </div>
+      )
 
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Usuarios Propietarios" />
+                <TitlePage titulo="Personal de Seguridad" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar
@@ -302,11 +259,7 @@ function Users() {
                  data={data}
                  actions= {[
                      
-                     {
-                 icon:() =>  <Switch {...label} defaultChecked onChange={handleChangeSwitch} className="toggle-button"/>,
-                 tooltip:"add",
-                 
-             },
+                
                             {
                         icon:() => <i class="material-icons edit">edit</i>,
                         tooltip:"Editar",
@@ -353,4 +306,4 @@ function Users() {
     )
 }
 
-export default Users
+export default Seguridad

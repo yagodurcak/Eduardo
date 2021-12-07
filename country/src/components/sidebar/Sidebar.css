@@ -12,6 +12,7 @@
     display: flex;
     justify-content: start;
     align-items: center;
+    
 }
 .logo{
     height: 110px;
@@ -44,8 +45,8 @@
 
 
 .logo1{
-    height: 60px;
-    width: 60px;
+    height: 40px;
+    width: 40px;
     
 }
 
@@ -75,17 +76,62 @@
     width: 15px;
 }
 
+.logo3{
+    height: 25px;
+    width: 25px;
+}
+
 .logoContainter1{
     /* background-color: mediumblue; */
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: white;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 25px;
+    
 }
+
 
 .listahover.active,
 .listahover:hover{
     background-color: #F88703;
 
     cursor: pointer;
+    padding: 10px 10px;
+}
+
+.submenu{
+    padding: 10px 0px 10px 25px;
+    margin: -10px 0px;
+    
+}
+
+
+.submenu:hover{
+    background-color: #F88703;
+    padding: 10px 10px;
+    cursor: pointer;
+    
+}
+
+.linkactivo{
+    background-color: #F88703;
+    padding: 10px 10px;
+ 
+}
+.linkactivo1{
+    background-color: #F88703;
+
+    cursor: pointer;
+    padding: 15px 0px 15px 0px;
+}
+ 
+
+.links{
+    background-color: lightskyblue;
+    color: white;
 }
