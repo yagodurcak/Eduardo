@@ -42,3 +42,8 @@ border-radius: 150px;
     /* color: tomato; */
 }
 
+.select1{
+    height: 40px;
+    width: 100%;
+    border: 1px solid grey;
+}

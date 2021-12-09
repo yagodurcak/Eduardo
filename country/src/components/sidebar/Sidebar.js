@@ -26,10 +26,15 @@ import visitas from "../../IMG/Visitas 3visitas.svg"
 function Sidebar() {
 
     const [submenuUser, setSubMenuUser] = useState(false)
+    const [submenuVisitas, setSubMenuVisitas] = useState(false)
 
     const abrirSubmenuUser = () => {
         setSubMenuUser(!submenuUser)
         console.log(submenuUser);
+    }
+    const abrirSubmenuVisitas = () => {
+        setSubMenuVisitas(!submenuVisitas)
+        console.log(submenuVisitas);
     }
 
 
@@ -131,7 +136,7 @@ function Sidebar() {
                             </NavLink>
                         </li>
                     </Link>
-                    <Link to="/Visita" style={{ textDecoration: 'none' }}>
+                    <Link to="/Visita" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuVisitas()}>
                         <li className='listahover'>
                         <NavLink className="logoContainter1" exact to="/Visita" activeClassName="linkactivo">
 
@@ -142,6 +147,33 @@ function Sidebar() {
                             </NavLink>
                         </li>
                     </Link>
+                    {submenuVisitas
+                    
+                    ? (
+                    
+                    <div>
+                        <Link to="/Visita" style={{ textDecoration: 'none' }}>
+                            <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Visita">
+                                    <img src={propietario} alt="" className='logo3' />
+                                    <h1 className="title1">Reglas</h1>
+                                    <a href=""><img src={down} alt="" className='logo2' /></a>
+                                </NavLink>
+                            </li>
+                        </Link>
+                        <Link to="/2" style={{ textDecoration: 'none' }}>
+                            <li className='submenu'>
+                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/2">
+                                    <img src={seguridad} alt="" className='logo3' />
+                                    <h1 className="title1">Invitados</h1>
+                                    <a href=""><img src={down} alt="" className='logo2' /></a>
+                                </NavLink>
+                            </li>
+                        </Link>
+                    </div>
+                    
+                    ) 
+                    : null}
                     <Link to="/Noticias" style={{ textDecoration: 'none' }}>
                         <li className='listahover'>
                         <NavLink className="logoContainter1" exact to="/Noticias" activeClassName="linkactivo">

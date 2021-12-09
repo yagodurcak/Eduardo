@@ -1,4 +1,5 @@
 import './index.css';
+import "./Firebase"
 
 import App from './App';
 import React from 'react';

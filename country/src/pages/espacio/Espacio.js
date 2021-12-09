@@ -3,9 +3,6 @@ import '../users/Users.css'
 import {Button, Modal, TextField} from '@material-ui/core';
 import React,{useEffect, useState}  from 'react';
 
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -79,7 +76,7 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 
 function Espacio() {
-    const [age, setAge] = React.useState('');
+ 
     const [data, setdata] = useState([]);
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
@@ -96,12 +93,13 @@ function Espacio() {
     })
 
     const [error, setError] = useState(false)
-   
+
+
+
+
 
     const{maxhs, type, description, number, timereserve} = info;
-    const handleChange = (event) => {
-        setAge(event.target.value);
-      };
+
   
     const baseUrl="http://localhost:3001/Espacios";
     const handleChangeInsert = (e) => {
@@ -227,7 +225,18 @@ function Espacio() {
             <h3 className="my-5">Agregar Nuevo Usuario</h3>
 
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-
+            <label htmlFor="">Seleccione un tipo*</label>
+            <select className="select1">
+                     
+                        <option value="s" >Deportivo</option>
+                        <option value="ss" >Recreativo </option>
+                        <option value="ss" >Esparcimiento </option>
+                        <option value="ss" >Salas de uso multiple </option>
+                        <option value="ss" >Crear Uno </option>
+        
+                        
+                   
+                    </select>   
             
             <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} label="Tipo*"  />
             <br />
@@ -238,7 +247,7 @@ function Espacio() {
             <br />
               <TextField className={styles.inputMaterial} name="maxhs" onChange={handleChangeInsert}  label="Horas máximas de reservas al mes por usuario*" />
               <TextField className={styles.inputMaterial} name="normas" onChange={handleChangeInsert}  label="Normas de Uso*" />
-
+              <input type="file"/>
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>
@@ -250,27 +259,28 @@ function Espacio() {
 
 
 
-      const bodyEditar=(
-          <form action="" onSubmit={onSubmitEditar}>
-            <div className={styles.modal}>
-              <h3 className="my-5">Editar Espacio</h3>
-              { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
-              <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} value= {info&&info.type} label="Tipo*" />
-              <br />
-              <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} value= {info&&info.description} label="Descripción*" />          
-                <br />
-                <TextField className={styles.inputMaterial} name="number" onChange={handleChangeInsert} value= {info&&info.number} label="ID (N° o nombre)*" />
-              <br />
-                <TextField className={styles.inputMaterial} name="timereserve" onChange={handleChangeInsert} value= {info&&info.timereserve} label="TTiempo previo de reserva (horas)*" />
-                <TextField className={styles.inputMaterial} name="maxhs" onChange={handleChangeInsert} value= {info&&info.maxhs} label="Horas máximas de reservas al mes por usuario*" />
-                <TextField className={styles.inputMaterial} name="normas" onChange={handleChangeInsert} value= {info&&info.normas} label="Normas de Uso*" />
-                 <br /><br />
-              <div align="right">
-                <Button color="primary" type="submit" >Editar</Button>
-                <Button onClick= {()=>abrirCerrarModalEditar()}> Cancelar</Button>
-              </div>
-            </div>
-          </form>
+  const bodyEditar = (
+    <form action="" onSubmit={onSubmitEditar}>
+      <div className={styles.modal}>
+        <h3 className="my-5">Editar Espacio</h3>
+        {error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null}
+
+        <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} value={info && info.type} label="Tipo*" />
+        <br />
+        <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} value={info && info.description} label="Descripción*" />
+        <br />
+        <TextField className={styles.inputMaterial} name="number" onChange={handleChangeInsert} value={info && info.number} label="ID (N° o nombre)*" />
+        <br />
+        <TextField className={styles.inputMaterial} name="timereserve" onChange={handleChangeInsert} value={info && info.timereserve} label="TTiempo previo de reserva (horas)*" />
+        <TextField className={styles.inputMaterial} name="maxhs" onChange={handleChangeInsert} value={info && info.maxhs} label="Horas máximas de reservas al mes por usuario*" />
+        <TextField className={styles.inputMaterial} name="normas" onChange={handleChangeInsert} value={info && info.normas} label="Normas de Uso*" />
+        <br /><br />
+        <div align="right">
+          <Button color="primary" type="submit" >Editar</Button>
+          <Button onClick={() => abrirCerrarModalEditar()}> Cancelar</Button>
+        </div>
+      </div>
+    </form>
         )
 
         

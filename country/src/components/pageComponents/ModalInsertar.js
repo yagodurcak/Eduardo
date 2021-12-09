@@ -3,13 +3,7 @@ import React, {useState} from 'react';
 
 const ModalInsertar = (props)=> {
 
-    
-
-
-
-   
-
-    
+       
     return (
         <div>      
             <Modal
