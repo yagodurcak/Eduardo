@@ -6,11 +6,10 @@ import React,{useEffect, useState}  from 'react';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
-import Select from '@mui/material/Select';
-import Switch from '@mui/material/Switch';
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
+import down from "../../IMG/down.svg"
 import {makeStyles} from '@material-ui/core/styles';
 
 // import { Switch } from 'antd';
@@ -41,50 +40,38 @@ const useStyles = makeStyles((theme) => ({
  
 
 
+
   const customerTableHead = [
 
     {
-        title:"Tipo de visita",
-        field: "type",       
+        title:"Descripción",
+        field: "description",       
        
     },
     {
-        title:"Descripción",
-        field: "description"
-    },
-    {
-        title:"Max. personas",
-        field: "max"
-    },
-    {
-        title:"Rango de horario",
-        field: "hs"
-    },
-    {
-        title:"D[as disponibles",
-        field: "days"
-    },
-]
+        title:"Numero",
+        field: "number"
+    }]
 
 
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 
-function Visita() {
+
+function Telefonos() {
  
     const [data, setdata] = useState([]);
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
-    const [switchOn, setSwitchOn] = useState(true)
+
+
+
+
     
     const [info, setInfo] = useState({
-        type: "",
+        
         description: "",
-        hs: "",
-        days: "",
-        max: "",
-  
+        number:"" 
     })
 
     const [error, setError] = useState(false)
@@ -93,10 +80,10 @@ function Visita() {
 
 
 
-    const{max, type, description, hs, days} = info;
+    const{description, number} = info;
 
   
-    const baseUrl="http://localhost:3001/Visita";
+    const baseUrl="http://localhost:3001/Telefonos";
     const handleChangeInsert = (e) => {
 
         setInfo({
@@ -146,12 +133,8 @@ function Visita() {
           var dataNueva= data;
           dataNueva.map(artista=>{
             if(artista.id===info.id){
-              artista.type=info.type;
-              artista.hs=info.hs;
               artista.description=info.description;
-              artista.max=info.max;
-              artista.days=info.days
-  
+              artista.number=info.number 
             }
           });
           setdata(dataNueva);
@@ -161,16 +144,12 @@ function Visita() {
         })
       }
 
-      const handleChangeSwitch = () => {
-          setSwitchOn(!switchOn)
-        
-      }
 
-    const onSubmitInsertar = (e) => {
+      
+      const onSubmitInsertar = (e) => {
+                    e.preventDefault();
 
-        e.preventDefault();
-
-        if (type.trim() === "" || days.trim() === "" ||description.trim() === "" ||hs.trim() === "" ||max.trim() === ""  ) {
+        if (description.trim() === "") {
         
          setError(true);
          return
@@ -179,12 +158,10 @@ function Visita() {
 
             peticionPost()
             setInfo({
-                type: "",
                 description: "",
-                hs: "",
-                days: "",
-                max: "",
+                number:""
             });
+
             // abrirCerrarModalInsertar()
         }
         
@@ -217,28 +194,16 @@ function Visita() {
         <form action="" onSubmit={onSubmitInsertar}>
       
           <div className={styles.modal}>
-            <h3 className="my-5">Agregar Regla</h3>
+            <h3 className="my-5">Agregar teléfono</h3>
 
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            {/* <label htmlFor="">Seleccione un tipo*</label>
-            <select className="select1">
-                     
-                        <option value="s" >Visita</option>
-                        <option value="ss" >Proveedor </option>           
-                   
-                    </select>    */}
-            
-            <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} label="Tipo*"  />
-            <br />
-              <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert}  label="Descripción*" multiline rows={3} />
-       
-              <br />
-              <TextField className={styles.inputMaterial} name="hs" onChange={handleChangeInsert}  label="Rango de horario*" />
-            <br />
-              <TextField className={styles.inputMaterial} name="days" onChange={handleChangeInsert}  label="Días disponibles*" />
-              <TextField className={styles.inputMaterial} name="max" onChange={handleChangeInsert}  label="Max. Personas*" />
 
-             
+    
+            <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} label="Descripción*"  />
+            <br />
+            <TextField className={styles.inputMaterial} name="number" onChange={handleChangeInsert} label="Número"  />
+            <br />            
+            
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>
@@ -253,17 +218,15 @@ function Visita() {
   const bodyEditar = (
     <form action="" onSubmit={onSubmitEditar}>
       <div className={styles.modal}>
-        <h3 className="my-5">Editar Regla</h3>
+        <h3 className="my-5">Editar teléfono</h3>
         {error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null}
 
-        <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} value={info && info.type} label="Tipo*" />
-        <br />
         <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} value={info && info.description} label="Descripción*" />
         <br />
-        <TextField className={styles.inputMaterial} name="hs" onChange={handleChangeInsert} value={info && info.hs} label="Rango de horario*" />
+        <TextField className={styles.inputMaterial} name="number" onChange={handleChangeInsert} value={info && info.number} label="Número*" />
         <br />
-        <TextField className={styles.inputMaterial} name="days" onChange={handleChangeInsert} value={info && info.days} label="Días disponibles*" />
-        <TextField className={styles.inputMaterial} name="max" onChange={handleChangeInsert} value={info && info.max} label="Max. Personas*" />
+
+             
         <br /><br />
         <div align="right">
           <Button color="primary" type="submit" >Editar</Button>
@@ -277,7 +240,7 @@ function Visita() {
 
         const bodyEliminar=(
             <div className={styles.modal}>
-              <p>Estás seguro que deseas eliminar  <b>{info&&info.type}</b>? </p>
+              <p>Estás seguro que deseas eliminar  <b>{info&&info.description}</b>? </p>
               <div align="right">
                 <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
                 <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
@@ -292,7 +255,7 @@ function Visita() {
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Reglas para visitas y proveedores" />
+                <TitlePage titulo="Información util" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar
@@ -306,11 +269,7 @@ function Visita() {
                  data={data}
                  actions= {[
 
-                    {
-                        icon:() =>  <Switch {...label} defaultChecked onChange={handleChangeSwitch} className="toggle-button"/>,
-                        tooltip:"add",
-                        
-                    },
+            
                      
  
                             {
@@ -359,4 +318,4 @@ function Visita() {
     )
 }
 
-export default Visita
+export default Telefonos

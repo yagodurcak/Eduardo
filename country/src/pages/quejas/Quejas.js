@@ -53,11 +53,7 @@ function Quejas() {
         <div>
             <div className='Container'>
                 <TitlePage titulo="Quejas y Reclamos" />
-                <div className="flex justify-end ">
-                    <button className="btn">
-                        Agregar
-                    </button>
-                </div>
+ 
   
                 {/* <div className="mt-10">
 
@@ -78,15 +74,12 @@ function Quejas() {
                  data={data}
                  actions= {[
                     {
-                        icon:"edit",
-                        tooltip:"Editar",
-                        onClick: (event, rowdata) => alert("¿Quiere editar al usuario?")   
-                    },
-                    {
-                        icon:"delete",
-                        tooltip:"Eliminar",
-                        onClick: (event, rowdata) => alert("¿Quiere eliminar al usuario:  " + rowdata.artista + "?")   
-                    }
+                        icon:() => <span class="material-icons find">
+                        find_in_page
+                        </span>,
+                        tooltip:"Detalles",
+                        onClick: () => console.log("hola")
+                    }, 
                 ] }
 
                  /></div>

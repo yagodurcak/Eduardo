@@ -47,3 +47,25 @@ border-radius: 150px;
     width: 100%;
     border: 1px solid grey;
 }
+
+.chevronright{
+    color: white;
+    /* background-color: white; */
+}
+
+.label-input {
+    cursor: pointer;
+    color: black;
+    /* background-color: yellow; */
+    /* Style as you please, it will become the visible UI component. */
+ }
+.label-input:hover {
+  
+    color: #317143;
+    /* background-color: yellow; */
+    /* Style as you please, it will become the visible UI component. */
+ }
+ 
+.find{
+    color: #317143;
+}

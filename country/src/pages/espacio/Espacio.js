@@ -222,7 +222,7 @@ function Espacio() {
         <form action="" onSubmit={onSubmitInsertar}>
       
           <div className={styles.modal}>
-            <h3 className="my-5">Agregar Nuevo Usuario</h3>
+            <h3 className="my-5">Agregar Nuevo Espacio</h3>
 
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             <label htmlFor="">Seleccione un tipo*</label>
@@ -238,16 +238,16 @@ function Espacio() {
                    
                     </select>   
             
-            <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} label="Tipo*"  />
+            {/* <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} label="Tipo*"  />  */}
             <br />
-              <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert}  label="Descripción*" />
+              <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert}  label="Descripción*"  multiline rows={3}/>
             <TextField className={styles.inputMaterial} name="number" onChange={handleChangeInsert}  label="ID (N° o nombre)*" />          
               <br />
               <TextField className={styles.inputMaterial} name="timereserve" onChange={handleChangeInsert}  label="Tiempo previo de reserva (horas)*" />
             <br />
               <TextField className={styles.inputMaterial} name="maxhs" onChange={handleChangeInsert}  label="Horas máximas de reservas al mes por usuario*" />
-              <TextField className={styles.inputMaterial} name="normas" onChange={handleChangeInsert}  label="Normas de Uso*" />
-              <input type="file"/>
+              <TextField className={styles.inputMaterial} name="normas" onChange={handleChangeInsert}  label="Normas de Uso*" multiline rows={5}/>
+              <input type="file" className="mt-10"/>
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>

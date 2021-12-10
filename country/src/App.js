@@ -6,6 +6,8 @@ import {
   Switch
 } from "react-router-dom";
 
+import Archivos from "./pages/archivos/Archivos";
+import DetalleTramite from "./pages/tramites/DetalleTramite";
 import Espacio from "./pages/espacio/Espacio";
 import Home from "./pages/home/Home";
 import Login from "./components/Login"
@@ -14,6 +16,7 @@ import Personal from "./pages/personal/Personal";
 import Quejas from "./pages/quejas/Quejas";
 import Seguridad from "./pages/seguridad/Seguridad";
 import Sidebar from "./components/sidebar/Sidebar";
+import Telefonos from "./pages/telefonos/Telefonos";
 import Topbar from "./components/topbar/Topbar";
 import Tramites from "./pages/tramites/Tramites";
 import Users from "./pages/users/Users"
@@ -60,6 +63,15 @@ function App() {
           <Seguridad/>
           </Route>
     
+          <Route path="/Archivos">
+          <Archivos/>
+          </Route>
+          <Route path="/Telefonos">
+          <Telefonos/>
+          </Route>
+          <Route path="/Detalle">
+          <DetalleTramite/>
+          </Route>
           </div>
         </Switch>
   
