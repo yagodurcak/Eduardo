@@ -69,7 +69,7 @@ function App() {
           <Route path="/Telefonos">
           <Telefonos/>
           </Route>
-          <Route path="/Detalle">
+          <Route path="/Tramites/:id">
           <DetalleTramite/>
           </Route>
           </div>

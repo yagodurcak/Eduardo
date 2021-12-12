@@ -1,14 +1,16 @@
 import '../users/Users.css'
 
 import {Button, Modal, TextField} from '@material-ui/core';
-import React,{useEffect, useState}  from 'react';
-
 import {
     Link,
+    useParams
 } from "react-router-dom";
+import React,{useEffect, useState}  from 'react';
+
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
+import ModalMostrar from "../../components/pageComponents/ModalMostrar"
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
@@ -84,8 +86,10 @@ function Telefonos() {
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
+    const [showModalMostrar, setShowModalMostrar] = useState(false);
 
 
+    const {id} = useParams();
 
 
     
@@ -95,7 +99,10 @@ function Telefonos() {
         type:"" ,
         proyecto:"" ,
         propietario:"" ,
-        estado:"" ,
+        estado:"" , 
+        mza:"",
+        lote:"",
+        dni:""
 
 
     })
@@ -120,11 +127,17 @@ function Telefonos() {
         : 
         abrirCerrarModalEliminar() 
       }
+    const seleccionarUsers=(user, caso)=>{
+        setInfo(user);
+        (caso==="Mostrar")?abrirCerrarModalMostrar()
+        : 
+        abrirCerrarModalMostrar() 
+      }
 
     const traerFrase = async () => {
         const api = await fetch(baseUrl);
         const frase = await api.json()
-        console.log(frase[0]);
+        // console.log(frase[0]);
         setdata(frase)
     }
 
@@ -155,12 +168,28 @@ function Telefonos() {
           var dataNueva= data;
           dataNueva.map(artista=>{
             if(artista.id===info.id){
-              artista.description=info.description;
+              artista.estado="Rechazado";
 
             }
           });
           setdata(dataNueva);
           abrirCerrarModalEditar();
+        }).catch(error=>{
+          console.log(error);
+        })
+      }
+      const peticionApprove=async()=>{
+        await axios.put(baseUrl+"/"+info.id, info)
+        .then(response=>{
+          var dataNueva= data;
+          dataNueva.map(artista=>{
+            if(artista.id===info.id){
+              artista.estado="Aprobado";
+
+            }
+          });
+          setdata(dataNueva);
+          abrirCerrarModalMostrar();
         }).catch(error=>{
           console.log(error);
         })
@@ -209,6 +238,9 @@ function Telefonos() {
       }
       const abrirCerrarModalEliminar=()=>{
         setShowModalEliminar(!showModalEliminar);
+      }
+      const abrirCerrarModalMostrar=()=>{
+        setShowModalMostrar(!showModalMostrar);
       }
       const styles= useStyles();
 
@@ -262,7 +294,7 @@ function Telefonos() {
 
         const bodyEliminar=(
             <div className={styles.modal}>
-              <p>Estás seguro que deseas eliminar  <b>{info&&info.description}</b>? </p>
+              <p>Estás seguro que deseas eliminar  <b>{info&&info.id}</b>? </p>
               <div align="right">
                 <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
                 <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
@@ -271,6 +303,30 @@ function Telefonos() {
         
             </div>
           )
+        const bodyMostrar=(
+            <div className={styles.modal}>
+                <h1 className="text-gray-500 text-center font- text-4xl font-normal my-10">Detalle de trámite</h1>
+
+                <h5 className="text-gray-500 font-normal my-3 text-lg">Propietario: <span className="text-gray-900 font-medium">{info&&info.propietario}</span></h5>
+                <h5 className="text-gray-500 font-normal my-3 text-lg">Manzana: <span className="text-gray-900 font-medium">{info&&info.mza}</span></h5>
+                <h5 className="text-gray-500 font-normal my-3 text-lg">Lote: <span className="text-gray-900 font-medium">{info&&info.lote}</span></h5>
+              <h5 className="text-gray-500 font-normal my-3 text-lg">Numero de Ticket: <span className="text-gray-900 font-medium">{info&&info.ticket}</span> </h5>
+             
+                <h5 className="text-gray-500 font-normal my-3 text-lg">Tipo de proyecto: <span className="text-gray-900 font-medium">{info&&info.propietario}</span></h5>
+                <h5 className="text-gray-500 font-normal my-3 text-lg">Descripcion: <span className="text-gray-900 font-medium">{info&&info.description}</span></h5>
+                <h5 className="text-gray-500 font-normal my-3 text-lg">Estado: <span className="text-gray-900 font-medium">{info&&info.estado}</span></h5>
+                <h5 className="text-gray-500 font-normal my-3 text-lg">Documentos adjuntos: </h5>
+              <div align="right">
+
+                <button className="btn-medium mx-5 mt-10" onClick={()=>peticionApprove()}>Aprobar</button>
+                <button className="btn-medium-2">Observar</button>
+     
+            
+              </div>
+        
+            </div>
+          )
+
 
         const PaginaNUeva = () => (
             <Link  to="/Users" style={{ textDecoration: 'none' }}>
@@ -294,12 +350,12 @@ function Telefonos() {
                  actions= {[
 
                     {
-                        icon:() => <Link  to="/Detalle" style={{ textDecoration: 'none' }}>
-                         <span class="material-icons find">
+                        icon:() => 
+                         <span class="material-icons find">i
                         find_in_page
-                        </span>
-                        </Link>,
+                        </span>,                   
                         tooltip:"Detalles",
+                        onClick: (event, rowData) => seleccionarUsers(rowData, "Mostrar") 
                      
                     }, 
                             {
@@ -340,6 +396,15 @@ function Telefonos() {
             peticionDelete={peticionDelete}
             bodyEliminar={bodyEliminar}
             />
+            <ModalMostrar
+            showModalMostrar={showModalMostrar}
+            abrirCerrarModalMostrar= {abrirCerrarModalMostrar}
+            onSubmitEditar={onSubmitEditar}
+            info={info}
+            peticionDelete={peticionDelete}
+            bodyMostrar={bodyMostrar}
+            />
+            
         </div>
     )
 }
