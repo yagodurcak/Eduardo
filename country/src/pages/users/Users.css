@@ -103,3 +103,8 @@ border: none;
  cursor: pointer;
 
 }
+
+.btn-gastos{
+    width: fit-content  ;
+    background-color: #317143;
+}

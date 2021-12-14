@@ -7,8 +7,10 @@ import {
 } from "react-router-dom";
 
 import Archivos from "./pages/archivos/Archivos";
+import Calculos from "./pages/gastos/Calculos";
 import DetalleTramite from "./pages/tramites/DetalleTramite";
 import Espacio from "./pages/espacio/Espacio";
+import GastosComunes from "./pages/gastos/GastosComunes";
 import Home from "./pages/home/Home";
 import Login from "./components/Login"
 import Noticias from "./pages/noticias/noticias";
@@ -71,6 +73,12 @@ function App() {
           </Route>
           <Route path="/Tramites/:id">
           <DetalleTramite/>
+          </Route>
+          <Route path="/GastosComunes">
+          <GastosComunes/>
+          </Route>
+          <Route path="/Calculos">
+          <Calculos/>
           </Route>
           </div>
         </Switch>

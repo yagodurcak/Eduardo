@@ -31,9 +31,11 @@ function Sidebar() {
     const [submenuUser, setSubMenuUser] = useState(false)
     const [submenuVisitas, setSubMenuVisitas] = useState(false)
     const [submenuInformacion, setsubmenuInformacion] = useState(false)
+    const [submenuGastos, setSubmenuGastos] = useState(false)
     const [activeUser, setActiveUser] = useState(false)
     const [activeVisitas, setActiveVisitas] = useState(false)
     const [activeInformacion, setActiveInformacion] = useState(false)
+    const [activeGastos, setActiveGastos] = useState(false)
 
     const abrirSubmenuUser = () => {
         setSubMenuUser(!submenuUser)
@@ -47,6 +49,10 @@ function Sidebar() {
     const abrirSubmenuVInformacion = () => {
         setsubmenuInformacion(!submenuInformacion)
         setActiveInformacion(!activeInformacion)
+    }
+    const abrirSubmenuGastos = () => {
+        setSubmenuGastos(!submenuGastos)
+        setActiveGastos(!activeGastos)
     }
 
 
@@ -272,10 +278,8 @@ function Sidebar() {
                             </NavLink>
                         </li>
                     </Link>
-                    <Link to="/#" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuVInformacion()}>
+                    <Link to="/GastosComunes" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuGastos()}>
                     <li className='listahover'>
-
-
                             <div className="dropdown">
                                 <div className="logoContainter1">
                                     <img src={gastos} alt="" className='logo1' />
@@ -286,6 +290,46 @@ function Sidebar() {
 
                     </li>
                         </Link>
+                        {submenuGastos
+                    
+                    ? (
+                    
+                    <div>
+                        <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
+                            <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/GastosComunes">
+                                    <img src={adjunto} alt="" className='logo3' />
+                                    <h1 className="title1">Condominio</h1>
+                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                                </NavLink>
+                            </li>
+                        </Link>
+                        <Link to="/Telefonos" style={{ textDecoration: 'none' }}>
+                            <li className='submenu'>
+                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Telefonos">
+                                    <img src={phone} alt="" className='logo3' />
+                                    <h1 className="title1">Energía</h1>
+                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                           
+
+                                </NavLink>
+                            </li>
+                        </Link>
+                        <Link to="/Telefonos" style={{ textDecoration: 'none' }}>
+                            <li className='submenu'>
+                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Telefonos">
+                                    <img src={phone} alt="" className='logo3' />
+                                    <h1 className="title1">Agua</h1>
+                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                           
+
+                                </NavLink>
+                            </li>
+                        </Link>
+                    </div>
+                    
+                    ) 
+                    : null}
                     <li className='listahover'>
                     <NavLink className="logoContainter1" exact to="/cs" activeClassName="linkactivo">
 
