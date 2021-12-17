@@ -24,55 +24,85 @@ const ContainersImg= styled.div`
 
 function Login() {
 
-    const [login, setLogin] = useState({
-        email: "renato@gmail.com",
-        password: "12345678"
-    });
 
-
-    const {email, password}= login;
-
-
-
-
-    const Registro = (e) => {
-        // setLogin({
-        //     ...login,
-        //     [e.target.name]: e.target.value
-        // })
-    }
-
-    // const traerFrase = async () => {
-    //     const api = await axios('http://condodeskback.tinpad.com.pe/api/water-expenditure/1');
-    //     const frase = await api.json()
-    //     console.log(frase);
-    // }
-    // useEffect(() => {
-    //         traerFrase()
+    const [datas, setdatas] = useState([]);
+    const [data, setdata] = useState({});
+    const [email, setemail] = useState("")
+    const [password, setpassword] = useState("")
+    const [wrongPassword, setwrongPassword] = useState(false)
+    const [wrongEmail, setwrongEmail] = useState(false)
+    const [notExist, setnotExist] = useState(false)
     
-    // },[]);
+
 
     const iniciarSesion = (e) => {
         e.preventDefault();
 
-        // const config = {
-        //     headers: { Authorization: `Bearer 1|xqTCimotNZlQG3xLmPeCaBVH9VDtAEIg6yP1Bdz3` }
-        // };
-        
-        const bodyParameters = {
-            email:"renato@gmail.com",
-            password:"12345678"
-        };
 
-        const Json = JSON.stringify(bodyParameters)
-        console.log(Json);
-        
-        axios.post( 
-          'http://condodeskback.tinpad.com.pe/api/login',
-          Json
-        ).then(res => {console.log(res);}).catch(err=> {console.log(err);})
-        console.log(Json);
+        const headers = {
+            'Content-Type': 'application/json'
+        }
+
+        const data = {
+            email: email,
+            password: password
+        }
+
+        // if (condition) {
+            
+        // }
+
+        axios.post('https://back2.tinpad.com.pe/public/api/login', data, {headers})
+             .then(response => {
+                 if(response.data.token) {
+                     localStorage.setItem('Authorization', response.data.token)
+										 localStorage.setItem('user', JSON.stringify(response.data.user))
+										 
+  
+                 }
+
+
+                 setdata(response.data.user)
+                 console.log(response.data);
+                 window.location.href="./Home";
+                 
+             })
+             .catch(err => {
+                if(err.response) {
+                    if(err.response.status === 401) {
+                        console.log('danger', 'Contraseña inválida', 8)
+                        setwrongPassword(true)
+                    }
+                    else if(err.response.status === 404){
+                        console.log('warning', `El usuario ${data.email} no existe`)
+                        setwrongEmail(true)
+                    }
+                    else {
+                        console.log('warning', 'Hubo un error al intentar inciar sesion')
+                        setnotExist(true)
+                    }
+                }
+             })
     }
+
+
+    // const iniciarSesions = (e) => {
+    //     e.preventDefault();
+        
+    //     // const bodyParameters = {
+    //     //     email : "renato33@gmail.com",
+    //     //    password : "12345678"        };
+
+    //     // const Json = JSON.stringify(bodyParameters)
+    //     // console.log(Json);
+        
+    //    const Hola= axios( 
+    //       'https://back2.tinpad.com.pe/public/api/project/1').then(res => {console.log(res);}).catch(err=> {console.log(err);})
+      
+      
+    //       console.log(Hola);
+
+    // }
 
 
     return (
@@ -81,16 +111,20 @@ function Login() {
                     <div>
                         <ContainersImg>
                         <Icono src={imagen} alt="" />
+                        { wrongPassword ? <h2 className="bg-red-500 text-white py-3 px-5">Contraseña incorrecta</h2> : null}
+                        { wrongEmail ? <h2 className="bg-red-500 text-white py-3 px-5">Usuario incorrecto</h2> : null}
+                        { notExist ? <h2 className="bg-red-500 text-white py-3 px-5">Error al intentar inciar sesion</h2> : null}
+                        
                         </ContainersImg>
                                         
                                         <form action="" className="mt-1" onSubmit={iniciarSesion}>
                         <div className="inputContainer">
                             <i class="fa fa-user fa-2x icon"> </i>
-                            <input type="text" placeholder="USERNAME"  className="mt-5 placeholder-white Field" name="email" onChange={e=> this.email = e.target.value} value={email}/>
+                            <input type="text" placeholder="USERNAME"  className="mt-5 placeholder-white Field" name="email" onChange={e=> setemail(e.target.value)} value={email}/>
                         </div>
                         <div className="inputContainer">
                             <i class="fa fa-lock fa-2x icon"> </i>
-                            <input type= "password" placeholder="PASSWORD"  className="mt-5 placeholder-white Field" name="password" onChange={e=> this.password = e.target.value}  value={password}/>
+                            <input type= "password" placeholder="PASSWORD"  className="mt-5 placeholder-white Field" name="password" onChange={e=> setpassword(e.target.value)}  value={password}/>
                         </div>
                         <button className="boton" type="submit">LOGIN</button>
                         <div className="ForgotContainer">
@@ -100,7 +134,11 @@ function Login() {
                         </div>
                                 
                                         </form>
+      
+                        
                     </div>
+                    
+                    { data ? (<h3 className="forgot">{data.name} </h3>): null}
                 
             </div>
 

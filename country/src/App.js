@@ -28,7 +28,7 @@ function App() {
   return (
     <Router>
       <Switch>
-          <Route path="/Login">
+          <Route exact path="/">
           <Login/>
           </Route>
 
@@ -37,7 +37,7 @@ function App() {
         <Switch>
         <div  className="topbarContainer" >
           <Topbar/> 
-          <Route exact path="/">
+          <Route  path="/Home">
             <Home />
           </Route>
           <Route path="/Users">

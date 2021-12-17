@@ -79,11 +79,17 @@ function Telefonos() {
 
 
 
+    const baseUrl="http://localhost:3001/Telefonos";
+  
+    const traerFrase = async () => {
+        const api = await fetch(baseUrl);
+        const frase = await api.json()
+        console.log(frase[0]);
+        setdata(frase)
+    }
 
     const{description, number} = info;
 
-  
-    const baseUrl="http://localhost:3001/Telefonos";
     const handleChangeInsert = (e) => {
 
         setInfo({
@@ -99,12 +105,6 @@ function Telefonos() {
         abrirCerrarModalEliminar() 
       }
 
-    const traerFrase = async () => {
-        const api = await fetch(baseUrl);
-        const frase = await api.json()
-        console.log(frase[0]);
-        setdata(frase)
-    }
 
     const peticionPost=async()=>{
         await axios.post(baseUrl, info)

@@ -1,13 +1,6 @@
-import './Home.css'
+import React, {createContext} from 'react'
 
-import React, {useEffect} from 'react';
-
-import Featured from '../../components/featuredInfo/Featured'
-import Table from "../../components/table/Table"
-import TitlePage from '../../components/pageComponents/TitlePage';
-import axios from 'axios';
-
-function Home() {
+function UserContext() {
 
     useEffect(() => {
      
@@ -34,13 +27,13 @@ function Home() {
         
       
       }, []);
-    return (    
-        <div className='homeContainer'>        
-            <TitlePage titulo="Dashboards"/>
-            <Featured/>            
-            <Table/>
+
+      
+    return (
+        <div>
+            
         </div>
     )
 }
 
-export default Home
+export default UserContext

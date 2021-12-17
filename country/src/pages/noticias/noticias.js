@@ -46,11 +46,12 @@ const useStyles = makeStyles((theme) => ({
   const customerTableHead = [
     {
         title:"Fecha",
-        field: "date"
+    
+        render: data => (data.publicationDate).split(" ")[0].split("-").reverse().join("-")
     },
     {
         title:"Tipo",
-        field: "type",       
+        field: "typeReleaseId",       
        
     },
     {
@@ -102,13 +103,37 @@ function Noticias() {
         abrirCerrarModalEliminar() 
       }
 
-    const traerFrase = async () => {
-        const api = await fetch(baseUrl);
-        const frase = await api.json()
-        console.log(frase[0]);
-        setdata(frase)
-    }
+    // const traerFrase = async () => {
+    //     const api = await fetch(baseUrl);
+    //     const frase = await api.json()
+    //     console.log(frase[0]);
+    //     setdata(frase)
+    // }
+    useEffect(() => {
+     
+    
+      const buscarCotizacion = async() => {
+        
+          const url = `https://back2.tinpad.com.pe/public/api/new-release`;
 
+          const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+          }
+  
+  
+          const rtdo = await axios.get(url, {headers})
+ 
+          console.log(rtdo.data.data[0]);
+          setdata(rtdo.data.data)
+  
+      }
+  
+      buscarCotizacion()
+      
+      console.log(data);
+    }, []);
     const peticionPost=async()=>{
         await axios.post(baseUrl, info)
         .then(response=>{
@@ -182,9 +207,9 @@ function Noticias() {
            
         }
 
-    useEffect(() => {
-        traerFrase()
-    }, [])
+    // useEffect(() => {
+    //     traerFrase()
+    // }, [])
 
     
     const abrirCerrarModalInsertar = () => {

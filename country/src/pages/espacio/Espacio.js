@@ -43,14 +43,14 @@ const useStyles = makeStyles((theme) => ({
 
   const customerTableHead = [
 
-    {
-        title:"Id",
-        field: "id",       
+    // {
+    //     title:"Id",
+    //     field: "id",       
        
-    },
+    // },
     {
         title:"Tipo de espacio",
-        field: "type",       
+        field: "spaceTypeId",       
        
     },
     {
@@ -63,11 +63,13 @@ const useStyles = makeStyles((theme) => ({
     },
     {
         title:"Tiempo previo para reservar",
-        field: "timereserve"
+        render: data => data.previusReservationTime + " hs"
+      
     },
     {
         title:"Horas máximas al mes",
-        field: "maxhs"
+        render: data => data.maximiunReservationTime +  " hs"
+       
     },
 ]
 
@@ -91,6 +93,8 @@ function Espacio() {
         maxhs: "",
         normas: ""
     })
+
+
 
     const [error, setError] = useState(false)
 
@@ -117,12 +121,38 @@ function Espacio() {
         abrirCerrarModalEliminar() 
       }
 
-    const traerFrase = async () => {
-        const api = await fetch(baseUrl);
-        const frase = await api.json()
-        console.log(frase[0]);
-        setdata(frase)
-    }
+    // const traerFrase = async () => {
+    //     const api = await fetch(baseUrl);
+    //     const frase = await api.json()
+    //     console.log(frase[0]);
+    //     setdata(frase)
+    // }
+
+    useEffect(() => {
+     
+    
+      const buscarCotizacion = async() => {
+        
+          const url = `https://back2.tinpad.com.pe/public/api/space`;
+
+          const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+          }
+  
+  
+          const rtdo = await axios.get(url, {headers})
+ 
+          console.log(rtdo.data.data[0]);
+          setdata(rtdo.data.data)
+  
+      }
+  
+      buscarCotizacion()
+      
+      console.log(data);
+    }, []);
 
     const peticionPost=async()=>{
         await axios.post(baseUrl, info)
@@ -200,9 +230,9 @@ function Espacio() {
            
         }
 
-    useEffect(() => {
-        traerFrase()
-    }, [])
+    // useEffect(() => {
+    //     traerFrase()
+    // }, [])
 
     
     const abrirCerrarModalInsertar = () => {

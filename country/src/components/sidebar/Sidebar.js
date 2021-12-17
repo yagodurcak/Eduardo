@@ -75,9 +75,9 @@ function Sidebar() {
                 <ul className='lista1'>
 
 
-                    <Link to="/" style={{ textDecoration: 'none' }}>
+                    <Link to="/Home" style={{ textDecoration: 'none' }}>
                         <li className='listahover'>
-                            <NavLink className="logoContainter1" exact to="/" activeClassName="linkactivo">
+                            <NavLink className="logoContainter1" exact to="/Home" activeClassName="linkactivo">
 
    
                                 <img src={dashnoard} alt="" className='logo1' />

@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
     {
         title:"Tipo de visita",
-        field: "type",       
+        field: "typeVisitId",       
        
     },
     {
@@ -54,15 +54,21 @@ const useStyles = makeStyles((theme) => ({
     },
     {
         title:"Max. personas",
-        field: "max"
+        field: "maximunNumberPerson"
     },
     {
-        title:"Rango de horario",
-        field: "hs"
+        title:"Horario de entrada (hs)",
+        render: data => data.startingTimeRange + " hs"
+  
     },
     {
-        title:"D[as disponibles",
-        field: "days"
+        title:"Horario de salida (hs)",
+        render: data => data.endingTimeRange + " hs"
+  
+    },
+    {
+        title:"Dias disponibles",
+        field: "availableDays"
     },
 ]
 
@@ -87,37 +93,63 @@ function Visita() {
   
     })
 
+    
     const [error, setError] = useState(false)
 
-
-
-
-
+    
+    
+    
+    
     const{max, type, description, hs, days} = info;
-
-  
+    
+    
     const baseUrl="http://localhost:3001/Visita";
     const handleChangeInsert = (e) => {
-
-        setInfo({
-            ...info,
-            [e.target.name]: e.target.value
-        })
+      
+      setInfo({
+        ...info,
+        [e.target.name]: e.target.value
+      })
     }
-
+    
     const seleccionarUser=(user, caso)=>{
-        setInfo(user);
-        (caso==="Editar")?abrirCerrarModalEditar()
-        : 
-        abrirCerrarModalEliminar() 
-      }
-
-    const traerFrase = async () => {
-        const api = await fetch(baseUrl);
-        const frase = await api.json()
-        console.log(frase[0]);
-        setdata(frase)
+      setInfo(user);
+      (caso==="Editar")?abrirCerrarModalEditar()
+      : 
+      abrirCerrarModalEliminar() 
     }
+    
+    // const traerFrase = async () => {
+    //   const api = await fetch(baseUrl);
+    //   const frase = await api.json()
+    //   console.log(frase[0]);
+    //   setdata(frase)
+    // }
+    useEffect(() => {
+     
+    
+      const buscarCotizacion = async() => {
+        
+          const url = `https://back2.tinpad.com.pe/public/api/rules-visit-provider`;
+
+          const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+          }
+  
+  
+          const rtdo = await axios.get(url, {headers})
+ 
+          console.log(rtdo.data.data[0]);
+          setdata(rtdo.data.data)
+  
+      }
+  
+      buscarCotizacion()
+      
+      console.log(data);
+    }, []);
 
     const peticionPost=async()=>{
         await axios.post(baseUrl, info)
@@ -195,9 +227,9 @@ function Visita() {
            
         }
 
-    useEffect(() => {
-        traerFrase()
-    }, [])
+    // useEffect(() => {
+    //     traerFrase()
+    // }, [])
 
     
     const abrirCerrarModalInsertar = () => {
@@ -292,7 +324,7 @@ function Visita() {
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Reglas para visitas y proveedores" />
+                <TitlePage titulo="Reglas para visitas y proveedoress" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar

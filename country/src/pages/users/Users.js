@@ -61,11 +61,11 @@ const customerTableHead = [
     },
     {
         title:"Mz.",
-        field: "mza"
+        field: "block"
     },
     {
         title:"Lte.",
-        field: "lte"
+        field: "lot"
     },
     {
         title:"Correo",
@@ -82,13 +82,16 @@ function Users() {
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [switchOn, setSwitchOn] = useState(true)
+
+    
+   
     
     const [info, setInfo] = useState({
-        dni: "",
+        id: "",
         email: "",
         lastname: "",
         lte: "",
-        mza: "",
+        block: "",
         names: "",
         area:"",
         phone: ""
@@ -97,7 +100,7 @@ function Users() {
     const [error, setError] = useState(false)
    
 
-    const{dni, lastname, lte, mza, phone, names, area, email} = info;
+    const{id,dni,  lastname, lte, mza, phone, names, area, email} = info;
   
     const baseUrl="http://localhost:3001/Users";
     const handleChangeInsert = (e) => {
@@ -115,12 +118,38 @@ function Users() {
         abrirCerrarModalEliminar() 
       }
 
-    const traerFrase = async () => {
-        const api = await fetch(baseUrl);
-        const frase = await api.json()
-        console.log(frase[0]);
-        setdata(frase)
-    }
+    // const traerFrase = async () => {
+    //     const api = await fetch(baseUrl);
+    //     const frase = await api.json()
+    //     console.log(frase[0]);
+    //     setdata(frase)
+    // }
+
+    useEffect(() => {
+     
+    
+      const buscarCotizacion = async() => {
+        
+          const url = `https://back2.tinpad.com.pe/public/api/property`;
+
+          const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+          }
+  
+  
+          const rtdo = await axios.get(url, {headers})
+ 
+          console.log(rtdo.data.data[0]);
+          setdata(rtdo.data.data)
+  
+      }
+  
+      buscarCotizacion()
+      
+      console.log(data);
+    }, []);
 
     const peticionPost=async()=>{
         await axios.post(baseUrl, info)
@@ -148,7 +177,7 @@ function Users() {
           var dataNueva= data;
           dataNueva.map(artista=>{
             if(artista.id===info.id){
-              artista.names=info.names;
+              artista.id=info.id;
               artista.lastname=info.lastname;
               artista.dni=info.dni;
               artista.lte=info.lte;
@@ -202,9 +231,9 @@ function Users() {
            
         }
 
-    useEffect(() => {
-        traerFrase()
-    }, [])
+    // useEffect(() => {
+    //     traerFrase()
+    // }, [])
 
     
     const abrirCerrarModalInsertar = () => {
