@@ -87,7 +87,7 @@ function Calculos() {
                                 </Link>
                             </button>
                             <div>
-                                <h3>Gasto Total : $350</h3>
+                                {/* <h3>Gasto Total : $350</h3>  */}
                             </div>
                         </div>
 

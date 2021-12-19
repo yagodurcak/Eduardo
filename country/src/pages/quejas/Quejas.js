@@ -4,6 +4,7 @@ import React,{useEffect, useState}  from 'react';
 
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
+import axios from "axios"
 
 const customerTableHead = [
 
@@ -17,15 +18,15 @@ const customerTableHead = [
     },
     {
         title:"Asunto",
-        field: "asunto"
+        field: "subject"
     },
     {
         title:"Propietario",
-        field: "propietario"
+        field: "propertyId"
     },
     {
         title:"Estado",
-        field: "estado"
+        field: "stateId"
     },
     {
         title:"Actualiz.",
@@ -38,16 +39,44 @@ function Quejas() {
 
     const [data, setdata] = useState([]);
 
-    const traerFrase = async () => {
-        const api = await fetch("http://localhost:3001/Quejas");
-        const frase = await api.json()
-        console.log(frase[0]);
-        setdata(frase)
-    }
+    // const traerFrase = async () => {
+    //     const api = await fetch("http://localhost:3001/Quejas");
+    //     const frase = await api.json()
+    //     console.log(frase[0]);
+    //     setdata(frase)
+    // }
     
+    // useEffect(() => {
+    //     traerFrase()
+    // }, [])
+
     useEffect(() => {
-        traerFrase()
-    }, [])
+     
+    
+        const buscarCotizacion = async() => {
+          
+            const url = `https://back2.tinpad.com.pe/public/api/complaint-claim`;
+  
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+            }
+    
+    
+            const rtdo = await axios.get(url, {headers})
+   
+            console.log(rtdo.data.data[0]);
+          
+            setdata(rtdo.data.data)
+    
+        }
+    
+        buscarCotizacion()
+        
+        console.log(data);
+      }, []);
+
 
     return (
         <div>

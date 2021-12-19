@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
     {
         title:"N° o Nombre",
-        field: "number"
+        field: "internalCode"
     },
     {
         title:"Tiempo previo para reservar",
@@ -97,8 +97,6 @@ function Espacio() {
 
 
     const [error, setError] = useState(false)
-
-
 
 
 
@@ -145,6 +143,7 @@ function Espacio() {
           const rtdo = await axios.get(url, {headers})
  
           console.log(rtdo.data.data[0]);
+        
           setdata(rtdo.data.data)
   
       }

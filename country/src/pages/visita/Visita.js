@@ -73,29 +73,31 @@ const useStyles = makeStyles((theme) => ({
 ]
 
 
+
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 
 function Visita() {
- 
-    const [data, setdata] = useState([]);
-    const [showModalInsertar, setShowModalInsertar] = useState(false);
-    const [showModalEditar, setShowModalEditar] = useState(false);
+  
+  const [data, setdata] = useState([]);
+  const [showModalInsertar, setShowModalInsertar] = useState(false);
+  const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [switchOn, setSwitchOn] = useState(true)
     
     const [info, setInfo] = useState({
-        type: "",
-        description: "",
-        hs: "",
-        days: "",
-        max: "",
-  
+      type: "",
+      description: "",
+      hs: "",
+      days: "",
+      max: "",
+      
     })
+    
 
     
     const [error, setError] = useState(false)
-
+    
     
     
     

@@ -2,6 +2,7 @@ import "./Login.css"
 
 import React, {useEffect, useState} from 'react';
 
+import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import imagen from "../IMG/Groupicono.svg"
 import styled from '@emotion/styled';
@@ -25,13 +26,14 @@ const ContainersImg= styled.div`
 function Login() {
 
 
-    const [datas, setdatas] = useState([]);
+
     const [data, setdata] = useState({});
     const [email, setemail] = useState("")
     const [password, setpassword] = useState("")
     const [wrongPassword, setwrongPassword] = useState(false)
     const [wrongEmail, setwrongEmail] = useState(false)
     const [notExist, setnotExist] = useState(false)
+    const [redirect, setRedirect] = useState(false);
     
 
 
@@ -48,23 +50,22 @@ function Login() {
             password: password
         }
 
-        // if (condition) {
-            
-        // }
+        if (email.trim() === "" || password.trim() === "" ) {
+            setnotExist(true);
+            return
+        } else {
+
+            setnotExist(false);
 
         axios.post('https://back2.tinpad.com.pe/public/api/login', data, {headers})
              .then(response => {
                  if(response.data.token) {
                      localStorage.setItem('Authorization', response.data.token)
-										 localStorage.setItem('user', JSON.stringify(response.data.user))
-										 
-  
+										 localStorage.setItem('user', JSON.stringify(response.data.user)) 
+                                         setRedirect(true)
                  }
-
-
                  setdata(response.data.user)
                  console.log(response.data);
-                 window.location.href="./Home";
                  
              })
              .catch(err => {
@@ -82,27 +83,12 @@ function Login() {
                         setnotExist(true)
                     }
                 }
-             })
+             })}
     }
 
-
-    // const iniciarSesions = (e) => {
-    //     e.preventDefault();
-        
-    //     // const bodyParameters = {
-    //     //     email : "renato33@gmail.com",
-    //     //    password : "12345678"        };
-
-    //     // const Json = JSON.stringify(bodyParameters)
-    //     // console.log(Json);
-        
-    //    const Hola= axios( 
-    //       'https://back2.tinpad.com.pe/public/api/project/1').then(res => {console.log(res);}).catch(err=> {console.log(err);})
-      
-      
-    //       console.log(Hola);
-
-    // }
+    if (redirect) {
+        return <Redirect to="/Home"/>;
+    }
 
 
     return (
@@ -113,7 +99,7 @@ function Login() {
                         <Icono src={imagen} alt="" />
                         { wrongPassword ? <h2 className="bg-red-500 text-white py-3 px-5">Contraseña incorrecta</h2> : null}
                         { wrongEmail ? <h2 className="bg-red-500 text-white py-3 px-5">Usuario incorrecto</h2> : null}
-                        { notExist ? <h2 className="bg-red-500 text-white py-3 px-5">Error al intentar inciar sesion</h2> : null}
+                        { notExist ? <h2 className="bg-red-500 text-white py-3 px-5">Complete todos los datos</h2> : null}
                         
                         </ContainersImg>
                                         

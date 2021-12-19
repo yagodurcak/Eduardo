@@ -8,6 +8,8 @@ import React,{useEffect, useState}  from 'react';
 
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
+import axios from "axios"
+import imagen from "../../assets/Dashboard Login.jpg"
 
 function GastosComunes() {
     
@@ -17,90 +19,109 @@ function GastosComunes() {
     const customerTableHead = [
     
         {
-            title:"Propietario",
-            field: "propietario"
+            title:"Item",
+            field: "id"
         },
         {
-            title:"Doc de Identidad",
-            field: "dni"
+            title:"Concepto",
+            field: "concept"
         },
         {
-            title:"Mz.",
-            field: "mza"
+            title:"N° de Factura",
+            field: "invoiceNumber"
         },
         {
-            title:"Lte.",
-            field: "lote"
+            title:"Monto S/",
+            field: "amount"
         },
         {
-            title:"Área(m2)",
-            field: "area"
-        },
-        {
-            title:"Pariticipacion (%)",
-            field: "Participación"
-        },
-        {
-            title:"Subtotal(S/)",
-            field: "subt"
-        }
-        ,
-        {
-            title:"Cobranza(S/)",
-            field: "cobranza"
-        }
-        ,
-        {
-            title:"Total",
-           render: data => data.lote + cobranza
-        }
-        ,
-        {
-            title:"Recibo",
-            field: "recibo"
+            title:"Archivo",
+            render: data =>  <a href= {imagen} download className='enlaceDownload'><span class="material-icons">
+            attach_file
+            </span></a>
+ 
         }
     ]
-    const traerFrase = async () => {
-        const api = await fetch("http://localhost:3001/Calculos");
-        const frase = await api.json()
-        console.log(frase[0]);
-        setdata(frase)
-    }
+    // const traerFrase = async () => {
+    //     const api = await fetch("http://localhost:3001/Calculos");
+    //     const frase = await api.json()
+    //     console.log(frase[0]);
+    //     setdata(frase)
+    // }
 
-    console.log(data);
+    // console.log(data);
+    
+    // useEffect(() => {
+    //     traerFrase()
+    // }, [])
+    
     
     useEffect(() => {
-        traerFrase()
-    }, [])
+
+
+
+
+          
+     
+    
+        const buscarCotizacion = async() => {
+          
+            const url = `https://back2.tinpad.com.pe/public/api/condominium-expense`;
+  
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+            }
+    
+    
+            const rtdo = await axios.get(url, {headers})
+            
+            console.log(rtdo.data.data[0]);
+          
+            setdata(rtdo.data.data)
+    
+        }
+    
+        buscarCotizacion()
+        
+        console.log(data);
+      }, []);
+
 
     return (
         <div>
             <div className='Container'>
                 <TitlePage titulo="Gastos Condominio" />
-                        <button className='btn-gastos'>
-                            <Link to="/Calculos" style={{ textDecoration: 'none' }}>
-                                    <NavLink className="logoContainter1" exact to="/Calculos" activeClassName="linkactivo">
-                                        {/* <img src={tramites} alt="" className='logo1' /> */}
-                                        <h1 className="title1">Calculos</h1>
-                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                                    </NavLink>
-                            </Link>
-                        </button>
+                        <div className="flex justify-between">
+                            <button className='btn btn-2'>
+                                <Link to="/Calculos" style={{ textDecoration: 'none' }}>
+                                        <NavLink className="logoContainter1" exact to="/Calculos" activeClassName="linkactivo">
+                                            {/* <img src={tramites} alt="" className='logo1' /> */}
+                                            <h1 className="title1">Calculos</h1>
+                                            {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                                        </NavLink>
+                                </Link>
+                            </button>
+                                            <button className="btn" >
+                            Agregar gasto
+                                                </button>
+                        </div>
 
 
                 <div className="mt-10"><Table2
                     title=""
                     columns={customerTableHead}
                     data={data}
-                    actions={[
-                        {
-                            icon: () => <span class="material-icons find">
-                                find_in_page
-                            </span>,
-                            tooltip: "Detalles",
-                            onClick: () => console.log("hola")
-                        },
-                    ]}
+                    // actions={[
+                    //     {
+                    //         icon: () => <span class="material-icons find">
+                    //             find_in_page
+                    //         </span>,
+                    //         tooltip: "Detalles",
+                    //         onClick: () => console.log("hola")
+                    //     },
+                    // ]}
                 /></div>
 
 

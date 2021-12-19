@@ -7,9 +7,11 @@ import {
 import React , {useState} from 'react';
 
 import adjunto from "../../IMG/sidebar/adjunto.svg"
+import agua from "../../IMG//sidebar/agua.svg"
 import calendario from "../../IMG/CalendarioActividades 1calendario.svg"
 import dashnoard from "../../IMG/dashboard.svg"
 import down from "../../IMG/down.svg"
+import energy from "../../IMG//sidebar/energy.svg"
 import espacio from "../../IMG/Vectorespacios.svg"
 import gastos from "../../IMG/Pagos 1gastos.svg"
 import imagen from "../../IMG/Profile 1usericon.svg"
@@ -307,7 +309,7 @@ function Sidebar() {
                         <Link to="/Telefonos" style={{ textDecoration: 'none' }}>
                             <li className='submenu'>
                             <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Telefonos">
-                                    <img src={phone} alt="" className='logo3' />
+                                    <img src={energy} alt="" className='logo3' />
                                     <h1 className="title1">Energía</h1>
                                     {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                            
@@ -318,7 +320,7 @@ function Sidebar() {
                         <Link to="/Telefonos" style={{ textDecoration: 'none' }}>
                             <li className='submenu'>
                             <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Telefonos">
-                                    <img src={phone} alt="" className='logo3' />
+                                    <img src={agua} alt="" className='logo3' />
                                     <h1 className="title1">Agua</h1>
                                     {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                            
