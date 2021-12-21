@@ -43,14 +43,10 @@ const useStyles = makeStyles((theme) => ({
 
   const customerTableHead = [
 
-    // {
-    //     title:"Id",
-    //     field: "id",       
-       
-    // },
     {
         title:"Tipo de espacio",
-        field: "spaceTypeId",       
+        // field: data.space_type,    
+        render: data => data.space_type.name 
        
     },
     {
@@ -80,30 +76,33 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 function Espacio() {
  
     const [data, setdata] = useState([]);
+    const [spaceTypes, setSpaceTypes] = useState("")
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [switchOn, setSwitchOn] = useState(true)
     
     const [info, setInfo] = useState({
-        type: "",
+        id: "",
+        spaceTypeId: "",
         description: "",
-        number: "",
-        timereserve: "",
-        maxhs: "",
-        normas: ""
+        internalCode: "",
+        previusReservationTime: "",
+        maximiunReservationTime: "",
+        rulesOfUse: ""
     })
 
-
-
+    
+    
     const [error, setError] = useState(false)
+    
+    
+    
+    const{maximiunReservationTime,rulesOfUse, spaceTypeId, description, internalCode, previusReservationTime,id} = info;
 
-
-
-    const{maxhs, type, description, number, timereserve} = info;
 
   
-    const baseUrl="http://localhost:3001/Espacios";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/space";
     const handleChangeInsert = (e) => {
 
         setInfo({
@@ -118,13 +117,6 @@ function Espacio() {
         : 
         abrirCerrarModalEliminar() 
       }
-
-    // const traerFrase = async () => {
-    //     const api = await fetch(baseUrl);
-    //     const frase = await api.json()
-    //     console.log(frase[0]);
-    //     setdata(frase)
-    // }
 
     useEffect(() => {
      
@@ -142,19 +134,54 @@ function Espacio() {
   
           const rtdo = await axios.get(url, {headers})
  
-          console.log(rtdo.data.data[0]);
+          // console.log(rtdo.data.data[0]);
         
           setdata(rtdo.data.data)
+
   
       }
   
       buscarCotizacion()
       
-      console.log(data);
+      // console.log(data);
+      
     }, []);
 
+    useEffect(() => {
+     
+    
+      const buscarTipo = async() => {
+        
+          const url = `https://back2.tinpad.com.pe/public/api/space-type`;
+
+          const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+          }
+  
+  
+          const rtdo = await axios.get(url, {headers})
+ 
+          // console.log(rtdo.data.data);
+        
+          setSpaceTypes(rtdo.data.data)
+  
+      }
+  
+      buscarTipo()
+      
+      // console.log(data);
+    }, []);
+    
+
     const peticionPost=async()=>{
-        await axios.post(baseUrl, info)
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+    }
+        await axios.post(baseUrl, info, {headers})
         .then(response=>{
           setdata(data.concat(response.data));
           abrirCerrarModalInsertar();
@@ -164,32 +191,47 @@ function Espacio() {
       }
 
       const peticionDelete=async()=>{
-        await axios.delete(baseUrl+"/"+info.id, info)
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
+      }
+        await axios.delete(baseUrl+"/"+info.id, {headers}, info) 
         .then(response=>{
           setdata(data.filter(artista=>artista.id!==info.id));
           abrirCerrarModalEliminar();
-        }).catch(error=>{
+        }).catch(error=>{ 
           console.log(error);
         })
       }
 
 
       const peticionPut=async()=>{
-        await axios.put(baseUrl+"/"+info.id, info)
+
+       
+
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
+      }
+        await axios.put(baseUrl+"/"+info.id,  info , {headers: headers})
         .then(response=>{
           var dataNueva= data;
           dataNueva.map(artista=>{
             if(artista.id===info.id){
-              artista.type=info.type;
-              artista.number=info.number;
+              artista.spaceTypeId =info.spaceTypeId;
+              artista.internalCode=info.internalCode;
               artista.description=info.description;
-              artista.maxhs=info.maxhs;
-              artista.timereserve=info.timereserve
-  
+              artista.previusReservationTime=info.previusReservationTime;
+              artista.maximiunReservationTime=info.maximiunReservationTime;
+              artista.rulesOfUse=info.rulesOfUse  
             }
+            
           });
           setdata(dataNueva);
           abrirCerrarModalEditar();
+         
         }).catch(error=>{
           console.log(error);
         })
@@ -204,7 +246,7 @@ function Espacio() {
 
         e.preventDefault();
 
-        if (type.trim() === "" || number.trim() === "" ||description.trim() === "" ||timereserve.trim() === "" ||maxhs.trim() === ""  ) {
+        if (description.trim() === "" ) {
         
          setError(true);
          return
@@ -213,27 +255,27 @@ function Espacio() {
 
             peticionPost()
             setInfo({
-                type: "",
-                number: "",
-                timereserve: "",
-                maxhs: "",
-                description:""
+              id: "",
+              spaceTypeId: "",
+        description: "",
+        internalCode: "",
+        previusReservationTime: "",
+        maximiunReservationTime: "",
+        rulesOfUse: ""
             });
+            // window.location.reload();
             // abrirCerrarModalInsertar()
         }
         
     }
-    const onSubmitEditar = () => {
+    const onSubmitEditar = (e) => {
 
+      e.preventDefault();
             peticionPut()
            
         }
 
-    // useEffect(() => {
-    //     traerFrase()
-    // }, [])
 
-    
     const abrirCerrarModalInsertar = () => {
           
         setShowModalInsertar(!showModalInsertar)
@@ -254,28 +296,29 @@ function Espacio() {
             <h3 className="my-5">Agregar Nuevo Espacio</h3>
 
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            <label htmlFor="">Seleccione un tipo*</label>
-            <select className="select1">
+            {/* <label htmlFor="">Seleccione un tipo*</label> */}
+            {/* <select className="select1">
                      
-                        <option value="s" >Deportivo</option>
-                        <option value="ss" >Recreativo </option>
-                        <option value="ss" >Esparcimiento </option>
-                        <option value="ss" >Salas de uso multiple </option>
-                        <option value="ss" >Crear Uno </option>
-        
+            <option value="cat" >Seleccione la categoria</option>
+                        {spaceTypes.map(tipos=> (
+                            <option value={tipos.id} key={tipos.id} >{tipos.id}</option>
+                        ))}
+                        <option value="">Crear nuevo</option>
                         
                    
-                    </select>   
+          </select>    */}
+
             
             {/* <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} label="Tipo*"  />  */}
             <br />
               <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert}  label="Descripción*"  multiline rows={3}/>
-            <TextField className={styles.inputMaterial} name="number" onChange={handleChangeInsert}  label="ID (N° o nombre)*" />          
+              <TextField className={styles.inputMaterial} name="spaceTypeId" onChange={handleChangeInsert}  label="typeid*" />
+            <TextField className={styles.inputMaterial} name="internalCode" onChange={handleChangeInsert}  label="ID (N° o nombre)*" />          
               <br />
-              <TextField className={styles.inputMaterial} name="timereserve" onChange={handleChangeInsert}  label="Tiempo previo de reserva (horas)*" />
+              <TextField className={styles.inputMaterial} name="previusReservationTime" onChange={handleChangeInsert}  label="Tiempo previo de reserva (horas)*" />
             <br />
-              <TextField className={styles.inputMaterial} name="maxhs" onChange={handleChangeInsert}  label="Horas máximas de reservas al mes por usuario*" />
-              <TextField className={styles.inputMaterial} name="normas" onChange={handleChangeInsert}  label="Normas de Uso*" multiline rows={5}/>
+              <TextField className={styles.inputMaterial} name="maximiunReservationTime" onChange={handleChangeInsert}  label="Horas máximas de reservas al mes por usuario*" />
+              <TextField className={styles.inputMaterial} name="rulesOfUse" onChange={handleChangeInsert}  label="Normas de Uso*" multiline rows={5}/>
               <input type="file" className="mt-10"/>
             <br /><br />
             <div align="right">
@@ -294,15 +337,15 @@ function Espacio() {
         <h3 className="my-5">Editar Espacio</h3>
         {error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null}
 
-        <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} value={info && info.type} label="Tipo*" />
+        <TextField className={styles.inputMaterial} name="spaceTypeId" onChange={handleChangeInsert} value={info && info.spaceTypeId} label="Tipo*" />
         <br />
         <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} value={info && info.description} label="Descripción*" />
         <br />
-        <TextField className={styles.inputMaterial} name="number" onChange={handleChangeInsert} value={info && info.number} label="ID (N° o nombre)*" />
+        <TextField className={styles.inputMaterial} name="internalCode" onChange={handleChangeInsert} value={info && info.internalCode} label="ID (N° o nombre)*" />
         <br />
-        <TextField className={styles.inputMaterial} name="timereserve" onChange={handleChangeInsert} value={info && info.timereserve} label="TTiempo previo de reserva (horas)*" />
-        <TextField className={styles.inputMaterial} name="maxhs" onChange={handleChangeInsert} value={info && info.maxhs} label="Horas máximas de reservas al mes por usuario*" />
-        <TextField className={styles.inputMaterial} name="normas" onChange={handleChangeInsert} value={info && info.normas} label="Normas de Uso*" />
+        <TextField className={styles.inputMaterial} name="previusReservationTime" onChange={handleChangeInsert} value={info && info.previusReservationTime} label="TTiempo previo de reserva (horas)*" />
+        <TextField className={styles.inputMaterial} name="maximiunReservationTime" onChange={handleChangeInsert} value={info && info.maximiunReservationTime} label="Horas máximas de reservas al mes por usuario*" />
+        <TextField className={styles.inputMaterial} name="rulesOfUse" onChange={handleChangeInsert} value={info && info.rulesOfUse} label="Normas de Uso*" />
         <br /><br />
         <div align="right">
           <Button color="primary" type="submit" >Editar</Button>
@@ -316,7 +359,7 @@ function Espacio() {
 
         const bodyEliminar=(
             <div className={styles.modal}>
-              <p>Estás seguro que deseas eliminar  <b>{info&&info.type}</b>? </p>
+              <p>Estás seguro que deseas eliminar  <b>{info&&info.id}</b>? </p>
               <div align="right">
                 <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
                 <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>

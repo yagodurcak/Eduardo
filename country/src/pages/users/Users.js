@@ -78,6 +78,7 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 function Users() {
 
     const [data, setdata] = useState([]);
+    const [userInfo, setUserInfo] = useState([])
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
@@ -128,7 +129,7 @@ function Users() {
     useEffect(() => {
      
     
-      const buscarCotizacion = async() => {
+      const buscarProperty = async() => {
         
           const url = `https://back2.tinpad.com.pe/public/api/property`;
 
@@ -141,14 +142,41 @@ function Users() {
   
           const rtdo = await axios.get(url, {headers})
  
-          console.log(rtdo.data.data[0]);
+          // console.log(rtdo.data.data[0]);
           setdata(rtdo.data.data)
   
       }
   
-      buscarCotizacion()
+      buscarProperty()
       
-      console.log(data);
+      // console.log(data);
+    }, []);
+
+
+    useEffect(() => {
+     
+    
+      const buscarUser = async() => {
+        
+          const url = `https://back2.tinpad.com.pe/public/api/user`;
+
+          const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+          }
+  
+  
+          const rtdo = await axios.get(url, {headers})
+ 
+          console.log(rtdo.data.data);
+          setUserInfo(rtdo.data.data)
+  
+      }
+  
+      buscarUser()
+      
+      // console.log(data);
     }, []);
 
     const peticionPost=async()=>{

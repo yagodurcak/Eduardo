@@ -18,7 +18,7 @@
 
 .topbarContainer{
   /* background-color: lightblue; */
-  flex: 6;
+  flex: 8;
   height: 50px;
   display: grid;
   padding: 20px 30px;

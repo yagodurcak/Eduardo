@@ -30,10 +30,7 @@ function Home() {
     
         }
     
-        buscarCotizacion()
-        
-      
-      }, []);
+        buscarCotizacion()     }, []);
     return (    
         <div className='homeContainer'>        
             <TitlePage titulo="Dashboards"/>
