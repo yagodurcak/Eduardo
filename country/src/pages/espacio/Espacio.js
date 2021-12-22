@@ -1,3 +1,7 @@
+
+
+// falta adjuntar archivos
+
 import '../users/Users.css'
 
 import {Button, Modal, TextField} from '@material-ui/core';
@@ -82,6 +86,7 @@ function Espacio() {
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [showModalAdd, setShowModalAdd] = useState(false);
     const [switchOn, setSwitchOn] = useState(true)
+
 
     
     const [info, setInfo] = useState({
@@ -201,6 +206,7 @@ function Espacio() {
     }, []);
     
 
+
     const peticionPost=async()=>{
       const headers = {
         'Content-Type': 'application/json',
@@ -227,15 +233,11 @@ function Espacio() {
           setSpaceTypes(spaceTypes.concat(response.data));
           console.log(response.data);
           abrirCerrarModalAdd();
-          // setTimeout(() => {
-          //   window.location.reload();
-          // }, 500);
-      
-          
-         
+   
         }).catch(error=>{
           console.log(error);
         })
+
       }
 
       const peticionDelete=async()=>{
@@ -339,22 +341,15 @@ function Espacio() {
     }
     const onSubmitInsertarAdd = (e) => {
 
-      abrirCerrarModalInsertar();
+      // abrirCerrarModalInsertar();
 
         e.preventDefault();
 
-    
-
             peticionPostAdd()
 
-            window.location.reload();
-
-            
-     
-            // window.location.reload();
-           
-        
-        
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);  
     }
     const onSubmitEditar = (e) => {
 
