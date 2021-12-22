@@ -45,7 +45,7 @@ const customerTableHead = [
     },
     {
         title:"Nombres",
-        field: "names"
+        field: "name"
     },
     {
         title:"Apellidos",
@@ -53,7 +53,7 @@ const customerTableHead = [
     },
     {
         title:"Doc. de Identidad",
-        field: "dni"
+        field: "document"
     },
     {
         title:"Teléfono",
@@ -180,7 +180,12 @@ function Users() {
     }, []);
 
     const peticionPost=async()=>{
-        await axios.post(baseUrl, info)
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+    }
+        await axios.post(baseUrl, info, {headers})
         .then(response=>{
           setdata(data.concat(response.data));
           abrirCerrarModalInsertar();

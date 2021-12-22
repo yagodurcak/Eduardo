@@ -1,3 +1,8 @@
+
+
+
+// falta loi de mail en editar
+
 import "../users/Users.css"
 
 import {Button, Modal, TextField} from '@material-ui/core';
@@ -35,26 +40,22 @@ const useStyles = makeStyles((theme) => ({
 
 
 const customerTableHead = [
-    {
-        title:"Id",
-        field: "id",       
-       
-    },
-    {
-        title:"Nombres",
-        field: "names"
-    },
-    {
-        title:"Apellidos",
-        field: "lastname"
-    },
-    {
-        title:"Doc. de Identidad",
-        field: "dni"
-    }
+
+{
+    title:"Nombres",
+    field: "name"
+},
+{
+    title:"Apellidos",
+    field: "lastName"
+},
+{
+    title:"Doc. de Identidad",
+    field: "document"
+}
 ]
 
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
+
 
 function Seguridad() {
 
@@ -66,23 +67,32 @@ function Seguridad() {
  
     
     const [info, setInfo] = useState({
-        dni: "",
-        lastname: "",
-        names: ""
+      id: "",
+      name: "",
+      lastName: "",
+      document:"",
+      email: "",
+      password:"12345678",
+      password_confirmation:"12345678",
+      roleId: "2"
+
     })
 
    
 
-    const{dni, lastname,  names} = info;
+    const{document, lastName,  name, email } = info;
   
-    const baseUrl="http://localhost:3001/Seguridad";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/user";
     const handleChangeInsert = (e) => {
+      setInfo({
+        ...info,
+        [e.target.name]: e.target.value
+    })
 
-        setInfo({
-            ...info,
-            [e.target.name]: e.target.value
-        })
     }
+
+
+    
 
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
@@ -91,51 +101,92 @@ function Seguridad() {
         abrirCerrarModalEliminar() 
       }
 
-    const traerFrase = async () => {
-        const api = await fetch(baseUrl);
-        const frase = await api.json()
-        console.log(frase[0]);
-        setdata(frase)
-    }
-
-    const peticionPost=async()=>{
-        await axios.post(baseUrl, info)
-        .then(response=>{
-          setdata(data.concat(response.data));
-          abrirCerrarModalInsertar();
-        }).catch(error=>{
-          console.log(error);
-        })
-      }
-
-      const peticionDelete=async()=>{
-        await axios.delete(baseUrl+"/"+info.id, info)
-        .then(response=>{
-          setdata(data.filter(artista=>artista.id!==info.id));
-          abrirCerrarModalEliminar();
-        }).catch(error=>{
-          console.log(error);
-        })
-      }
-
-      const peticionPut=async()=>{
-        await axios.put(baseUrl+"/"+info.id, info)
-        .then(response=>{
-          var dataNueva= data;
-          dataNueva.map(artista=>{
-            if(artista.id===info.id){
-              artista.names=info.names;
-              artista.lastname=info.lastname;
-              artista.dni=info.dni
+      useEffect(() => {
+     
+    
+        const buscarProperty = async() => {
+          
+            const url = `https://back2.tinpad.com.pe/public/api/user`;
   
-            }
-          });
-          setdata(dataNueva);
-          abrirCerrarModalEditar();
-        }).catch(error=>{
-          console.log(error);
-        })
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+            }    
+    
+            const rtdo = await axios.get(url, {headers})
+   
+            // console.log(rtdo.data.data[0]);
+            setdata((rtdo.data.data).filter(artista=> artista.roleId === "2"));
+      
+            
+            console.log(rtdo.data.data);
+        }
+    
+        buscarProperty()
+        
+      }, []);
+      
+  
+
+
+      const peticionPost=async()=>{
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
       }
+          await axios.post("https://back2.tinpad.com.pe/public/api/register", info, {headers})
+          .then(response=>{
+            setdata(data.concat(response.data));
+            abrirCerrarModalInsertar();
+          }).catch(error=>{
+            console.log(error);
+          })
+        }
+
+
+        const peticionDelete=async()=>{
+          const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      
+        }
+          await axios.delete(baseUrl+"/"+info.id, {headers}, info) 
+          .then(response=>{
+            setdata(data.filter(artista=>artista.id!==info.id));
+            abrirCerrarModalEliminar();
+          }).catch(error=>{ 
+            console.log(error);
+          })
+        }
+
+        const peticionPut=async()=>{       
+
+          const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      
+        }
+          await axios.put("https://back2.tinpad.com.pe/public/api/user"+"/"+info.id,  info , {headers: headers})
+          .then(response=>{
+            var dataNueva= data;
+            dataNueva.map(artista=>{
+              if(artista.id===info.id){
+                artista.name=info.name;
+                artista.lastName=info.lastName;
+                artista.document=info.document;
+                // artista.email=info.email
+                            }              
+            });
+            setdata(dataNueva);
+            abrirCerrarModalEditar();
+           
+          }).catch(error=>{
+            console.log(error);
+          })
+        }
+      
 
  
 
@@ -143,7 +194,7 @@ function Seguridad() {
 
         e.preventDefault();
 
-        if (dni.trim() === "" || lastname.trim() === "" ||names.trim() === ""  ) {
+        if (document.trim() === "" || lastName.trim() === "" ||name.trim() === "" ||email.trim() === "" ) {
         
          setError(true);
          return
@@ -152,26 +203,31 @@ function Seguridad() {
 
             peticionPost()
             setInfo({
-                dni: "",
-           
-                lastname: "",
-            
-                names: "",
+              id: "",
+              name: "",
+              lastName: "",
+              document:"",
+              email: ""
+
         
             });
+
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
             // abrirCerrarModalInsertar()
         }
         
     }
-    const onSubmitEditar = () => {
+    const onSubmitEditar = (e) => {
 
+      e.preventDefault();
             peticionPut()
-           
+            // window.location.reload();
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 2000);
         }
-
-    useEffect(() => {
-        traerFrase()
-    }, [])
 
     
     const abrirCerrarModalInsertar = () => {
@@ -192,12 +248,17 @@ function Seguridad() {
           <div className={styles.modal}>
             <h3 className="my-5">Agregar Nuevo Usuario</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            <TextField className={styles.inputMaterial} name="names" onChange={handleChangeInsert} label="Nombres*"  />
+            <TextField className={styles.inputMaterial} name="name" onChange={handleChangeInsert} label="Nombres*"  />
             <br />
-            <TextField className={styles.inputMaterial} name="lastname" onChange={handleChangeInsert}  label="Apellidos*" />          
+            <TextField className={styles.inputMaterial} name="lastName" onChange={handleChangeInsert}  label="Apellidos*" />          
               <br />
-              <TextField className={styles.inputMaterial} name="dni" onChange={handleChangeInsert}  label="Doc. de Identidad*" />
+              <TextField className={styles.inputMaterial} name="document" onChange={handleChangeInsert}  label="Doc. de Identidad*" />
             <br />
+              <TextField className={styles.inputMaterial} name="email" onChange={handleChangeInsert}  label="Email*" />
+            <br />
+            {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
+            {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
+
 
             <br /><br />
             <div align="right">
@@ -214,11 +275,13 @@ function Seguridad() {
           <div className={styles.modal}>
             <h3 className="my-5">Registrar usuario nuevo</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
-            <TextField className={styles.inputMaterial} name="names" onChange={handleChangeInsert} value= {info&&info.names} label="Nombre" />
+            <TextField className={styles.inputMaterial} name="name" onChange={handleChangeInsert} value= {info&&info.name} label="Nombre" />
             <br />
-            <TextField className={styles.inputMaterial} name="lastname" onChange={handleChangeInsert} value= {info&&info.lastname} label="Apellido" />          
+            <TextField className={styles.inputMaterial} name="lastName" onChange={handleChangeInsert} value= {info&&info.lastName} label="Apellido" />          
               <br />
-              <TextField className={styles.inputMaterial} name="dni" onChange={handleChangeInsert} value= {info&&info.dni} label="Doc. de Identidad" />
+              <TextField className={styles.inputMaterial} name="document" onChange={handleChangeInsert} value= {info&&info.document} label="Doc. de Identidad" />
+            <br />
+              {/* <TextField className={styles.inputMaterial} name="email" onChange={handleChangeInsert} value= {info&&info.email} label="Doc. de Identidad" /> */}
             <br />
      
             <br /><br />
@@ -232,7 +295,7 @@ function Seguridad() {
 
       const bodyEliminar=(
         <div className={styles.modal}>
-          <p>Estás seguro que deseas eliminar  <b>{info&&info.names}</b>? </p>
+          <p>Estás seguro que deseas eliminar  <b>{info&&info.name}</b>? </p>
           <div align="right">
             <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
             <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
@@ -257,8 +320,7 @@ function Seguridad() {
                  title="" 
                  columns={customerTableHead} 
                  data={data}
-                 actions= {[
-                     
+                 actions= {[                    
                 
                             {
                         icon:() => <i class="material-icons edit">edit</i>,

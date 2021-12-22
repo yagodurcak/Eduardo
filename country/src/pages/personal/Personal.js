@@ -35,11 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const customerTableHead = [
-    {
-        title:"Id",
-        field: "id",       
-       
-    },
+
     {
         title:"Nombres",
         field: "name"
@@ -50,7 +46,7 @@ const customerTableHead = [
     },
     {
         title:"Doc. de Identidad",
-        field: "dni"
+        field: "document"
     }
 ]
 
@@ -66,8 +62,12 @@ function Personal() {
  
     
     const [info, setInfo] = useState({
-        dni: "",
+        id: "",
+        name: "",
         lastname: "",
+        email: "",
+        id: "",
+        id: "",
         name: ""
     })
 
@@ -75,7 +75,7 @@ function Personal() {
 
     const{dni, lastname,  name} = info;
   
-    const baseUrl="http://localhost:3001/Personal";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/user";
     const handleChangeInsert = (e) => {
 
         setInfo({

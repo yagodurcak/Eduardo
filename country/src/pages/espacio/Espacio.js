@@ -3,6 +3,7 @@ import '../users/Users.css'
 import {Button, Modal, TextField} from '@material-ui/core';
 import React,{useEffect, useState}  from 'react';
 
+import ModalAdd from '../../components/pageComponents/ModalAdd';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -46,8 +47,7 @@ const useStyles = makeStyles((theme) => ({
     {
         title:"Tipo de espacio",
         // field: data.space_type,    
-        render: data => data.space_type.name 
-       
+        render: data => data.space_type.name
     },
     {
         title:"Descripción",
@@ -76,11 +76,13 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 function Espacio() {
  
     const [data, setdata] = useState([]);
-    const [spaceTypes, setSpaceTypes] = useState("")
+    const [spaceTypes, setSpaceTypes] = useState([])
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
+    const [showModalAdd, setShowModalAdd] = useState(false);
     const [switchOn, setSwitchOn] = useState(true)
+
     
     const [info, setInfo] = useState({
         id: "",
@@ -89,8 +91,18 @@ function Espacio() {
         internalCode: "",
         previusReservationTime: "",
         maximiunReservationTime: "",
-        rulesOfUse: ""
+        rulesOfUse: "",
+        visibility: "",
     })
+
+    const [infoType, setInfoType] = useState({
+        id: "",
+        name: ""
+  
+    })
+    
+
+    console.log(spaceTypes);
 
     
     
@@ -98,7 +110,12 @@ function Espacio() {
     
     
     
-    const{maximiunReservationTime,rulesOfUse, spaceTypeId, description, internalCode, previusReservationTime,id} = info;
+    const{maximiunReservationTime,rulesOfUse, spaceTypeId, description, internalCode, previusReservationTime, id} = info;
+
+
+    const{name} = infoType;
+
+
 
 
   
@@ -109,6 +126,15 @@ function Espacio() {
             ...info,
             [e.target.name]: e.target.value
         })
+        console.log(e.target.name, e.target.value);
+    }
+    const handleChangeInsertType = (e) => {
+
+        setInfoType({
+            ...infoType,
+            [e.target.name]: e.target.value
+        })
+        console.log(e.target.name, e.target.value);
     }
 
     const seleccionarUser=(user, caso)=>{
@@ -189,6 +215,28 @@ function Espacio() {
           console.log(error);
         })
       }
+    const peticionPostAdd=async()=>{
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+    }
+    const url = `https://back2.tinpad.com.pe/public/api/space-type`;
+        await axios.post(url, infoType, {headers})
+        .then(response=>{
+          setSpaceTypes(spaceTypes.concat(response.data));
+          console.log(response.data);
+          abrirCerrarModalAdd();
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 500);
+      
+          
+         
+        }).catch(error=>{
+          console.log(error);
+        })
+      }
 
       const peticionDelete=async()=>{
         const headers = {
@@ -198,17 +246,18 @@ function Espacio() {
       }
         await axios.delete(baseUrl+"/"+info.id, {headers}, info) 
         .then(response=>{
-          setdata(data.filter(artista=>artista.id!==info.id));
+          setdata(data.filter(artista=>artista.id!==info.name));
           abrirCerrarModalEliminar();
         }).catch(error=>{ 
           console.log(error);
         })
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
 
 
-      const peticionPut=async()=>{
-
-       
+      const peticionPut=async()=>{       
 
         const headers = {
           'Content-Type': 'application/json',
@@ -237,6 +286,22 @@ function Espacio() {
         })
       }
 
+      const peticionPutSwitch=async()=>{       
+
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
+      }
+        await axios.put(baseUrl+"/"+info.id, {headers}, info) 
+        .then(response=>{
+          setdata(data.visibility= 0 );
+          abrirCerrarModalEliminar();
+        }).catch(error=>{ 
+          console.log(error);
+        })
+      }
+
       const handleChangeSwitch = () => {
           setSwitchOn(!switchOn)
         
@@ -246,7 +311,7 @@ function Espacio() {
 
         e.preventDefault();
 
-        if (description.trim() === "" ) {
+        if (description.trim() === "" || spaceTypeId.trim() === "" ||internalCode.trim() === "" ||previusReservationTime.trim() === "" || maximiunReservationTime.trim() === "" || rulesOfUse.trim() === "" ) {
         
          setError(true);
          return
@@ -263,16 +328,42 @@ function Espacio() {
         maximiunReservationTime: "",
         rulesOfUse: ""
             });
+
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
             // window.location.reload();
             // abrirCerrarModalInsertar()
         }
+        
+    }
+    const onSubmitInsertarAdd = (e) => {
+
+      abrirCerrarModalInsertar();
+
+        e.preventDefault();
+
+    
+
+            peticionPostAdd()
+
+            window.location.reload();
+
+            
+     
+            // window.location.reload();
+           
+        
         
     }
     const onSubmitEditar = (e) => {
 
       e.preventDefault();
             peticionPut()
-           
+            // window.location.reload();
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
         }
 
 
@@ -287,6 +378,9 @@ function Espacio() {
       const abrirCerrarModalEliminar=()=>{
         setShowModalEliminar(!showModalEliminar);
       }
+      const abrirCerrarModalAdd=()=>{
+        setShowModalAdd(!showModalAdd);
+      }
       const styles= useStyles();
 
       const bodyInsertar=(
@@ -296,23 +390,24 @@ function Espacio() {
             <h3 className="my-5">Agregar Nuevo Espacio</h3>
 
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            {/* <label htmlFor="">Seleccione un tipo*</label> */}
-            {/* <select className="select1">
-                     
-            <option value="cat" >Seleccione la categoria</option>
-                        {spaceTypes.map(tipos=> (
-                            <option value={tipos.id} key={tipos.id} >{tipos.id}</option>
-                        ))}
-                        <option value="">Crear nuevo</option>
-                        
-                   
-          </select>    */}
+            <select className='select1' onChange={handleChangeInsert} name="spaceTypeId" value={spaceTypeId}>
 
-            
+
+              {/* <label htmlFor=""  value="">Seleccione un tipo*</label>  */}
+              <option value="" >Seleccione un tipo de espacio</option>
+              {spaceTypes.map(tipos => (
+                <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
+                ))}
+              
+
+
+            </select>   
+
+            <button className='mt-5' onClick={()=>abrirCerrarModalAdd()}>Crear nuevo tipo de espacio</button>
             {/* <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} label="Tipo*"  />  */}
             <br />
               <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert}  label="Descripción*"  multiline rows={3}/>
-              <TextField className={styles.inputMaterial} name="spaceTypeId" onChange={handleChangeInsert}  label="typeid*" />
+              {/* <TextField className={styles.inputMaterial} name="spaceTypeId" onChange={handleChangeInsert}  label="typeid*" /> */}
             <TextField className={styles.inputMaterial} name="internalCode" onChange={handleChangeInsert}  label="ID (N° o nombre)*" />          
               <br />
               <TextField className={styles.inputMaterial} name="previusReservationTime" onChange={handleChangeInsert}  label="Tiempo previo de reserva (horas)*" />
@@ -324,6 +419,24 @@ function Espacio() {
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>
               <Button onClick= {abrirCerrarModalInsertar}> Cancelar</Button>
+            </div>
+          </div>
+        </form>
+      )
+      const bodyAdd=(
+        <form action="" onSubmit={onSubmitInsertarAdd} >
+      
+          <div className={styles.modal}>
+            <h3 className="my-5">Agregar Nuevo Espacio</h3>
+
+            {/* { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null } */}
+          
+    
+            <TextField className={styles.inputMaterial} name="name" onChange={handleChangeInsertType}  label="Nombre nuevo tipo de espacio" />          
+             
+            <div align="right">
+              <Button color="primary" type="submit" >Insertar</Button>
+              <Button onClick= {abrirCerrarModalAdd}> Cancelar</Button>
             </div>
           </div>
         </form>
@@ -359,7 +472,7 @@ function Espacio() {
 
         const bodyEliminar=(
             <div className={styles.modal}>
-              <p>Estás seguro que deseas eliminar  <b>{info&&info.id}</b>? </p>
+              <p>Estás seguro que deseas eliminar  <b>{info&&info.description}</b>? </p>
               <div align="right">
                 <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
                 <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
@@ -390,7 +503,8 @@ function Espacio() {
 
                     {
                         icon:() =>  <Switch {...label} defaultChecked onChange={handleChangeSwitch} className="toggle-button"/>,
-                        tooltip:"add",
+                        tooltip:"add",peticionPutSwitch
+                        
                         
                     },
                      
@@ -436,6 +550,14 @@ function Espacio() {
             info={info}
             peticionDelete={peticionDelete}
             bodyEliminar={bodyEliminar}
+            />
+            <ModalAdd
+      showModalAdd={showModalAdd}
+      functionShow= {abrirCerrarModalAdd}
+      handleChangeInsert={handleChangeInsert}
+      onSubmitEditar={onSubmitInsertarAdd}
+      info={info}
+      bodyAdd={bodyAdd}
             />
         </div>
     )
