@@ -253,6 +253,7 @@ function Espacio() {
         }).catch(error=>{ 
           console.log(error);
         })
+        // set1
         setTimeout(() => {
           window.location.reload();
         }, 1000);
@@ -330,7 +331,7 @@ function Espacio() {
         maximiunReservationTime: "",
         rulesOfUse: ""
             });
-
+            // set1
             setTimeout(() => {
               window.location.reload();
             }, 1000);
@@ -356,6 +357,7 @@ function Espacio() {
       e.preventDefault();
             peticionPut()
             // window.location.reload();
+            // set1
             setTimeout(() => {
               window.location.reload();
             }, 1000);

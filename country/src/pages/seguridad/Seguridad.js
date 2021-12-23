@@ -212,6 +212,7 @@ function Seguridad() {
         
             });
 
+            // set1
             setTimeout(() => {
               window.location.reload();
             }, 1000);

@@ -86,6 +86,7 @@ function Users() {
     const [InfoUser, setInfoUser] = useState({})
     const [InfoUserProperty, setInfoUserProperty] = useState([])
 
+
     
    
     
@@ -147,7 +148,7 @@ function Users() {
       useEffect(() => {
         setInfoUser(info.user)
         setInfoUserProperty(info.property)
-      }, [info]);
+      }, []);
 
     useEffect(() => {
      
@@ -242,9 +243,11 @@ function Users() {
         }).catch(error=>{ 
           console.log(error);
         })
-             setTimeout(() => {
-              window.location.reload();
-            }, 500);
+
+        // set1
+            //  setTimeout(() => {
+            //   window.location.reload();
+            // }, 500);
       }
 
       const peticionPut=async()=>{       
@@ -337,9 +340,11 @@ function Users() {
         .then(response=>{
           // setdata(data.concat(response.data));
           // abrirCerrarModalInsertar();
-               setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+
+          // set1
+            //    setTimeout(() => {
+            //   window.location.reload();
+            // }, 1000);
         }).catch(error=>{
           console.log(error);
         })
