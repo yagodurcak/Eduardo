@@ -72,6 +72,7 @@ function Seguridad() {
       lastName: "",
       document:"",
       email: "",
+      phone: "0000",
       password:"12345678",
       password_confirmation:"12345678",
       roleId: "2"
@@ -96,6 +97,7 @@ function Seguridad() {
 
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
+        console.log(user);
         (caso==="Editar")?abrirCerrarModalEditar()
         : 
         abrirCerrarModalEliminar() 
@@ -117,6 +119,8 @@ function Seguridad() {
             const rtdo = await axios.get(url, {headers})
    
             // console.log(rtdo.data.data[0]);
+
+
             setdata((rtdo.data.data).filter(artista=> artista.roleId === "2"));
       
             
@@ -126,7 +130,28 @@ function Seguridad() {
         buscarProperty()
         
       }, []);
-      
+
+      const buscarProperty = async() => {
+          
+        const url = `https://back2.tinpad.com.pe/public/api/user`;
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+        }    
+
+        const rtdo = await axios.get(url, {headers})
+
+        // console.log(rtdo.data.data[0]);
+
+
+        setdata((rtdo.data.data).filter(artista=> artista.roleId === "2"));
+  
+        
+        console.log("buscar property");
+
+    }
   
 
 
@@ -138,11 +163,12 @@ function Seguridad() {
       }
           await axios.post("https://back2.tinpad.com.pe/public/api/register", info, {headers})
           .then(response=>{
-            setdata(data.concat(response.data));
+            // setdata(data.concat(response.data));
             abrirCerrarModalInsertar();
           }).catch(error=>{
             console.log(error);
           })
+          buscarProperty()
         }
 
 
@@ -154,11 +180,12 @@ function Seguridad() {
         }
           await axios.delete(baseUrl+"/"+info.id, {headers}, info) 
           .then(response=>{
-            setdata(data.filter(artista=>artista.id!==info.id));
+            // setdata(data.filter(artista=>artista.id!==info.id));
             abrirCerrarModalEliminar();
           }).catch(error=>{ 
             console.log(error);
           })
+          buscarProperty()
         }
 
         const peticionPut=async()=>{       
@@ -170,21 +197,13 @@ function Seguridad() {
         }
           await axios.put("https://back2.tinpad.com.pe/public/api/user"+"/"+info.id,  info , {headers: headers})
           .then(response=>{
-            var dataNueva= data;
-            dataNueva.map(artista=>{
-              if(artista.id===info.id){
-                artista.name=info.name;
-                artista.lastName=info.lastName;
-                artista.document=info.document;
-                // artista.email=info.email
-                            }              
-            });
-            setdata(dataNueva);
+
             abrirCerrarModalEditar();
            
           }).catch(error=>{
             console.log(error);
           })
+          buscarProperty()
         }
       
 
@@ -207,7 +226,11 @@ function Seguridad() {
               name: "",
               lastName: "",
               document:"",
-              email: ""
+              email: "",
+              phone: "0000",
+              password:"12345678",
+              password_confirmation:"12345678",
+              roleId: "2"
 
         
             });
@@ -282,7 +305,7 @@ function Seguridad() {
               <br />
               <TextField className={styles.inputMaterial} name="document" onChange={handleChangeInsert} value= {info&&info.document} label="Doc. de Identidad" />
             <br />
-              {/* <TextField className={styles.inputMaterial} name="email" onChange={handleChangeInsert} value= {info&&info.email} label="Doc. de Identidad" /> */}
+              <TextField className={styles.inputMaterial} name="email" onChange={handleChangeInsert} value= {info&&info.email} label="Doc. de Identidad" />
             <br />
      
             <br /><br />

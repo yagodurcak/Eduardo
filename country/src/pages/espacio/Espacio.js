@@ -86,6 +86,16 @@ function Espacio() {
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [showModalAdd, setShowModalAdd] = useState(false);
     const [switchOn, setSwitchOn] = useState(true)
+    const [Archivos, setArchivos] = useState([])
+    const [spaceId, setSpaceId] = useState("")
+
+
+
+    const subirArchivos = (e) => {
+      setArchivos(e)
+    }
+
+
 
 
     
@@ -97,7 +107,7 @@ function Espacio() {
         previusReservationTime: "",
         maximiunReservationTime: "",
         rulesOfUse: "",
-        visibility: "",
+        visibility: "", 
     })
 
     const [infoType, setInfoType] = useState({
@@ -107,7 +117,7 @@ function Espacio() {
     })
     
 
-    console.log(spaceTypes);
+    // console.log(spaceTypes);
 
     
     
@@ -131,7 +141,7 @@ function Espacio() {
             ...info,
             [e.target.name]: e.target.value
         })
-        console.log(e.target.name, e.target.value);
+        // console.log(e.target.name, e.target.value);
     }
     const handleChangeInsertType = (e) => {
 
@@ -139,11 +149,12 @@ function Espacio() {
             ...infoType,
             [e.target.name]: e.target.value
         })
-        console.log(e.target.name, e.target.value);
+        // console.log(e.target.name, e.target.value);
     }
 
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
+        console.log(user);
         (caso==="Editar")?abrirCerrarModalEditar()
         : 
         abrirCerrarModalEliminar() 
@@ -177,6 +188,46 @@ function Espacio() {
       // console.log(data);
       
     }, []);
+
+        
+    const buscarCotizacion = async() => {
+        
+      const url = `https://back2.tinpad.com.pe/public/api/space`;
+
+      const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+      }
+
+
+      const rtdo = await axios.get(url, {headers})
+
+      // console.log(rtdo.data.data[0]);
+    
+      setdata(rtdo.data.data)
+
+
+  }
+  const buscarTipo = async() => {
+        
+    const url = `https://back2.tinpad.com.pe/public/api/space-type`;
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+    }
+
+
+    const rtdo = await axios.get(url, {headers})
+
+    // console.log(rtdo.data.data);
+  
+    setSpaceTypes(rtdo.data.data)
+
+}
+
 
     useEffect(() => {
      
@@ -215,12 +266,49 @@ function Espacio() {
     }
         await axios.post(baseUrl, info, {headers})
         .then(response=>{
-          setdata(data.concat(response.data));
+          // setdata(data.concat(response.data));
+          console.log(response.data.data.id);
           abrirCerrarModalInsertar();
+          setSpaceId(response.data.data.id)
         }).catch(error=>{
           console.log(error);
         })
+        buscarCotizacion()
       }
+
+      useEffect(() => {
+  
+        const peticionPost2=async()=>{
+          console.log("post2");
+          const f = new FormData()
+    
+    
+    
+          for (let index = 0;  index < Archivos.length; index++) {
+            f.append("file", Archivos[index])
+            f.append("spaceId", spaceId)
+            
+          }
+    
+          const headers = {
+            'Content-type': 'multipart/form-data',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      
+        }
+    
+          const url1= "https://back2.tinpad.com.pe/public/api/space-image"
+            await axios.post(url1, f, {headers})
+            .then(response=>{
+              // setdata(data.concat(response.data));
+              // abrirCerrarModalInsertar();
+            }).catch(error=>{
+              console.log(error);
+            })
+            // buscarCotizacion()
+          }
+
+          peticionPost2()
+      }, [spaceId]);
     const peticionPostAdd=async()=>{
       const headers = {
         'Content-Type': 'application/json',
@@ -230,13 +318,14 @@ function Espacio() {
     const url = `https://back2.tinpad.com.pe/public/api/space-type`;
         await axios.post(url, infoType, {headers})
         .then(response=>{
-          setSpaceTypes(spaceTypes.concat(response.data));
-          console.log(response.data);
+          // setSpaceTypes(spaceTypes.concat(response.data));
+          // console.log(response.data);
           abrirCerrarModalAdd();
    
         }).catch(error=>{
           console.log(error);
         })
+        buscarTipo()
 
       }
 
@@ -248,11 +337,13 @@ function Espacio() {
       }
         await axios.delete(baseUrl+"/"+info.id, {headers}, info) 
         .then(response=>{
-          setdata(data.filter(artista=>artista.id!==info.name));
+          // setdata(data.filter(artista=>artista.id!==info.name));
           abrirCerrarModalEliminar();
         }).catch(error=>{ 
           console.log(error);
         })
+
+        buscarCotizacion()
         // set1
         // setTimeout(() => {
         //   window.location.reload();
@@ -269,24 +360,25 @@ function Espacio() {
       }
         await axios.put(baseUrl+"/"+info.id,  info , {headers: headers})
         .then(response=>{
-          var dataNueva= data;
-          dataNueva.map(artista=>{
-            if(artista.id===info.id){
-              artista.spaceTypeId =info.spaceTypeId;
-              artista.internalCode=info.internalCode;
-              artista.description=info.description;
-              artista.previusReservationTime=info.previusReservationTime;
-              artista.maximiunReservationTime=info.maximiunReservationTime;
-              artista.rulesOfUse=info.rulesOfUse  
-            }
+          // var dataNueva= data;
+          // dataNueva.map(artista=>{
+          //   if(artista.id===info.id){
+          //     artista.spaceTypeId =info.spaceTypeId;
+          //     artista.internalCode=info.internalCode;
+          //     artista.description=info.description;
+          //     artista.previusReservationTime=info.previusReservationTime;
+          //     artista.maximiunReservationTime=info.maximiunReservationTime;
+          //     artista.rulesOfUse=info.rulesOfUse  
+          //   }
             
-          });
-          setdata(dataNueva);
+          // });
+          // setdata(dataNueva);
           abrirCerrarModalEditar();
          
         }).catch(error=>{
           console.log(error);
         })
+        buscarCotizacion()
       }
 
       const peticionPutSwitch=async()=>{       
@@ -321,7 +413,9 @@ function Espacio() {
         }else {
             setError(false);
 
-            peticionPost()
+            peticionPost()    
+            
+
             setInfo({
               id: "",
               spaceTypeId: "",
@@ -332,9 +426,11 @@ function Espacio() {
         rulesOfUse: ""
             });
 
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+            abrirCerrarModalInsertar();
+
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 1000);
             // window.location.reload();
             // abrirCerrarModalInsertar()
         }
@@ -348,18 +444,14 @@ function Espacio() {
 
             peticionPostAdd()
 
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);  
+      
     }
     const onSubmitEditar = (e) => {
 
       e.preventDefault();
             peticionPut()
             // window.location.reload();
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+ 
         }
 
 
@@ -410,10 +502,10 @@ function Espacio() {
             <br />
               <TextField className={styles.inputMaterial} name="maximiunReservationTime" onChange={handleChangeInsert}  label="Horas máximas de reservas al mes por usuario*" />
               <TextField className={styles.inputMaterial} name="rulesOfUse" onChange={handleChangeInsert}  label="Normas de Uso*" multiline rows={5}/>
-              <input type="file" className="mt-10"/>
+              <input type="file" className="mt-10" name="file" multiple onChange={(e)=> subirArchivos(e.target.files)}/>
             <br /><br />
             <div align="right">
-              <Button color="primary" type="submit" >Insertar</Button>
+              <Button color="primary" type="submit">Insertar</Button>
               <Button onClick= {abrirCerrarModalInsertar}> Cancelar</Button>
             </div>
           </div>
@@ -445,8 +537,20 @@ function Espacio() {
       <div className={styles.modal}>
         <h3 className="my-5">Editar Espacio</h3>
         {error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null}
+        <select className='select1' onChange={handleChangeInsert} name="spaceTypeId" value={spaceTypeId}>
 
-        <TextField className={styles.inputMaterial} name="spaceTypeId" onChange={handleChangeInsert} value={info && info.spaceTypeId} label="Tipo*" />
+
+{/* <label htmlFor=""  value="">Seleccione un tipo*</label>  */}
+<option value="" >Seleccione un tipo de espacio</option>
+{spaceTypes.map(tipos => (
+  <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
+  ))}
+
+
+
+</select>  
+
+        {/* <TextField className={styles.inputMaterial} name="spaceTypeId" onChange={handleChangeInsert} value={info && info.spaceTypeId} label="Tipo*" /> */}
         <br />
         <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} value={info && info.description} label="Descripción*" />
         <br />

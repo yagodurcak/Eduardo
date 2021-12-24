@@ -385,23 +385,9 @@ const useStyles = makeStyles((theme) => ({
         await axios.put("https://back2.tinpad.com.pe/public/api/user"+"/"+InfoUser.id,  InfoUser , {headers: headers})
         .then(response=>{
 
-          var dataNueva= InfoUser;
-          // console.log(dataNueva);
-          dataNueva.map(artista=>{
-            if(artista.userId===info.userId){
-              artista.user.name=info.user.name;
-              artista.user.lastName=info.user.lastName;
-              artista.user.document=info.user.document;
-              artista.user.email=info.user.email;
-              artista.user.phone=info.user.phone;
-              // artista.email=info.email
-                          }                                       
-          });
+          console.log("bienput");
           
-          setdata(dataNueva);
-          
-       
-         
+          buscarApi()   
         }).catch(error=>{
           console.log(error);
         })
@@ -446,8 +432,8 @@ const useStyles = makeStyles((theme) => ({
       e.preventDefault();
             peticionPut()
             abrirCerrarModalEditar();
-            buscarApi()
-           
+            console.log("exit");
+            buscarApi()           
            
         }
 
