@@ -17,6 +17,7 @@ import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import mas from "../../IMG/space/mas.svg"
 
 // import { Switch } from 'antd';
 
@@ -88,6 +89,41 @@ function Espacio() {
     const [switchOn, setSwitchOn] = useState(true)
     const [Archivos, setArchivos] = useState([])
     const [spaceId, setSpaceId] = useState("")
+
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [selectedFilesPost, setSelectedFilesPost] = useState([]);
+
+
+    const handleImageChange = (e) => {
+      // console.log(e.target.files[])
+      if (e.target.files) {
+        // console.log(e.target.files);
+        const filesArray = Array.from(e.target.files).map((file) =>
+          URL.createObjectURL(file)
+        );
+        setSelectedFiles((prevImages) => prevImages.concat(filesArray));
+     
+          // for (let i = 0; i < e.target.files.length; i++) {
+          //   const newImage = e.target.files[i];
+          //   // newImage["id"] = Math.random();
+          //   setSelectedFilesPost((prevState) => [...prevState, newImage]);
+          // }
+   
+ 
+        setSelectedFilesPost(e.target.files)
+        Array.from(e.target.files).map(
+          (file) => URL.revokeObjectURL(file) // avoid memory leak
+        );
+      }
+      
+    };
+
+    const renderPhotos = (source) => {
+      // console.log("source: ", source);
+      return source.map((photo) => {
+        return <img src={photo} alt="" key={photo} className='foto1'/>;
+      });
+    };
 
 
 
@@ -277,33 +313,46 @@ function Espacio() {
       }
 
       useEffect(() => {
-  
+
+
+          
         const peticionPost2=async()=>{
           console.log("post2");
-          const f = new FormData()
+
+          const f = new FormData()   
     
-    
-    
-          for (let index = 0;  index < Archivos.length; index++) {
-            f.append("file", Archivos[index])
-            f.append("spaceId", spaceId)
+          console.log(selectedFilesPost.length);
+          console.log(selectedFilesPost);
+  
+          for (let index = 0;  index < selectedFilesPost.length; index++) {
+  
+              f.append("file", selectedFilesPost[index])
+              f.append("spaceId", spaceId)
+     
+            // console.log(f);
+
+            const headers = {
+              'Content-type': 'multipart/form-data',
+              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+        
+          }
+      
+            const url1= "https://back2.tinpad.com.pe/public/api/space-image"
+              await axios.post(url1, f, {headers})
+              .then(response=>{
+                // setdata(data.concat(response.data));
+                // abrirCerrarModalInsertar();
+                setSelectedFiles([])
+                setSelectedFilesPost([])
+                console.log("exito -1");
+              }).catch(error=>{
+                console.log(error);
+                setSelectedFiles([])
+                setSelectedFilesPost([])
+              })
             
           }
-    
-          const headers = {
-            'Content-type': 'multipart/form-data',
-            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-      
-        }
-    
-          const url1= "https://back2.tinpad.com.pe/public/api/space-image"
-            await axios.post(url1, f, {headers})
-            .then(response=>{
-              // setdata(data.concat(response.data));
-              // abrirCerrarModalInsertar();
-            }).catch(error=>{
-              console.log(error);
-            })
+          // console.log(filesImg);
             // buscarCotizacion()
           }
 
@@ -454,7 +503,10 @@ function Espacio() {
  
         }
 
-
+        const abrirCerrarInsertar = () => {
+          abrirCerrarModalInsertar();
+          setSelectedFiles([])
+        }
     const abrirCerrarModalInsertar = () => {
           
         setShowModalInsertar(!showModalInsertar)
@@ -473,11 +525,11 @@ function Espacio() {
 
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
-      
+
           <div className={styles.modal}>
             <h3 className="my-5">Agregar Nuevo Espacio</h3>
 
-            { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
+            {error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null}
             <select className='select1' onChange={handleChangeInsert} name="spaceTypeId" value={spaceTypeId}>
 
 
@@ -485,28 +537,46 @@ function Espacio() {
               <option value="" >Seleccione un tipo de espacio</option>
               {spaceTypes.map(tipos => (
                 <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
-                ))}
-              
+              ))}
 
 
-            </select>   
 
-            <button className='mt-5' onClick={()=>abrirCerrarModalAdd()}>Crear nuevo tipo de espacio</button>
+            </select>
+
+            <button className='mt-5' onClick={() => abrirCerrarModalAdd()}>Crear nuevo tipo de espacio</button>
             {/* <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} label="Tipo*"  />  */}
             <br />
-              <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert}  label="Descripción*"  multiline rows={3}/>
-              {/* <TextField className={styles.inputMaterial} name="spaceTypeId" onChange={handleChangeInsert}  label="typeid*" /> */}
-            <TextField className={styles.inputMaterial} name="internalCode" onChange={handleChangeInsert}  label="ID (N° o nombre)*" />          
-              <br />
-              <TextField className={styles.inputMaterial} name="previusReservationTime" onChange={handleChangeInsert}  label="Tiempo previo de reserva (horas)*" />
+            <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} label="Descripción*" multiline rows={3} />
+            {/* <TextField className={styles.inputMaterial} name="spaceTypeId" onChange={handleChangeInsert}  label="typeid*" /> */}
+            <TextField className={styles.inputMaterial} name="internalCode" onChange={handleChangeInsert} label="ID (N° o nombre)*" />
             <br />
-              <TextField className={styles.inputMaterial} name="maximiunReservationTime" onChange={handleChangeInsert}  label="Horas máximas de reservas al mes por usuario*" />
-              <TextField className={styles.inputMaterial} name="rulesOfUse" onChange={handleChangeInsert}  label="Normas de Uso*" multiline rows={5}/>
-              <input type="file" className="mt-10" name="file" multiple onChange={(e)=> subirArchivos(e.target.files)}/>
-            <br /><br />
+            <TextField className={styles.inputMaterial} name="previusReservationTime" onChange={handleChangeInsert} label="Tiempo previo de reserva (horas)*" />
+            <br />
+            <TextField className={styles.inputMaterial} name="maximiunReservationTime" onChange={handleChangeInsert} label="Horas máximas de reservas al mes por usuario*" />
+            <TextField className={styles.inputMaterial} name="rulesOfUse" onChange={handleChangeInsert} label="Normas de Uso*" multiline rows={5} />
+            {/* <div class="image-upload">
+              <label for="file-input">
+                <img src={mas} />
+              </label>
+              <input type="file" className="mt-10" name="file" id="file-input" multiple onChange={(e) => subirArchivos(e.target.files)} />
+            </div> */}
+            {/* <br /><br /> */}
+
+            <div>
+              <input type="file" id="file" multiple onChange={handleImageChange} />
+              <div className="label-holder">
+                <label htmlFor="file" className="label">
+                  <i className="material-icons">add_a_photo</i>
+                </label>
+              </div>
+              <div className="result">{renderPhotos(selectedFiles)}</div>
+            </div>
+
+
+             {/* aparte  */}
             <div align="right">
               <Button color="primary" type="submit">Insertar</Button>
-              <Button onClick= {abrirCerrarModalInsertar}> Cancelar</Button>
+              <Button onClick={abrirCerrarInsertar}> Cancelar</Button>
             </div>
           </div>
         </form>
