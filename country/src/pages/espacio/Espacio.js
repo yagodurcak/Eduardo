@@ -190,7 +190,7 @@ function Espacio() {
 
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
-        console.log(user);
+        console.log(user.id);
         (caso==="Editar")?abrirCerrarModalEditar()
         : 
         abrirCerrarModalEliminar() 
@@ -261,6 +261,67 @@ function Espacio() {
     // console.log(rtdo.data.data);
   
     setSpaceTypes(rtdo.data.data)
+
+}
+
+const [spaceIdDelete, setSpaceIdDelete] = useState([])
+let result=[];
+const buscarSpaceId = async() => {
+        
+  const url = `https://back2.tinpad.com.pe/public/api/space-image`;
+
+  const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+  }
+
+  // console.log(typeof(info.id));
+  const idSeek = (info.id).toString()
+  // console.log(typeof(idSeek));
+  axios.get(url,{headers})
+    .then( (response) =>{
+
+          response.data.data.forEach((req) => {
+          if (req.spaceId === idSeek) {
+
+                    result.push(req);
+            } 
+          })
+        // this.setState({results:results});   
+        console.log(result);
+   
+    })
+  .catch(function (error) {
+    console.log(error);
+  })
+
+  
+  
+}
+const eliminarTodos = async () => {
+          
+  const url = `https://back2.tinpad.com.pe/public/api/space-image`;
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+}
+  
+  for (let index = 0; index < result.length; index++) {
+    console.log(result[index].id);
+    await axios.delete(url+"/"+result[index].id, {headers}) 
+    .then(response=>{
+      // setdata(data.filter(artista=>artista.id!==info.id));
+      abrirCerrarModalEliminar();
+      console.log("eliminado de space-image");
+    }).catch(error=>{ 
+      
+      console.log(error);
+    })
+}
+ // setSpaceTypes(rtdo.data.data)
 
 }
 
@@ -384,19 +445,34 @@ function Espacio() {
           'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
     
       }
-        await axios.delete(baseUrl+"/"+info.id, {headers}, info) 
+       const url1 = "https://back2.tinpad.com.pe/public/api/space"
+        await axios.delete(url1+"/"+info.id, {headers}) 
         .then(response=>{
-          // setdata(data.filter(artista=>artista.id!==info.name));
+          // setdata(data.filter(artista=>artista.id!==info.id));
           abrirCerrarModalEliminar();
+          console.log("eliminado de space");
         }).catch(error=>{ 
+          
           console.log(error);
         })
 
+        buscarSpaceId()
+        eliminarTodos()
+
+        
+
+     
+      //  const url2 = "https://back2.tinpad.com.pe/public/api/space-image"
+      //   await axios.delete(url2+"/"+info.spaceTypeId, {headers}) 
+      //   .then(response=>{
+      //     // setdata(data.filter(artista=>artista.id!==info.id));
+      //     console.log("eliminado de space-image");
+      //     // abrirCerrarModalEliminar();
+      //   }).catch(error=>{ 
+      //     console.log(error);
+      //   })
+
         buscarCotizacion()
-        // set1
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 1000);
       }
 
 
@@ -645,7 +721,7 @@ function Espacio() {
               <p>Estás seguro que deseas eliminar  <b>{info&&info.description}</b>? </p>
               <div align="right">
                 <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
-                <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
+                <Button onClick={()=>buscarSpaceId()}>No</Button>
         
               </div>
         
