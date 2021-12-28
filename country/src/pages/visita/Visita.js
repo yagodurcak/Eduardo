@@ -1,8 +1,15 @@
 import '../users/Users.css'
 
-import {Button, Modal, TextField} from '@material-ui/core';
+import {Button, Modal, TextField,} from '@material-ui/core';
+import {
+  DatePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+  TimePicker,
+} from '@material-ui/pickers';
 import React,{useEffect, useState}  from 'react';
 
+import DateMomentUtils from '@date-io/moment';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -12,10 +19,6 @@ import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
-
-// import { Switch } from 'antd';
-
-
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -84,26 +87,54 @@ function Visita() {
   const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [switchOn, setSwitchOn] = useState(true)
+
+    const [horaInicio, setHoraInicio] = useState(new Date());
+    const [horaFinal, setHoraFinal] = useState(new Date());
+    const [ visitTypes, setVisitTypes] = useState([])
+
+
     
     const [info, setInfo] = useState({
-      type: "",
+      typeVisitId: "",
       description: "",
-      hs: "",
-      days: "",
-      max: "",
+      startingTimeRange: "",
+      endingTimeRange: "",
+      availableDays: "",
+      maximunNumberPerson: "",
       
     })
-    
-    
+
+    const diasSemana = [
+      {
+        label: 'Mon',
+        value: 'Mon',
+      },
+      {
+        label: 'Tue',
+        value: 'Tue',
+      },
+      {
+        label: 'Wed',
+        value: 'Wed',
+      },
+      {
+        label: 'Thu',
+        value: 'Thu',
+      },
+      {
+        label: 'Fri',
+        value: 'Fri',
+      },
+      {
+        label: 'Sat',
+        value: 'Sat',
+      },
+    ];
 
     
     const [error, setError] = useState(false)
     
-    
-    
-    
-    
-    const{max, type, description, hs, days} = info;
+    const{typeVisitId, startingTimeRange, description, endingTimeRange, availableDays, maximunNumberPerson} = info;
     
     
     const baseUrl="http://localhost:3001/Visita";
@@ -148,11 +179,32 @@ function Visita() {
           setdata(rtdo.data.data)
   
       }
+      buscarTipo()
   
       buscarCotizacion()
       
       console.log(data);
     }, []);
+
+
+    const buscarTipo = async() => {
+        
+      const url = `https://back2.tinpad.com.pe/public/api/visit-type`;
+  
+      const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+      }
+  
+  
+      const rtdo = await axios.get(url, {headers})
+  
+      // console.log(rtdo.data.data);
+    
+      setVisitTypes(rtdo.data.data)
+  
+  }
 
     const peticionPost=async()=>{
         await axios.post(baseUrl, info)
@@ -205,7 +257,7 @@ function Visita() {
 
         e.preventDefault();
 
-        if (type.trim() === "" || days.trim() === "" ||description.trim() === "" ||hs.trim() === "" ||max.trim() === ""  ) {
+        if (description.trim() === "" ) {
         
          setError(true);
          return
@@ -250,34 +302,61 @@ function Visita() {
 
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
-      
+
           <div className={styles.modal}>
             <h3 className="my-5">Agregar Regla</h3>
 
-            { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            {/* <label htmlFor="">Seleccione un tipo*</label>
-            <select className="select1">
-                     
-                        <option value="s" >Visita</option>
-                        <option value="ss" >Proveedor </option>           
-                   
-                    </select>    */}
-            
-            <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} label="Tipo*"  />
-            <br />
-              <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert}  label="Descripción*" multiline rows={3} />
-       
-              <br />
-              <TextField className={styles.inputMaterial} name="hs" onChange={handleChangeInsert}  label="Rango de horario*" />
-            <br />
-              <TextField className={styles.inputMaterial} name="days" onChange={handleChangeInsert}  label="Días disponibles*" />
-              <TextField className={styles.inputMaterial} name="max" onChange={handleChangeInsert}  label="Max. Personas*" />
+            {error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null}
 
-             
+
+            <select className='select1' onChange={handleChangeInsert} name="availableDays">
+
+
+
+<option value="" >Seleccione un tipo de visita</option>
+{visitTypes.map(tipos => (
+  <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
+))}
+
+
+
+</select>
+
+
+
+            <br />
+            <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} label="Descripción*" multiline rows={3} />
+
+
+
+            <br />
+            <TextField className={styles.inputMaterial} name="days" onChange={handleChangeInsert} label="Días disponibles*" />
+            <TextField className={styles.inputMaterial} name="max" onChange={handleChangeInsert} label="Max. Personas*" />
+
             <br /><br />
+            <MuiPickersUtilsProvider utils={DateMomentUtils}>
+
+              <TimePicker value={horaInicio} onChange={setHoraInicio} label="Rango horario - Inicio" />
+              <TimePicker value={horaFinal} onChange={setHoraFinal} label="Rango horario - Final" />
+
+              <br /><br />
+            </MuiPickersUtilsProvider>
+            <select className='select1' onChange={handleChangeInsert} name="typeVisitId" value={typeVisitId}>
+
+
+
+<option value="" >Rango de días</option>
+{diasSemana.map(tipos => (
+  <option value={tipos.value} key={tipos.value} >{tipos.label}</option>
+))}
+
+
+
+</select>
+   
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>
-              <Button onClick= {abrirCerrarModalInsertar}> Cancelar</Button>
+              <Button onClick={abrirCerrarModalInsertar}> Cancelar</Button>
             </div>
           </div>
         </form>

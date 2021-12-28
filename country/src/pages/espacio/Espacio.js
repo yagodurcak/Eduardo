@@ -92,38 +92,24 @@ function Espacio() {
 
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedFilesPost, setSelectedFilesPost] = useState([]);
+    const [selectedImage, setSelectedImage] = useState();
 
 
-    const handleImageChange = (e) => {
-      // console.log(e.target.files[])
-      if (e.target.files) {
-        // console.log(e.target.files);
-        const filesArray = Array.from(e.target.files).map((file) =>
-          URL.createObjectURL(file)
-        );
-        setSelectedFiles((prevImages) => prevImages.concat(filesArray));
-     
-          // for (let i = 0; i < e.target.files.length; i++) {
-          //   const newImage = e.target.files[i];
-          //   // newImage["id"] = Math.random();
-          //   setSelectedFilesPost((prevState) => [...prevState, newImage]);
-          // }
-   
- 
-        setSelectedFilesPost(e.target.files)
-        Array.from(e.target.files).map(
-          (file) => URL.revokeObjectURL(file) // avoid memory leak
-        );
+    const imageChange = (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        setSelectedImage(e.target.files[0]);
+        setSelectedFilesPost(e.target.files[0])
       }
-      
-    };
+  };
 
-    const renderPhotos = (source) => {
-      // console.log("source: ", source);
-      return source.map((photo) => {
-        return <img src={photo} alt="" key={photo} className='foto1'/>;
-      });
-    };
+
+  const removeSelectedImage = () => {
+    setSelectedImage();
+};
+      
+  
+
+
 
 
 
@@ -316,11 +302,14 @@ const eliminarTodos = async () => {
       // setdata(data.filter(artista=>artista.id!==info.id));
       abrirCerrarModalEliminar();
       console.log("eliminado de space-image");
+      setSelectedImage()
     }).catch(error=>{ 
       
       console.log(error);
+      setSelectedImage()
     })
 }
+console.log("eliminjar todos 2");
  // setSpaceTypes(rtdo.data.data)
 
 }
@@ -382,12 +371,12 @@ const eliminarTodos = async () => {
 
           const f = new FormData()   
     
-          console.log(selectedFilesPost.length);
+     
           console.log(selectedFilesPost);
   
-          for (let index = 0;  index < selectedFilesPost.length; index++) {
+         
   
-              f.append("file", selectedFilesPost[index])
+              f.append("file", selectedFilesPost)
               f.append("spaceId", spaceId)
      
             // console.log(f);
@@ -411,8 +400,7 @@ const eliminarTodos = async () => {
                 setSelectedFiles([])
                 setSelectedFilesPost([])
               })
-            
-          }
+ 
           // console.log(filesImg);
             // buscarCotizacion()
           }
@@ -457,9 +445,13 @@ const eliminarTodos = async () => {
         })
 
         buscarSpaceId()
-        eliminarTodos()
+        console.log("eliminjar todos");
+        setTimeout(() => {
+          
+          eliminarTodos()
+        }, 2000);
 
-        
+      
 
      
       //  const url2 = "https://back2.tinpad.com.pe/public/api/space-image"
@@ -550,6 +542,7 @@ const eliminarTodos = async () => {
         maximiunReservationTime: "",
         rulesOfUse: ""
             });
+            setSelectedImage()
 
             abrirCerrarModalInsertar();
 
@@ -582,6 +575,7 @@ const eliminarTodos = async () => {
         const abrirCerrarInsertar = () => {
           abrirCerrarModalInsertar();
           setSelectedFiles([])
+          setSelectedImage()
         }
     const abrirCerrarModalInsertar = () => {
           
@@ -638,15 +632,29 @@ const eliminarTodos = async () => {
             </div> */}
             {/* <br /><br /> */}
 
-            <div>
-              <input type="file" id="file" multiple onChange={handleImageChange} />
-              <div className="label-holder">
-                <label htmlFor="file" className="label">
-                  <i className="material-icons">add_a_photo</i>
-                </label>
-              </div>
-              <div className="result">{renderPhotos(selectedFiles)}</div>
-            </div>
+            <div className='mt-5'>
+                {/* <label>Choose File to Upload: </label> */}
+                <input type="file"  onChange={imageChange} id="file" />
+            <div className="label-holder">
+          <label htmlFor="file" className="label">
+            <i className="material-icons">add_a_photo</i>
+          </label>
+        </div>
+                </div> <br/>
+     
+
+            {selectedImage && (
+          <div className='eliminarImg'>
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              className='foto1'
+              alt="Thumb"
+            />
+            <button onClick={removeSelectedImage} style={styles.delete}>
+              Eliminar
+            </button>
+          </div>
+        )}
 
 
              {/* aparte  */}
