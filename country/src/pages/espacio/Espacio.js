@@ -304,7 +304,7 @@ useEffect(() => {
   
     // console.log(typeof(info.id));
     const idSeek = (info.id).toString()
-    // console.log(typeof(idSeek));
+    console.log(info.id);
     axios.get(url,{headers})
       .then( (response) =>{
   
@@ -479,6 +479,44 @@ console.log("eliminjar todos 2");
         // console.log(filesImg);
           // buscarCotizacion()
         }
+      const peticionPost3=async(casa)=>{
+        console.log("post2");
+
+        const f = new FormData()   
+  
+   
+        console.log(selectedFilesPost);
+
+       
+
+            f.append("file", selectedFilesPost)
+            f.append("spaceId", casa)
+   
+          // console.log(f);
+
+          const headers = {
+            'Content-type': 'multipart/form-data',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      
+        }
+    
+          const url1= "https://back2.tinpad.com.pe/public/api/space-image"
+            await axios.post(url1, f, {headers})
+            .then(response=>{
+              // setdata(data.concat(response.data));
+              // abrirCerrarModalInsertar();
+              setSelectedFiles([])
+              setSelectedFilesPost([])
+              console.log("exito -1");
+            }).catch(error=>{
+              console.log(error);
+              setSelectedFiles([])
+              setSelectedFilesPost([])
+            })
+
+        // console.log(filesImg);
+          // buscarCotizacion()
+        }
 
 
       useEffect(() => {
@@ -565,7 +603,7 @@ console.log("eliminjar todos 2");
         }).catch(error=>{
           console.log(error);
         })
-        peticionPost2()
+        peticionPost3(info.id)
         buscarCotizacion()
       }
 
@@ -650,6 +688,7 @@ console.log("eliminjar todos 2");
           abrirCerrarModalInsertar();
           setSelectedFiles([])
           setSelectedImage()
+          setInfoImg() 
          
         }
     const abrirCerrarModalInsertar = () => {
@@ -663,7 +702,7 @@ console.log("eliminjar todos 2");
         setShowModalEditar(!showModalEditar);
         console.log(pathImg);
         setSelectedImage()
-        
+        setInfoImg() 
         
     
    
