@@ -94,6 +94,7 @@ function Espacio() {
     const [selectedFilesPost, setSelectedFilesPost] = useState([]);
     const [selectedImage, setSelectedImage] = useState();
     const [pathImg, setPathImg] = useState()
+    const [infoImg, setInfoImg] = useState()
 
 
     const imageChange = (e) => {
@@ -115,14 +116,7 @@ function Espacio() {
 
 
 
-    const subirArchivos = (e) => {
-      setArchivos(e)
-    }
-
-
-
-
-    
+   
     const [info, setInfo] = useState({
         id: "",
         spaceTypeId: "",
@@ -152,6 +146,9 @@ function Espacio() {
     const{maximiunReservationTime,rulesOfUse, spaceTypeId, description, internalCode, previusReservationTime, id} = info;
 
 
+
+
+
     const{name} = infoType;
 
 
@@ -179,9 +176,11 @@ function Espacio() {
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
         console.log(user.id);
+       
+        
 
         
-        (caso==="Editar")? abrirCerrarModalEditar() 
+        (caso==="Editar")? abrirCerrarModalEditar()
         : 
         abrirCerrarModalEliminar() 
       }
@@ -256,7 +255,7 @@ function Espacio() {
 
 const [spaceIdDelete, setSpaceIdDelete] = useState([])
 let result=[];
-let result2="";
+let result2= null
 const buscarSpaceId = async() => {
         
   const url = `https://back2.tinpad.com.pe/public/api/space-image`;
@@ -291,45 +290,78 @@ const buscarSpaceId = async() => {
   console.log(pathImg);
   
 }
-const buscarSpaceId2 = async() => {
-        
+useEffect(() => {
+
+  const buscarSpaceId2 = async() => {
+          
+    const url = `https://back2.tinpad.com.pe/public/api/space-image`;
+  
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+    }
+  
+    // console.log(typeof(info.id));
+    const idSeek = (info.id).toString()
+    // console.log(typeof(idSeek));
+    axios.get(url,{headers})
+      .then( (response) =>{
+  
+            response.data.data.forEach((req) => {
+            if (req.spaceId === idSeek) {
+  
+                      result2 = req;
+                      setInfoImg(req)
+              } 
+            })
+            // this.setState({results:results});   
+            console.log(result2);
+            console.log(result);
+            // result2 = "https://back2.tinpad.com.pe/public/" + result2.path
+  
+            setPathImg("https://back2.tinpad.com.pe/public/" + result2.path)
+            console.log(result2);
+          
+  
+          })
+          .catch(function (error) {
+            console.log(error);
+            setPathImg()
+          })         
+          
+  }
+  
+  buscarSpaceId2()
+}, [showModalEditar]);
+
+const eliminarImg = async () => {
+
+  console.log("borrandoimg");
   const url = `https://back2.tinpad.com.pe/public/api/space-image`;
 
   const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
 
-  }
-
-  // console.log(typeof(info.id));
-  const idSeek = (info.id).toString()
-  // console.log(typeof(idSeek));
-  axios.get(url,{headers})
-    .then( (response) =>{
-
-          response.data.data.forEach((req) => {
-          if (req.spaceId === idSeek) {
-
-                    result2 = req;
-            } 
-          })
-          // this.setState({results:results});   
-          console.log(result2);
-          console.log(result2.path);
-
-    
-            setPathImg(result2.path)
-            
-      
-          
-          
-        })
-        .catch(function (error) {
-          console.log(error);
-        })         
-        
 }
 
+// console.log(result2.id);
+
+
+  await axios.delete(url+"/"+infoImg.id, {headers}) 
+  .then(response=>{
+    // setdata(data.filter(artista=>artista.id!==info.id));
+   
+    console.log("eliminado de space-image");
+  }).catch(error=>{ 
+    
+    console.log(error);
+    
+  })
+  setPathImg()
+
+}
 
 const eliminarTodos = async () => {
           
@@ -409,49 +441,51 @@ console.log("eliminjar todos 2");
         buscarCotizacion()
       }
 
+      const peticionPost2=async()=>{
+        console.log("post2");
+
+        const f = new FormData()   
+  
+   
+        console.log(selectedFilesPost);
+
+       
+
+            f.append("file", selectedFilesPost)
+            f.append("spaceId", spaceId)
+   
+          // console.log(f);
+
+          const headers = {
+            'Content-type': 'multipart/form-data',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      
+        }
+    
+          const url1= "https://back2.tinpad.com.pe/public/api/space-image"
+            await axios.post(url1, f, {headers})
+            .then(response=>{
+              // setdata(data.concat(response.data));
+              // abrirCerrarModalInsertar();
+              setSelectedFiles([])
+              setSelectedFilesPost([])
+              console.log("exito -1");
+            }).catch(error=>{
+              console.log(error);
+              setSelectedFiles([])
+              setSelectedFilesPost([])
+            })
+
+        // console.log(filesImg);
+          // buscarCotizacion()
+        }
+
+
       useEffect(() => {
 
 
           
-        const peticionPost2=async()=>{
-          console.log("post2");
-
-          const f = new FormData()   
-    
-     
-          console.log(selectedFilesPost);
-  
-         
-  
-              f.append("file", selectedFilesPost)
-              f.append("spaceId", spaceId)
-     
-            // console.log(f);
-
-            const headers = {
-              'Content-type': 'multipart/form-data',
-              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
         
-          }
-      
-            const url1= "https://back2.tinpad.com.pe/public/api/space-image"
-              await axios.post(url1, f, {headers})
-              .then(response=>{
-                // setdata(data.concat(response.data));
-                // abrirCerrarModalInsertar();
-                setSelectedFiles([])
-                setSelectedFilesPost([])
-                console.log("exito -1");
-              }).catch(error=>{
-                console.log(error);
-                setSelectedFiles([])
-                setSelectedFilesPost([])
-              })
- 
-          // console.log(filesImg);
-            // buscarCotizacion()
-          }
-
           peticionPost2()
       }, [spaceId]);
     const peticionPostAdd=async()=>{
@@ -522,26 +556,16 @@ console.log("eliminjar todos 2");
           'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
     
       }
+      console.log(info);
         await axios.put(baseUrl+"/"+info.id,  info , {headers: headers})
         .then(response=>{
-          // var dataNueva= data;
-          // dataNueva.map(artista=>{
-          //   if(artista.id===info.id){
-          //     artista.spaceTypeId =info.spaceTypeId;
-          //     artista.internalCode=info.internalCode;
-          //     artista.description=info.description;
-          //     artista.previusReservationTime=info.previusReservationTime;
-          //     artista.maximiunReservationTime=info.maximiunReservationTime;
-          //     artista.rulesOfUse=info.rulesOfUse  
-          //   }
-            
-          // });
-          // setdata(dataNueva);
+       
           abrirCerrarModalEditar();
          
         }).catch(error=>{
           console.log(error);
         })
+        peticionPost2()
         buscarCotizacion()
       }
 
@@ -614,9 +638,10 @@ console.log("eliminjar todos 2");
     const onSubmitEditar = (e) => {
 
       e.preventDefault();
-  
+
      
             peticionPut()
+            setSelectedImage()
             // window.location.reload();
  
         }
@@ -633,9 +658,14 @@ console.log("eliminjar todos 2");
       }
 
       const abrirCerrarModalEditar=()=>{
+        
+        
         setShowModalEditar(!showModalEditar);
-        buscarSpaceId2()      
- 
+        console.log(pathImg);
+        setSelectedImage()
+        
+        
+    
    
       }
       const abrirCerrarModalEliminar=()=>{
@@ -747,15 +777,15 @@ console.log("eliminjar todos 2");
         <select className='select1' onChange={handleChangeInsert} name="spaceTypeId" value={spaceTypeId}>
 
 
-{/* <label htmlFor=""  value="">Seleccione un tipo*</label>  */}
-<option value="" >Seleccione un tipo de espacio</option>
-{spaceTypes.map(tipos => (
-  <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
-  ))}
+          {/* <label htmlFor=""  value="">Seleccione un tipo*</label>  */}
+          <option value="" >Seleccione un tipo de espacio</option>
+          {spaceTypes.map(tipos => (
+            <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
+          ))}
 
 
 
-</select>  
+        </select>
 
         {/* <TextField className={styles.inputMaterial} name="spaceTypeId" onChange={handleChangeInsert} value={info && info.spaceTypeId} label="Tipo*" /> */}
         <br />
@@ -767,16 +797,47 @@ console.log("eliminjar todos 2");
         <TextField className={styles.inputMaterial} name="maximiunReservationTime" onChange={handleChangeInsert} value={info && info.maximiunReservationTime} label="Horas máximas de reservas al mes por usuario*" />
         <TextField className={styles.inputMaterial} name="rulesOfUse" onChange={handleChangeInsert} value={info && info.rulesOfUse} label="Normas de Uso*" />
         <br /><br />
-        <div className='eliminarImg'>
+
+        { pathImg ? null :      <div className='mt-5'>
+                {/* <label>Choose File to Upload: </label> */}
+                <input type="file"  onChange={imageChange} id="file" />
+            <div className="label-holder">
+          <label htmlFor="file" className="label">
+            <i className="material-icons">add_a_photo</i>
+          </label>
+        </div>
+                </div> }
+
+                {selectedImage && (
+          <div className='eliminarImg mt-5'>
             <img
-              src={pathImg}
+              src={URL.createObjectURL(selectedImage)}
               className='foto1'
-              // alt="Thumb"
+              alt="Thumb"
             />
-            <button onClick={()=>setPathImg()} style={styles.delete}>
+            <button onClick={removeSelectedImage} style={styles.delete}>
               Eliminar
             </button>
           </div>
+        )}
+
+   
+     
+        {pathImg && (
+
+          <div className='eliminarImg'>
+            <img
+              src={pathImg}
+              className='foto1'
+            // alt="Thumb"
+            />
+
+            <button onClick={() => eliminarImg()} style={styles.delete}>
+              Eliminar
+            </button>
+          </div>
+
+        )}
         <div align="right">
           <Button color="primary" type="submit" >Editar</Button>
           <Button onClick={() => abrirCerrarModalEditar()}> Cancelar</Button>
