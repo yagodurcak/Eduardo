@@ -93,11 +93,13 @@ function Espacio() {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedFilesPost, setSelectedFilesPost] = useState([]);
     const [selectedImage, setSelectedImage] = useState();
+    const [pathImg, setPathImg] = useState()
 
 
     const imageChange = (e) => {
       if (e.target.files && e.target.files.length > 0) {
         setSelectedImage(e.target.files[0]);
+        console.log(e.target.files[0]);
         setSelectedFilesPost(e.target.files[0])
       }
   };
@@ -177,7 +179,9 @@ function Espacio() {
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
         console.log(user.id);
-        (caso==="Editar")?abrirCerrarModalEditar()
+
+        
+        (caso==="Editar")? abrirCerrarModalEditar() 
         : 
         abrirCerrarModalEliminar() 
       }
@@ -252,6 +256,7 @@ function Espacio() {
 
 const [spaceIdDelete, setSpaceIdDelete] = useState([])
 let result=[];
+let result2="";
 const buscarSpaceId = async() => {
         
   const url = `https://back2.tinpad.com.pe/public/api/space-image`;
@@ -274,17 +279,58 @@ const buscarSpaceId = async() => {
                     result.push(req);
             } 
           })
-        // this.setState({results:results});   
-        console.log(result);
+          // this.setState({results:results});   
+          console.log(result);
+          console.log(result.path);
+    
    
     })
   .catch(function (error) {
     console.log(error);
-  })
-
-  
+  }) 
+  console.log(pathImg);
   
 }
+const buscarSpaceId2 = async() => {
+        
+  const url = `https://back2.tinpad.com.pe/public/api/space-image`;
+
+  const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+  }
+
+  // console.log(typeof(info.id));
+  const idSeek = (info.id).toString()
+  // console.log(typeof(idSeek));
+  axios.get(url,{headers})
+    .then( (response) =>{
+
+          response.data.data.forEach((req) => {
+          if (req.spaceId === idSeek) {
+
+                    result2 = req;
+            } 
+          })
+          // this.setState({results:results});   
+          console.log(result2);
+          console.log(result2.path);
+
+    
+            setPathImg(result2.path)
+            
+      
+          
+          
+        })
+        .catch(function (error) {
+          console.log(error);
+        })         
+        
+}
+
+
 const eliminarTodos = async () => {
           
   const url = `https://back2.tinpad.com.pe/public/api/space-image`;
@@ -307,6 +353,7 @@ const eliminarTodos = async () => {
       
       console.log(error);
       setSelectedImage()
+
     })
 }
 console.log("eliminjar todos 2");
@@ -567,6 +614,8 @@ console.log("eliminjar todos 2");
     const onSubmitEditar = (e) => {
 
       e.preventDefault();
+  
+     
             peticionPut()
             // window.location.reload();
  
@@ -576,6 +625,7 @@ console.log("eliminjar todos 2");
           abrirCerrarModalInsertar();
           setSelectedFiles([])
           setSelectedImage()
+         
         }
     const abrirCerrarModalInsertar = () => {
           
@@ -584,6 +634,9 @@ console.log("eliminjar todos 2");
 
       const abrirCerrarModalEditar=()=>{
         setShowModalEditar(!showModalEditar);
+        buscarSpaceId2()      
+ 
+   
       }
       const abrirCerrarModalEliminar=()=>{
         setShowModalEliminar(!showModalEliminar);
@@ -714,6 +767,16 @@ console.log("eliminjar todos 2");
         <TextField className={styles.inputMaterial} name="maximiunReservationTime" onChange={handleChangeInsert} value={info && info.maximiunReservationTime} label="Horas máximas de reservas al mes por usuario*" />
         <TextField className={styles.inputMaterial} name="rulesOfUse" onChange={handleChangeInsert} value={info && info.rulesOfUse} label="Normas de Uso*" />
         <br /><br />
+        <div className='eliminarImg'>
+            <img
+              src={pathImg}
+              className='foto1'
+              // alt="Thumb"
+            />
+            <button onClick={()=>setPathImg()} style={styles.delete}>
+              Eliminar
+            </button>
+          </div>
         <div align="right">
           <Button color="primary" type="submit" >Editar</Button>
           <Button onClick={() => abrirCerrarModalEditar()}> Cancelar</Button>
