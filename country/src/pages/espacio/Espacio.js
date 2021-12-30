@@ -46,37 +46,11 @@ const useStyles = makeStyles((theme) => ({
 
  
 
-
-  const customerTableHead = [
-
-    {
-        title:"Tipo de espacio",
-        // field: data.space_type,    
-        render: data => data.space_type.name
-    },
-    {
-        title:"Descripción",
-        field: "description"
-    },
-    {
-        title:"N° o Nombre",
-        field: "internalCode"
-    },
-    {
-        title:"Tiempo previo para reservar",
-        render: data => data.previusReservationTime + " hs"
-      
-    },
-    {
-        title:"Horas máximas al mes",
-        render: data => data.maximiunReservationTime +  " hs"
-       
-    },
-]
-
-
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
-
+  
+  
+  const label = { inputProps: { 'aria-label': 'Switch demo' } };
+  
+  
 
 function Espacio() {
  
@@ -95,6 +69,34 @@ function Espacio() {
     const [selectedImage, setSelectedImage] = useState();
     const [pathImg, setPathImg] = useState()
     const [infoImg, setInfoImg] = useState()
+
+
+    // console.log(data);
+    const customerTableHead = [
+  
+      {
+          title:"Tipo de espacio",
+          // field: data.space_type,    
+          render: data => data.space_type.name},
+      {
+          title:"Descripción",
+          field: "description"
+      },
+      {
+          title:"N° o Nombre",
+          field: "internalCode"
+      },
+      {
+          title:"Tiempo previo para reservar",
+          render: data => data.previusReservationTime + " hs"
+        
+      },
+      {
+          title:"Horas máximas al mes",
+          render: data => data.maximiunReservationTime +  " hs"
+         
+      },
+  ]
 
 
     const imageChange = (e) => {

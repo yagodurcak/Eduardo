@@ -88,7 +88,7 @@ function Visita() {
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [switchOn, setSwitchOn] = useState(true)
 
-    const [horaInicio, setHoraInicio] = useState(new Date());
+    const [horaInicio, setHoraInicio] = useState(0);
     const [horaFinal, setHoraFinal] = useState(new Date());
     const [ visitTypes, setVisitTypes] = useState([])
 
@@ -97,37 +97,49 @@ function Visita() {
     const [info, setInfo] = useState({
       typeVisitId: "",
       description: "",
-      startingTimeRange: "",
-      endingTimeRange: "",
-      availableDays: "",
+      startingTimeRange: 0,
+      endingTimeRange: 12,
+      availableDays: "{\"day1\": \"lunes\",\"day2\": \"jueves\"}",
       maximunNumberPerson: "",
+      // monday: "0",
+      // tusday: "0",
+      // wednesday: "0",
+      // thursday: "0",
+      // friday: "0",
+      // satuday: "0",
+      // sunday: "0",
+      spaceId: "12"
       
     })
 
     const diasSemana = [
       {
-        label: 'Mon',
+        label: 'Lunes',
         value: 'Mon',
       },
       {
-        label: 'Tue',
+        label: 'Martes',
         value: 'Tue',
       },
       {
-        label: 'Wed',
+        label: 'Miercoles',
         value: 'Wed',
       },
       {
-        label: 'Thu',
+        label: 'Jueves',
         value: 'Thu',
       },
       {
-        label: 'Fri',
+        label: 'Viernes',
         value: 'Fri',
       },
       {
-        label: 'Sat',
+        label: 'Sabado',
         value: 'Sat',
+      },
+      {
+        label: 'Domingo',
+        value: 'dom',
       },
     ];
 
@@ -137,12 +149,19 @@ function Visita() {
     const{typeVisitId, startingTimeRange, description, endingTimeRange, availableDays, maximunNumberPerson} = info;
     
     
-    const baseUrl="http://localhost:3001/Visita";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/rules-visit-provider";
     const handleChangeInsert = (e) => {
       
       setInfo({
         ...info,
         [e.target.name]: e.target.value
+      })
+    }
+    const handleChangeInsertInt = (e) => {
+      
+      setInfo({
+        ...info,
+        [e.target.name]: parseInt(e.target.value) 
       })
     }
     
@@ -158,9 +177,6 @@ function Visita() {
     //   const frase = await api.json()
     //   console.log(frase[0]);
     //   setdata(frase)
-    // }
-    useEffect(() => {
-     
     
       const buscarCotizacion = async() => {
         
@@ -169,7 +185,6 @@ function Visita() {
           const headers = {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-
           }
   
   
@@ -179,6 +194,9 @@ function Visita() {
           setdata(rtdo.data.data)
   
       }
+    // }
+    useEffect(() => {
+     
       buscarTipo()
   
       buscarCotizacion()
@@ -206,15 +224,23 @@ function Visita() {
   
   }
 
-    const peticionPost=async()=>{
-        await axios.post(baseUrl, info)
-        .then(response=>{
-          setdata(data.concat(response.data));
-          abrirCerrarModalInsertar();
-        }).catch(error=>{
-          console.log(error);
-        })
-      }
+  const peticionPost=async()=>{
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+  }
+      await axios.post(baseUrl, info, {headers})
+      .then(response=>{
+        // setdata(data.concat(response.data));
+        console.log(response.data.data.id);
+        abrirCerrarModalInsertar();
+        // setSpaceId(response.data.data.id)
+      }).catch(error=>{
+        console.log(error);
+      })
+    
+    }
 
       const peticionDelete=async()=>{
         await axios.delete(baseUrl+"/"+info.id, info)
@@ -266,13 +292,23 @@ function Visita() {
 
             peticionPost()
             setInfo({
-                type: "",
-                description: "",
-                hs: "",
-                days: "",
-                max: "",
+              typeVisitId: "",
+              description: "",
+              startingTimeRange: 2,
+              endingTimeRange: 4,
+              availableDays: "",
+              maximunNumberPerson: "",
+              // monday: "0",
+              // tusday: "0",
+              // wednesday: "0",
+              // thursday: "0",
+              // friday: "0",
+              // satuday: "0",
+              // sunday: "0",
+              spaceId: "12"
             });
-            // abrirCerrarModalInsertar()
+            abrirCerrarModalInsertar()
+            buscarCotizacion()
         }
         
     }
@@ -309,18 +345,14 @@ function Visita() {
             {error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null}
 
 
-            <select className='select1' onChange={handleChangeInsert} name="availableDays">
+            <select className='select1' onChange={handleChangeInsert} name="typeVisitId">
 
+              <option value="" >Seleccione un tipo de visita</option>
+              {visitTypes.map(tipos => (
+                <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
+              ))}
 
-
-<option value="" >Seleccione un tipo de visita</option>
-{visitTypes.map(tipos => (
-  <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
-))}
-
-
-
-</select>
+            </select>
 
 
 
@@ -330,30 +362,51 @@ function Visita() {
 
 
             <br />
-            <TextField className={styles.inputMaterial} name="days" onChange={handleChangeInsert} label="Días disponibles*" />
-            <TextField className={styles.inputMaterial} name="max" onChange={handleChangeInsert} label="Max. Personas*" />
+            {/* <TextField className={styles.inputMaterial} name="availableDays" onChange={handleChangeInsert} label="Días disponibles*" /> */}
+            <TextField className={styles.inputMaterial} name="maximunNumberPerson" onChange={handleChangeInsert} label="Max. Personas*" />
 
             <br /><br />
             <MuiPickersUtilsProvider utils={DateMomentUtils}>
-
-              <TimePicker value={horaInicio} onChange={setHoraInicio} label="Rango horario - Inicio" />
-              <TimePicker value={horaFinal} onChange={setHoraFinal} label="Rango horario - Final" />
+{/* 
+              <TimePicker value={horaInicio} onChange={setHoraInicio} label="Rango horario - Inicio" name="startingTimeRange" />
+              <TimePicker value={horaFinal} onChange={setHoraFinal} label="Rango horario - Final"  name="endingTimeRange" /> */}
 
               <br /><br />
             </MuiPickersUtilsProvider>
+            <label htmlFor="">"Rango horario - Inicio"</label>
+            <br /><br />
+            <input type="time" name="startingTimeRange"  onChange={handleChangeInsertInt}/>
+            <br /><br />
+            <label htmlFor="">"Rango horario - Final"</label>
+            <br /><br />
+            <input type="time" name="endingTimeRange"  onChange={handleChangeInsertInt}/>
+            <br /><br />
             <select className='select1' onChange={handleChangeInsert} name="typeVisitId" value={typeVisitId}>
 
 
 
-<option value="" >Rango de días</option>
-{diasSemana.map(tipos => (
-  <option value={tipos.value} key={tipos.value} >{tipos.label}</option>
-))}
+              <option value="" >Rango de días - Inicio</option>
+              {diasSemana.map(tipos => (
+                <option value={tipos.value} key={tipos.value} >{tipos.label}</option>
+              ))}
 
 
 
-</select>
-   
+            </select>
+            <br /><br />
+            <select className='select1' onChange={handleChangeInsert} name="typeVisitId" value={typeVisitId}>
+
+
+
+              <option value="" >Rango de días - Final</option>
+              {diasSemana.map(tipos => (
+                <option value={tipos.value} key={tipos.value} >{tipos.label}</option>
+              ))}
+
+
+
+            </select>
+
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>
               <Button onClick={abrirCerrarModalInsertar}> Cancelar</Button>

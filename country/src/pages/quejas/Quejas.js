@@ -10,7 +10,7 @@ const customerTableHead = [
 
     {
         title:"Fecha",
-        field: "date"
+        render: data => ((data.created_at).slice(0,10))
     },
     {
         title:"Tipo",
@@ -26,12 +26,12 @@ const customerTableHead = [
     },
     {
         title:"Estado",
-        field: "stateId"
-    },
+        render: data => data.state.name},
+    
     {
         title:"Actualiz.",
-        field: "update"
-    }
+        render: data => ((data.state.updated_at).slice(0,10))}
+    
 ]
 
 

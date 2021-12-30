@@ -3,6 +3,7 @@ import '../users/Users.css'
 import {Button, Modal, TextField} from '@material-ui/core';
 import React,{useEffect, useState}  from 'react';
 
+import ModalAdd from '../../components/pageComponents/ModalAdd';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     },
     {
         title:"Tipo",
-        field: "typeReleaseId",       
+        render: data => data.type_release.name       
        
     },
     {
@@ -70,12 +71,20 @@ function Noticias() {
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [switchOn, setSwitchOn] = useState(true)
+    const [spaceTypes, setSpaceTypes] = useState([])
+    const [showModalAdd, setShowModalAdd] = useState(false);
+    const [selectedImage, setSelectedImage] = useState();
+    const [selectedFilesPost, setSelectedFilesPost] = useState([]);
+    // const [showModalAdd, setShowModalAdd] = useState(false);
 
     const [info, setInfo] = useState({
-        type: "",
-        date: "",
+      publicationDate: "",
+      typeReleaseId: "",
         title:"" ,  
-        description: ""
+        description: "",
+        image:""
+     
+
     })
 
     const [error, setError] = useState(false)
@@ -84,7 +93,7 @@ function Noticias() {
 
 
 
-    const{date, type, title, description} = info;
+    const{publicationDate, typeReleaseId, title, description, file, image} = info;
 
   
     const baseUrl="http://localhost:3001/Noticias";
@@ -96,6 +105,10 @@ function Noticias() {
         })
     }
 
+    const removeSelectedImage = () => {
+      setSelectedImage();
+  };
+       
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
         (caso==="Editar")?abrirCerrarModalEditar()
@@ -109,40 +122,128 @@ function Noticias() {
     //     console.log(frase[0]);
     //     setdata(frase)
     // }
+    const buscarCotizacion = async() => {
+      
+        const url = `https://back2.tinpad.com.pe/public/api/new-release`;
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+        }
+
+
+        const rtdo = await axios.get(url, {headers})
+
+        console.log(rtdo.data.data[0]);
+        setdata(rtdo.data.data)
+
+    }
     useEffect(() => {
      
     
-      const buscarCotizacion = async() => {
-        
-          const url = `https://back2.tinpad.com.pe/public/api/new-release`;
-
-          const headers = {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-
-          }
-  
-  
-          const rtdo = await axios.get(url, {headers})
- 
-          console.log(rtdo.data.data[0]);
-          setdata(rtdo.data.data)
-  
-      }
   
       buscarCotizacion()
       
       console.log(data);
     }, []);
-    const peticionPost=async()=>{
-        await axios.post(baseUrl, info)
-        .then(response=>{
-          setdata(data.concat(response.data));
-          abrirCerrarModalInsertar();
-        }).catch(error=>{
-          console.log(error);
-        })
+
+
+  //  buscar Tipos de noticias y menu desplegable 
+
+  const abrirCerrarModalAdd=()=>{
+    setShowModalAdd(!showModalAdd);
+  }
+  const handleChangeInsertType = (e) => {
+
+    setInfoType({
+        ...infoType,
+        [e.target.name]: e.target.value
+    })
+    // console.log(e.target.name, e.target.value);
+}
+
+const [infoType, setInfoType] = useState({
+  id: "",
+  name: ""
+
+})
+
+    const buscarTipo = async() => {
+        
+      const url = `https://back2.tinpad.com.pe/public/api/release-type`;
+  
+      const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
       }
+  
+  
+      const rtdo = await axios.get(url, {headers})
+  
+      // console.log(rtdo.data.data);
+    
+      setSpaceTypes(rtdo.data.data)
+  
+  }
+  useEffect(() => {
+     
+    buscarTipo()
+    
+    // console.log(data);
+  }, []);
+
+  const peticionPostAdd=async()=>{
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+  }
+  const url = `https://back2.tinpad.com.pe/public/api/space-type`;
+      await axios.post(url, infoType, {headers})
+      .then(response=>{
+        // setSpaceTypes(spaceTypes.concat(response.data));
+        // console.log(response.data);
+        abrirCerrarModalAdd();
+ 
+      }).catch(error=>{
+        console.log(error);
+      })
+      buscarTipo()
+
+    }
+
+  const onSubmitInsertarAdd = (e) => {
+
+    // abrirCerrarModalInsertar();
+
+      e.preventDefault();
+
+          peticionPostAdd()
+
+    
+  }
+
+
+  const peticionPost=async()=>{
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+  }
+
+  const url1 = "https://back2.tinpad.com.pe/public/api/new-release"
+      await axios.post(url1, info, {headers})
+      .then(response=>{
+        // setdata(data.concat(response.data));
+        console.log(response.data.data.id);
+        abrirCerrarModalInsertar();
+      }).catch(error=>{
+        console.log(error);
+      })
+      buscarCotizacion()
+    }
 
       const peticionDelete=async()=>{
         await axios.delete(baseUrl+"/"+info.id, info)
@@ -155,22 +256,25 @@ function Noticias() {
       }
 
 
-      const peticionPut=async()=>{
-        await axios.put(baseUrl+"/"+info.id, info)
+      const peticionPut=async()=>{       
+
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
+      }
+      const url2 = `https://back2.tinpad.com.pe/public/api/new-release`
+      console.log(info);
+        await axios.put(url2+"/"+info.id,  info , {headers: headers})
         .then(response=>{
-          var dataNueva= data;
-          dataNueva.map(artista=>{
-            if(artista.id===info.id){
-              artista.type=info.type;
-              artista.date=info.date;
-              artista.title=info.title  
-            }
-          });
-          setdata(dataNueva);
+       
           abrirCerrarModalEditar();
+         
         }).catch(error=>{
           console.log(error);
         })
+     
+        buscarCotizacion()
       }
 
       const handleChangeSwitch = () => {
@@ -182,7 +286,7 @@ function Noticias() {
       const onSubmitInsertar = (e) => {
                     e.preventDefault();
 
-        if (type.trim() === "" || title.trim() === "" ||description.trim() === "") {
+        if (title.trim() === "" ||description.trim() === ""||typeReleaseId.trim() === "" ) {
         
          setError(true);
          return
@@ -191,22 +295,32 @@ function Noticias() {
 
             peticionPost()
             setInfo({
-                type: "",
-                date: "",
+              publicationDate: "",
+              typeReleaseId: "",
                 title:"" ,  
-                description: ""
+                description: "",
+                file:"",
+                image:"", 
             });
 
-            // abrirCerrarModalInsertar()
+            abrirCerrarModalInsertar();
         }
         
     }
-    const onSubmitEditar = () => {
+    const onSubmitEditar = (e) => {
+      e.preventDefault()
 
             peticionPut()
            
         }
-
+        const imageChange = (e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            setSelectedImage(e.target.files[0]);
+            console.log(e.target.files[0]);
+            setSelectedFilesPost(e.target.files[0])
+          }
+      };
+    
     // useEffect(() => {
     //     traerFrase()
     // }, [])
@@ -215,6 +329,7 @@ function Noticias() {
     const abrirCerrarModalInsertar = () => {
           
         setShowModalInsertar(!showModalInsertar)
+        
       }
 
       const abrirCerrarModalEditar=()=>{
@@ -227,49 +342,113 @@ function Noticias() {
 
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
-      
+
           <div className={styles.modal}>
             <h3 className="my-5">Agregar noticia o comunicado</h3>
 
-            { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            {/* <label htmlFor="">Seleccione un tipo*</label>
-            <select className="select1">
-                     
-                        <option value="s" >Visita</option>
-                        <option value="ss" >Proveedor </option>           
-                   
-                    </select>    */}
-            
-            <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} label="Tipo*"  />
-            <TextField className={styles.inputMaterial} name="title" onChange={handleChangeInsert} label="Titulo*"  />
+            {error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null}
+            <select className='select1' onChange={handleChangeInsert} name="typeReleaseId" value={typeReleaseId}>
+
+
+              {/* <label htmlFor=""  value="">Seleccione un tipo*</label>  */}
+              <option value="" >Seleccione un tipo de noticia*</option>
+              {spaceTypes.map(tipos => (
+                <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
+              ))}
+
+
+
+            </select>
+
+                
+            {/* <button className='mt-5' onClick={() => abrirCerrarModalAdd()}>Crear nuevo tipo de espacio</button> */}
+            <TextField className={styles.inputMaterial} name="title" onChange={handleChangeInsert} label="Titulo*" />
             <br />
-              <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert}  label="Descripción*" multiline rows={3} />
-              
+            <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} label="Descripción*" multiline rows={3} />
+                
+            <br />
+            <br />
+            <label htmlFor="" className='mt-5'>Fecha de publicación</label>
+            <br />
+            <br />
             
-   
-              <div className="mt-10 flex items-center">
-                  <h4 className="text-gray-600 my-5 mr-10">Adjuntar archivo :</h4>
-                  <div>
-                    
-                                      <input type="file" name="photo" id="upload-photo" />
-                  </div>    
-              </div>
-              <div className="mt-10 flex items-center">
-                  <h4 className="text-gray-600 my-5 mr-10">Adjuntar imagen :</h4>
-                  <div>
-                    
-                                      <input type="file" name="photo" id="upload-photo" />
-                  </div>    
-              </div>
-            
+            <input type="date" className={styles.inputMaterial} name="publicationDate" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
+
+            {/* agregar pdf */}
+            <div className='mt-5'>
+                {/* <label>Choose File to Upload: </label> */}
+                <input type="file"  onChange={imageChange} id="file" name='image'/>
+            <div className="label-holder">
+          <label htmlFor="file" className="label">
+            <i className="material-icons">attach_file</i>
+          </label>
+        </div>
+                </div> <br/>
+     
+                {/* cambiar a pdf  */}
+            {/* {selectedImage && (
+          <div className='eliminarImg'>
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              className='foto1'
+              alt="Thumb"
+            />
+            <button onClick={removeSelectedImage} style={styles.delete}>
+              Eliminar
+            </button>
+          </div>
+        )} */}
+            {/* agregar imagen */}
+            <div className='mt-5'>
+                {/* <label>Choose File to Upload: </label> */}
+                <input type="file"  onChange={imageChange} id="file" name='image'/>
+            <div className="label-holder">
+          <label htmlFor="file" className="label">
+            <i className="material-icons">add_a_photo</i>
+          </label>
+        </div>
+                </div> <br/>
+     
+
+            {selectedImage && (
+          <div className='eliminarImg'>
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              className='foto1'
+              alt="Thumb"
+            />
+            <button onClick={removeSelectedImage} style={styles.delete}>
+              Eliminar
+            </button>
+          </div>
+        )}
+
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>
-              <Button onClick= {abrirCerrarModalInsertar}> Cancelar</Button>
+              <Button onClick={abrirCerrarModalInsertar}> Cancelar</Button>
             </div>
           </div>
         </form>
       )
+
+      const bodyAdd=(
+        <form action="" onSubmit={onSubmitInsertarAdd} >
+      
+          <div className={styles.modal}>
+            <h3 className="my-5">Agregar Nuevo Espacio</h3>
+
+            {/* { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null } */}
+          
+    
+            <TextField className={styles.inputMaterial} name="name" onChange={handleChangeInsertType}  label="Nombre nuevo tipo de espacio" />          
+             
+            <div align="right">
+              <Button color="primary" type="submit" >Insertar</Button>
+              <Button onClick= {abrirCerrarModalAdd}> Cancelar</Button>
+            </div>
+          </div>
+        </form>)
 
 
 
@@ -279,25 +458,71 @@ function Noticias() {
         <h3 className="my-5">Editar noticia o comunicado</h3>
         {error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null}
 
-        <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} value={info && info.type} label="Tipo*" />
+        <select className='select1' onChange={handleChangeInsert} name="typeReleaseId" value={typeReleaseId}>
+
+
+{/* <label htmlFor=""  value="">Seleccione un tipo*</label>  */}
+<option value="" >Seleccione un tipo de noticia*</option>
+{spaceTypes.map(tipos => (
+  <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
+))}
+
+
+
+</select>
+        <br />
         <TextField className={styles.inputMaterial} name="title" onChange={handleChangeInsert} value={info && info.title} label="Titulo*" />
         <br />
         <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} value={info && info.description} label="Descripción*" multiline rows={3} />
         <br />
-        <div className="mt-10 flex items-center">
-                  <h4 className="text-gray-600 my-5 mr-10">Adjuntar archivo :</h4>
-                  <div>
-                    
-                                      <input type="file" name="photo" id="upload-photo" />
-                  </div>    
-              </div>
-              <div className="mt-10 flex items-center">
-                  <h4 className="text-gray-600 my-5 mr-10">Adjuntar imagen :</h4>
-                  <div>
-                    
-                                      <input type="file" name="photo" id="upload-photo" />
-                  </div>    
-              </div>
+         {/* agregar pdf */}
+         <div className='mt-5'>
+                {/* <label>Choose File to Upload: </label> */}
+                <input type="file"  onChange={imageChange} id="file" name='image'/>
+            <div className="label-holder">
+          <label htmlFor="file" className="label">
+            <i className="material-icons">attach_file</i>
+          </label>
+        </div>
+                </div> <br/>
+     
+                {/* cambiar a pdf  */}
+            {/* {selectedImage && (
+          <div className='eliminarImg'>
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              className='foto1'
+              alt="Thumb"
+            />
+            <button onClick={removeSelectedImage} style={styles.delete}>
+              Eliminar
+            </button>
+          </div>
+        )} */}
+            {/* agregar imagen */}
+            <div className='mt-5'>
+                {/* <label>Choose File to Upload: </label> */}
+                <input type="file"  onChange={imageChange} id="file" name='image'/>
+            <div className="label-holder">
+          <label htmlFor="file" className="label">
+            <i className="material-icons">add_a_photo</i>
+          </label>
+        </div>
+                </div> <br/>
+     
+
+            {selectedImage && (
+          <div className='eliminarImg'>
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              className='foto1'
+              alt="Thumb"
+            />
+            <button onClick={removeSelectedImage} style={styles.delete}>
+              Eliminar
+            </button>
+          </div>
+        )}
         <br /><br />
         <div align="right">
           <Button color="primary" type="submit" >Editar</Button>
@@ -388,6 +613,14 @@ function Noticias() {
             info={info}
             peticionDelete={peticionDelete}
             bodyEliminar={bodyEliminar}
+            />
+                        <ModalAdd
+      showModalAdd={showModalAdd}
+      functionShow= {abrirCerrarModalAdd}
+      handleChangeInsert={handleChangeInsert}
+      onSubmitEditar={onSubmitInsertarAdd}
+      info={info}
+      bodyAdd={bodyAdd}
             />
         </div>
     )
