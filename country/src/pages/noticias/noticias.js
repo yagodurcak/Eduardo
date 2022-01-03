@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     },
     {
         title:"Tipo",
-        render: data => data.type_release.name       
+        // render: data => data.type_release.name       
        
     },
     {
@@ -82,7 +82,7 @@ function Noticias() {
       typeReleaseId: "",
         title:"" ,  
         description: "",
-        image:""
+        image:null
      
 
     })

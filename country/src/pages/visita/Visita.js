@@ -239,6 +239,8 @@ function Visita() {
       }).catch(error=>{
         console.log(error);
       })
+
+      buscarCotizacion()
     
     }
 
@@ -308,7 +310,7 @@ function Visita() {
               spaceId: "12"
             });
             abrirCerrarModalInsertar()
-            buscarCotizacion()
+   
         }
         
     }
@@ -363,7 +365,7 @@ function Visita() {
 
             <br />
             {/* <TextField className={styles.inputMaterial} name="availableDays" onChange={handleChangeInsert} label="Días disponibles*" /> */}
-            <TextField className={styles.inputMaterial} name="maximunNumberPerson" onChange={handleChangeInsert} label="Max. Personas*" />
+            <TextField className={styles.inputMaterial} name="maximunNumberPerson" onChange={handleChangeInsert} label="Max. Personas*" type="number" />
 
             <br /><br />
             <MuiPickersUtilsProvider utils={DateMomentUtils}>
@@ -375,11 +377,11 @@ function Visita() {
             </MuiPickersUtilsProvider>
             <label htmlFor="">"Rango horario - Inicio"</label>
             <br /><br />
-            <input type="time" name="startingTimeRange"  onChange={handleChangeInsertInt}/>
+            <input type="time" name="startingTimeRange"  onChange={handleChangeInsert}/>
             <br /><br />
             <label htmlFor="">"Rango horario - Final"</label>
             <br /><br />
-            <input type="time" name="endingTimeRange"  onChange={handleChangeInsertInt}/>
+            <input type="time" name="endingTimeRange"  onChange={handleChangeInsert}/>
             <br /><br />
             <select className='select1' onChange={handleChangeInsert} name="typeVisitId" value={typeVisitId}>
 
@@ -389,7 +391,7 @@ function Visita() {
               {diasSemana.map(tipos => (
                 <option value={tipos.value} key={tipos.value} >{tipos.label}</option>
               ))}
-
+  
 
 
             </select>

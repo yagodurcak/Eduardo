@@ -5,19 +5,28 @@
 import '../users/Users.css'
 
 import {Button, Modal, TextField} from '@material-ui/core';
-import React,{useEffect, useState}  from 'react';
+import React,{Component, useEffect, useState}  from 'react';
 
+import Input from '@material-ui/core/Input';
 import ModalAdd from '../../components/pageComponents/ModalAdd';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
-import Select from '@mui/material/Select';
+import Select from 'react-select'
 import Switch from '@mui/material/Switch';
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
 import mas from "../../IMG/space/mas.svg"
+
+// import Select from '@mui/material/Select';
+
+
+
+
+
+
 
 // import { Switch } from 'antd';
 
@@ -96,6 +105,22 @@ function Espacio() {
           render: data => data.maximiunReservationTime +  " hs"
          
       },
+  ]
+
+  const gustos = [
+    { value: '1', label: '1' },
+    { value: '2', label: '2' },
+    { value: '3', label: '3' },
+    { value: '4', label: '4' },
+    { value: '5', label: '5' },
+    { value: '6', label: '6' },
+    { value: '7', label: '7' },
+    { value: '8', label: '8' },
+    { value: '8', label: '8' },
+    { value: '9', label: '9' },
+    { value: '10', label: '10' },
+    { value: '11', label: '11' },
+    { value: '12', label: '12' }
   ]
 
 
@@ -177,19 +202,14 @@ function Espacio() {
 
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
-        console.log(user.id);
-       
-        
-
-        
+        console.log(user.id);       
         (caso==="Editar")? abrirCerrarModalEditar()
         : 
         abrirCerrarModalEliminar() 
       }
 
-    useEffect(() => {
-     
-    
+      useEffect(() => {
+      
       const buscarCotizacion = async() => {
         
           const url = `https://back2.tinpad.com.pe/public/api/space`;
@@ -209,6 +229,8 @@ function Espacio() {
 
   
       }
+     
+    
   
       buscarCotizacion()
       
@@ -656,6 +678,7 @@ console.log("eliminjar todos 2");
             setSelectedImage()
 
             abrirCerrarModalInsertar();
+            buscarCotizacion()
 
             // setTimeout(() => {
             //   window.location.reload();
@@ -744,9 +767,23 @@ console.log("eliminjar todos 2");
             {/* <TextField className={styles.inputMaterial} name="spaceTypeId" onChange={handleChangeInsert}  label="typeid*" /> */}
             <TextField className={styles.inputMaterial} name="internalCode" onChange={handleChangeInsert} label="ID (N° o nombre)*" />
             <br />
-            <TextField className={styles.inputMaterial} name="previusReservationTime" onChange={handleChangeInsert} label="Tiempo previo de reserva (horas)*" />
             <br />
-            <TextField className={styles.inputMaterial} name="maximiunReservationTime" onChange={handleChangeInsert} label="Horas máximas de reservas al mes por usuario*" />
+            {/* <TextField className={styles.inputMaterial} name="previusReservationTime" onChange={handleChangeInsert} label="Tiempo previo de reserva (horas)*" /> */}
+            <select className='select1' onChange={handleChangeInsert} name="previusReservationTime">
+
+
+              {/* <label htmlFor=""  value="">Seleccione un tipo*</label>  */}
+              <option value="" >Tiempo previo para reservar</option>
+  
+                      {gustos.map(tipos => (
+                <option value={tipos.value} key={tipos.value} >{tipos.label}</option>
+              ))}
+
+
+
+            </select>
+            <br />
+            <TextField className={styles.inputMaterial} name="maximiunReservationTime" onChange={handleChangeInsert} label="Horas máximas de reservas al mes por usuario*" type="number" />
             <TextField className={styles.inputMaterial} name="rulesOfUse" onChange={handleChangeInsert} label="Normas de Uso*" multiline rows={5} />
             {/* <div class="image-upload">
               <label for="file-input">
@@ -757,31 +794,31 @@ console.log("eliminjar todos 2");
             {/* <br /><br /> */}
 
             <div className='mt-5'>
-                {/* <label>Choose File to Upload: </label> */}
-                <input type="file"  onChange={imageChange} id="file" />
-            <div className="label-holder">
-          <label htmlFor="file" className="label">
-            <i className="material-icons">add_a_photo</i>
-          </label>
-        </div>
-                </div> <br/>
-     
+              {/* <label>Choose File to Upload: </label> */}
+              <input type="file" onChange={imageChange} id="file" />
+              <div className="label-holder">
+                <label htmlFor="file" className="label">
+                  <i className="material-icons">add_a_photo</i>
+                </label>
+              </div>
+            </div> <br />
+
 
             {selectedImage && (
-          <div className='eliminarImg'>
-            <img
-              src={URL.createObjectURL(selectedImage)}
-              className='foto1'
-              alt="Thumb"
-            />
-            <button onClick={removeSelectedImage} style={styles.delete}>
-              Eliminar
-            </button>
-          </div>
-        )}
+              <div className='eliminarImg'>
+                <img
+                  src={URL.createObjectURL(selectedImage)}
+                  className='foto1'
+                  alt="Thumb"
+                />
+                <button onClick={removeSelectedImage} style={styles.delete}>
+                  Eliminar
+                </button>
+              </div>
+            )}
 
 
-             {/* aparte  */}
+            {/* aparte  */}
             <div align="right">
               <Button color="primary" type="submit">Insertar</Button>
               <Button onClick={abrirCerrarInsertar}> Cancelar</Button>

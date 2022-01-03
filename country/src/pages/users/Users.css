@@ -206,3 +206,29 @@ border: none;
     
     
 }
+
+.estilosmodalDetails{
+    color: #317143;
+    padding: 10px;
+    text-align: center;
+}
+.estilosmodalDetails h3{
+    color: #317143;
+    margin: 10px;
+    text-align: justify;
+
+}
+.detailsInfo{
+    color: #A8A8A8;
+    font-weight: 500;
+}
+
+.calendario{
+    height: 50vh;
+    background-color: #317143;
+}
+
+.FullCalendar{
+    position: relative;
+    z-index: 0;
+}

@@ -1,5 +1,6 @@
 import './index.css';
 import "./Firebase"
+import "react-datetime/css/react-datetime.css";
 
 import App from './App';
 import React from 'react';

@@ -333,7 +333,7 @@ function Sidebar() {
                     ) 
                     : null}
                     <li className='listahover'>
-                    <NavLink className="logoContainter1" exact to="/cs" activeClassName="linkactivo">
+                    <NavLink className="logoContainter1" exact to="/Calendario" activeClassName="linkactivo">
 
                             <img src={calendario} alt="" className='logo1' />
                             <h1 className="title1">Calendario</h1>

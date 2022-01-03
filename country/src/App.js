@@ -8,11 +8,13 @@ import {
 
 import Archivos from "./pages/archivos/Archivos";
 import Calculos from "./pages/gastos/Calculos";
+import Calendar from "./pages/calendar/Calendar";
 import DetalleTramite from "./pages/tramites/DetalleTramite";
 import Espacio from "./pages/espacio/Espacio";
 import GastosComunes from "./pages/gastos/GastosComunes";
 import Home from "./pages/home/Home";
 import Login from "./components/Login"
+import Modal from 'react-modal';
 import Noticias from "./pages/noticias/noticias";
 import Personal from "./pages/personal/Personal";
 import Quejas from "./pages/quejas/Quejas";
@@ -23,6 +25,8 @@ import Topbar from "./components/topbar/Topbar";
 import Tramites from "./pages/tramites/Tramites";
 import Users from "./pages/users/Users"
 import Visita from "./pages/visita/Visita";
+
+Modal.setAppElement('#root');
 
 function App() {
   return (
@@ -79,6 +83,9 @@ function App() {
           </Route>
           <Route path="/Calculos">
           <Calculos/>
+          </Route>
+          <Route path="/Calendario">
+          <Calendar/>
           </Route>
           </div>
         </Switch>

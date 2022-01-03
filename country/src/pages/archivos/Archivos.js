@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   const customerTableHead = [
     {
         title:"Fecha",
-        field: "date"
+        field: "publicationDate"
     },
     {
         title:"Tamaño",
@@ -52,8 +52,8 @@ const useStyles = makeStyles((theme) => ({
        
     },
     {
-        title:"Titulo",
-        field: "title"
+        title:"Descripción",
+        field: "description"
     }]
 
 
@@ -66,6 +66,8 @@ function Archivos() {
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
+    const [selectedImage, setSelectedImage] = useState();
+    const [selectedFilesPost, setSelectedFilesPost] = useState([]);
 
 
 
@@ -87,7 +89,7 @@ function Archivos() {
     const{title, size} = info;
 
   
-    const baseUrl="http://localhost:3001/Archivos";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/useful-information";
     const handleChangeInsert = (e) => {
 
         setInfo({
@@ -103,12 +105,34 @@ function Archivos() {
         abrirCerrarModalEliminar() 
       }
 
-    const traerFrase = async () => {
-        const api = await fetch(baseUrl);
-        const frase = await api.json()
-        console.log(frase[0]);
-        setdata(frase)
-    }
+      useEffect(() => {
+      
+        const buscarCotizacion = async() => {
+          
+            const url = `https://back2.tinpad.com.pe/public/api/useful-information`;
+  
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+            }
+    
+    
+            const rtdo = await axios.get(url, {headers})
+   
+            // console.log(rtdo.data.data[0]);
+          
+            setdata(rtdo.data.data)
+  
+    
+        }
+
+        buscarCotizacion()
+  }, []);
+
+  const removeSelectedImage = () => {
+    setSelectedImage();
+};
 
     const peticionPost=async()=>{
         await axios.post(baseUrl, info)
@@ -177,9 +201,7 @@ function Archivos() {
            
         }
 
-    useEffect(() => {
-        traerFrase()
-    }, [])
+
 
     
     const abrirCerrarModalInsertar = () => {
@@ -195,6 +217,14 @@ function Archivos() {
       }
       const styles= useStyles();
 
+      const imageChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          setSelectedImage(e.target.files[0]);
+          console.log(e.target.files[0]);
+          setSelectedFilesPost(e.target.files[0])
+        }
+    };
+
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
       
@@ -209,14 +239,29 @@ function Archivos() {
               
             
    
-              <div className="mt-10 flex items-center">
-                  <h4 className="text-gray-600 my-5 mr-10">Adjuntar archivo :</h4>
-                  <div>
-                    
-                                      <input type="file" name="photo" id="upload-photo" />
-                  </div>    
-              </div>
-             
+            <div className='mt-5'>
+                {/* <label>Choose File to Upload: </label> */}
+                <input type="file"  onChange={imageChange} id="file" name='image'/>
+            <div className="label-holder">
+          <label htmlFor="file" className="label">
+            <i className="material-icons">attach_file</i>
+          </label>
+        </div>
+                </div> <br/>
+     
+
+            {selectedImage && (
+          <div className='eliminarImg'>
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              className='foto1'
+              alt="Thumb"
+            />
+            <button onClick={removeSelectedImage} style={styles.delete}>
+              Eliminar
+            </button>
+          </div>
+        )}
             
             <br /><br />
             <div align="right">
@@ -237,13 +282,29 @@ function Archivos() {
 
         <TextField className={styles.inputMaterial} name="title" onChange={handleChangeInsert} value={info && info.title} label="Titulo*" />
         <br />
-             <div className="mt-10 flex items-center">
-                  <h4 className="text-gray-600 my-5 mr-10">Adjuntar archivo :</h4>
-                  <div>
-                    
-                                      <input type="file" name="photo" id="upload-photo" />
-                  </div>    
-              </div>
+        <div className='mt-5'>
+                {/* <label>Choose File to Upload: </label> */}
+                <input type="file"  onChange={imageChange} id="file" name='image'/>
+            <div className="label-holder">
+          <label htmlFor="file" className="label">
+            <i className="material-icons">add_a_photo</i>
+          </label>
+        </div>
+                </div> <br/>
+     
+
+            {selectedImage && (
+          <div className='eliminarImg'>
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              className='foto1'
+              alt="Thumb"
+            />
+            <button onClick={removeSelectedImage} style={styles.delete}>
+              Eliminar
+            </button>
+          </div>
+        )}
              
         <br /><br />
         <div align="right">
