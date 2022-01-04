@@ -134,7 +134,7 @@ function Quejas() {
                 <h3 >Manzana: <span className="detailsInfo">{info&&info.subject}</span></h3>
                 <h3 >Lote: <span className="detailsInfo">{info&&info.subject}</span></h3>
                 <h3 >Doc de Identidad: <span className="detailsInfo">{info&&info.subject}</span></h3>
-                <h3 >Proceso: <span className="detailsInfo">{info&&info.state.scope}</span></h3>
+                {/* <h3 >Proceso: <span className="detailsInfo">{info&&info.state.scope}</span></h3> */}
                 <h3 >Asunto: <span className="detailsInfo">{info&&info.subject}</span></h3>
                 <h3 >Descripción: <span className="detailsInfo">{info&&info.description}</span></h3>
                 <h3 >Documentos Adjuntos:</h3>

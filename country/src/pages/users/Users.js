@@ -97,9 +97,6 @@ const useStyles = makeStyles((theme) => ({
       ]
       
 
-    
-   
-    
     const [info, setInfo] = useState({
 
       name: "",
@@ -119,6 +116,8 @@ const useStyles = makeStyles((theme) => ({
       document:"",
       email: "",
       phone: 0,
+ 
+
 
     })
 
@@ -169,12 +168,18 @@ const useStyles = makeStyles((theme) => ({
 
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
-        console.log(user);
-        
+        console.log(user);        
         // console.log(user.user);
         (caso==="Editar")?abrirCerrarModalEditar()
         : 
         abrirCerrarModalEliminar() 
+      }
+    const seleccionarVisibility=(user, caso)=>{
+        setInfo(user);
+        console.log(user);        
+        // console.log(user.user);
+        peticionPutVisibility(user)
+   
       }
       
       useEffect(() => {
@@ -398,6 +403,45 @@ const useStyles = makeStyles((theme) => ({
         
       }
 
+
+
+
+
+      
+    
+
+      const peticionPutVisibility=async(InfoUser)=>{    
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+    }
+      if (switchOn) {
+        await axios.put("https://back2.tinpad.com.pe/public/api/user"+"/"+InfoUser.userId,  {visibility: "0"} , {headers: headers})
+        .then(response=>{
+
+          console.log("visi1");
+          
+          buscarApi()   
+        }).catch(error=>{
+          console.log(error);
+        })
+      } else{
+        await axios.put("https://back2.tinpad.com.pe/public/api/user"+"/"+InfoUser.userId,  {visibility: "1"} , {headers: headers})
+        .then(response=>{
+
+          console.log("visi2");
+          
+          buscarApi()   
+        }).catch(error=>{
+          console.log(error);
+        })
+      }}
+
+
+   
+    
+
       const buscarApi = async() => {
         
         const url = `https://back2.tinpad.com.pe/public/api/property-user`;
@@ -540,6 +584,7 @@ const useStyles = makeStyles((theme) => ({
                      {
                  icon:() =>  <Switch {...label} defaultChecked onChange={handleChangeSwitch} className="toggle-button"/>,
                  tooltip:"add",
+                 onClick: (event, rowData) => seleccionarVisibility(rowData, "Visibility") 
                  
              },
                             {

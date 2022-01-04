@@ -277,6 +277,42 @@ const [infoType, setInfoType] = useState({
         buscarCotizacion()
       }
 
+      const seleccionarVisibility=(user, caso)=>{
+        setInfo(user);
+        console.log(user);        
+        // console.log(user.user);
+        peticionPutVisibility(user)
+   
+      }
+      const peticionPutVisibility=async(InfoUser)=>{    
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
+      }
+        if (switchOn) {
+          await axios.put("https://back2.tinpad.com.pe/public/api/new-release"+"/"+InfoUser.id,  {visibility: "0"} , {headers: headers})
+          .then(response=>{
+  
+            console.log("visi1");
+            
+            buscarCotizacion()  
+          }).catch(error=>{
+            console.log(error);
+          })
+        } else{
+          await axios.put("https://back2.tinpad.com.pe/public/api/new-release"+"/"+InfoUser.id,  {visibility: "1"} , {headers: headers})
+          .then(response=>{
+  
+            console.log("visi2");
+            
+            buscarCotizacion()  
+          }).catch(error=>{
+            console.log(error);
+          })
+        }}
+  
+
       const handleChangeSwitch = () => {
           setSwitchOn(!switchOn)
         
@@ -565,11 +601,12 @@ const [infoType, setInfoType] = useState({
                  data={data}
                  actions= {[
 
-                    {
-                        icon:() =>  <Switch {...label} defaultChecked onChange={handleChangeSwitch} className="toggle-button"/>,
-                        tooltip:"add",
-                        
-                    },
+                  {
+                    icon:() =>  <Switch {...label} defaultChecked onChange={handleChangeSwitch} className="toggle-button"/>,
+                    tooltip:"add",
+                    onClick: (event, rowData) => seleccionarVisibility(rowData, "Visibility") 
+                    
+                },
                      
  
                             {

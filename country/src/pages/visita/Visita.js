@@ -60,15 +60,16 @@ const useStyles = makeStyles((theme) => ({
         field: "maximunNumberPerson"
     },
     {
-        title:"Horario de entrada (hs)",
-        render: data => data.startingTimeRange + " hs"
+        title:"Rango de horario",
+        render: data => data.startingTimeRange +":00" + " - " +data.endingTimeRange +":00"
+        
   
     },
-    {
-        title:"Horario de salida (hs)",
-        render: data => data.endingTimeRange + " hs"
+    // {
+    //     title:"Horario de salida (hs)",
+    //     render: data => data.endingTimeRange + " hs"
   
-    },
+    // },
     {
         title:"Dias disponibles",
         field: "availableDays"
