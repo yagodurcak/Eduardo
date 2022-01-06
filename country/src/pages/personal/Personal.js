@@ -1,3 +1,8 @@
+
+
+
+// falta loi de mail en editar
+
 import "../users/Users.css"
 
 import {Button, Modal, TextField} from '@material-ui/core';
@@ -36,18 +41,18 @@ const useStyles = makeStyles((theme) => ({
 
 const customerTableHead = [
 
-    {
-        title:"Nombres",
-        field: "name"
-    },
-    {
-        title:"Apellidos",
-        field: "lastname"
-    },
-    {
-        title:"Doc. de Identidad",
-        field: "document"
-    }
+{
+    title:"Nombres",
+    field: "name"
+},
+{
+    title:"Apellidos",
+    field: "lastName"
+},
+{
+    title:"Doc. de Identidad",
+    field: "document"
+}
 ]
 
 
@@ -62,80 +67,118 @@ function Personal() {
  
     
     const [info, setInfo] = useState({
-        id: "",
-        name: "",
-        lastname: "",
-        email: "",
-        id: "",
-        id: "",
-        name: ""
+
+      name: "",
+      lastName: "",
+      document:"",
+      email:"",
+      phone:""
     })
 
    
 
-    const{dni, lastname,  name} = info;
+    const{document, lastName,  name, email, phone } = info;
   
-    const baseUrl="https://back2.tinpad.com.pe/public/api/user";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/employe";
     const handleChangeInsert = (e) => {
+      setInfo({
+        ...info,
+        [e.target.name]: e.target.value
+    })
 
-        setInfo({
-            ...info,
-            [e.target.name]: e.target.value
-        })
     }
+    
+        
+    const buscarCotizacion = async() => {
+        
+      const url = `https://back2.tinpad.com.pe/public/api/employe`;
+
+      const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      }
+
+
+      const rtdo = await axios.get(url, {headers})
+
+      console.log(rtdo.data.data[0]);
+      setdata(rtdo.data.data)
+
+  }
+// }
+useEffect(() => {
+ 
+
+
+  buscarCotizacion()
+  
+  console.log(data);
+}, []);
+
+    
 
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
+        console.log(user);
         (caso==="Editar")?abrirCerrarModalEditar()
         : 
         abrirCerrarModalEliminar() 
       }
 
-    const traerFrase = async () => {
-        const api = await fetch(baseUrl);
-        const frase = await api.json()
-        console.log(frase[0]);
-        setdata(frase)
-    }
 
-    const peticionPost=async()=>{
-        await axios.post(baseUrl, info)
-        .then(response=>{
-          setdata(data.concat(response.data));
-          abrirCerrarModalInsertar();
-        }).catch(error=>{
-          console.log(error);
-        })
+      const peticionPost=async()=>{
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
       }
+          await axios.post("https://back2.tinpad.com.pe/public/api/employe", info, {headers})
+          .then(response=>{
+            // setdata(data.concat(response.data));
+            abrirCerrarModalInsertar();
+          }).catch(error=>{
+            console.log(error);
+          })
 
-      const peticionDelete=async()=>{
-        await axios.delete(baseUrl+"/"+info.id, info)
-        .then(response=>{
-          setdata(data.filter(artista=>artista.id!==info.id));
-          abrirCerrarModalEliminar();
-        }).catch(error=>{
-          console.log(error);
-        })
-      }
+          buscarCotizacion()
+      
+        }
 
-      const peticionPut=async()=>{
-        await axios.put(baseUrl+"/"+info.id, info)
-        .then(response=>{
-          var dataNueva= data;
-          dataNueva.map(artista=>{
-            if(artista.id===info.id){
-              artista.name=info.name;
-              artista.lastname=info.lastname;
-              artista.dni=info.dni
-  
-            }
-          });
-          setdata(dataNueva);
-          abrirCerrarModalEditar();
-        }).catch(error=>{
-          console.log(error);
-        })
-      }
+
+        const peticionDelete=async()=>{
+          const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      
+        }
+          await axios.delete(baseUrl+"/"+info.id, {headers}, info) 
+          .then(response=>{
+            // setdata(data.filter(artista=>artista.id!==info.id));
+            abrirCerrarModalEliminar();
+          }).catch(error=>{ 
+            console.log(error);
+          })
+         buscarCotizacion()
+        }
+
+        const peticionPut=async()=>{       
+
+          const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      
+        }
+          await axios.put("https://back2.tinpad.com.pe/public/api/employe"+"/"+info.id,  info , {headers: headers})
+          .then(response=>{
+
+            abrirCerrarModalEditar();
+           
+          }).catch(error=>{
+            console.log(error);
+          })
+         buscarCotizacion()
+        }
+      
 
  
 
@@ -143,7 +186,7 @@ function Personal() {
 
         e.preventDefault();
 
-        if (dni.trim() === "" || lastname.trim() === "" ||name.trim() === ""  ) {
+        if (document.trim() === "" || lastName.trim() === "" ||name.trim() === "" ||email.trim() === "" ) {
         
          setError(true);
          return
@@ -152,26 +195,32 @@ function Personal() {
 
             peticionPost()
             setInfo({
-                dni: "",
-           
-                lastname: "",
-            
-                name: "",
+              id: "",
+              name: "",
+              lastName: "",
+              document:"",
+              email: "",
+
         
             });
+
+            // set1
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 1000);
             // abrirCerrarModalInsertar()
         }
         
     }
-    const onSubmitEditar = () => {
+    const onSubmitEditar = (e) => {
 
+      e.preventDefault();
             peticionPut()
-           
+            // window.location.reload();
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 2000);
         }
-
-    useEffect(() => {
-        traerFrase()
-    }, [])
 
     
     const abrirCerrarModalInsertar = () => {
@@ -190,14 +239,20 @@ function Personal() {
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
           <div className={styles.modal}>
-            <h3 className="my-5">Agregar Nuevo Personal</h3>
+            <h3 className="my-5">Agregar Nuevo Usuario</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             <TextField className={styles.inputMaterial} name="name" onChange={handleChangeInsert} label="Nombres*"  />
             <br />
-            <TextField className={styles.inputMaterial} name="lastname" onChange={handleChangeInsert}  label="Apellidos*" />          
+            <TextField className={styles.inputMaterial} name="lastName" onChange={handleChangeInsert}  label="Apellidos*" />          
               <br />
-              <TextField className={styles.inputMaterial} name="dni" onChange={handleChangeInsert}  label="Doc. de Identidad*" />
+              <TextField className={styles.inputMaterial} name="document" onChange={handleChangeInsert}  label="Doc. de Identidad*" />
             <br />
+              <TextField className={styles.inputMaterial} name="email" onChange={handleChangeInsert}  label="Email*" />
+              <TextField className={styles.inputMaterial} name="phone" onChange={handleChangeInsert}  label="Telefono*" />
+            <br />
+            {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
+            {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
+
 
             <br /><br />
             <div align="right">
@@ -216,9 +271,11 @@ function Personal() {
             { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
             <TextField className={styles.inputMaterial} name="name" onChange={handleChangeInsert} value= {info&&info.name} label="Nombre" />
             <br />
-            <TextField className={styles.inputMaterial} name="lastname" onChange={handleChangeInsert} value= {info&&info.lastname} label="Apellido" />          
+            <TextField className={styles.inputMaterial} name="lastName" onChange={handleChangeInsert} value= {info&&info.lastName} label="Apellido" />          
               <br />
-              <TextField className={styles.inputMaterial} name="dni" onChange={handleChangeInsert} value= {info&&info.dni} label="Doc. de Identidad" />
+              <TextField className={styles.inputMaterial} name="document" onChange={handleChangeInsert} value= {info&&info.document} label="Doc. de Identidad" />
+            <br />
+              <TextField className={styles.inputMaterial} name="email" onChange={handleChangeInsert} value= {info&&info.email} label="Doc. de Identidad" />
             <br />
      
             <br /><br />
@@ -245,7 +302,7 @@ function Personal() {
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Personal de Seguridad" />
+                <TitlePage titulo="Personal de Servicio" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar
@@ -257,8 +314,7 @@ function Personal() {
                  title="" 
                  columns={customerTableHead} 
                  data={data}
-                 actions= {[
-                     
+                 actions= {[                    
                 
                             {
                         icon:() => <i class="material-icons edit">edit</i>,

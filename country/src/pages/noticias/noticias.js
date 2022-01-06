@@ -3,6 +3,8 @@ import '../users/Users.css'
 import {Button, Modal, TextField} from '@material-ui/core';
 import React,{useEffect, useState}  from 'react';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import ModalAdd from '../../components/pageComponents/ModalAdd';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
@@ -75,6 +77,7 @@ function Noticias() {
     const [showModalAdd, setShowModalAdd] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
     const [selectedFilesPost, setSelectedFilesPost] = useState([]);
+    const [loading, setLoading] = useState(false);
     // const [showModalAdd, setShowModalAdd] = useState(false);
 
     const [info, setInfo] = useState({
@@ -82,7 +85,7 @@ function Noticias() {
       typeReleaseId: "",
         title:"" ,  
         description: "",
-        image:null
+  
      
 
     })
@@ -227,21 +230,50 @@ const [infoType, setInfoType] = useState({
 
 
   const peticionPost=async()=>{
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-
-  }
-
-  const url1 = "https://back2.tinpad.com.pe/public/api/new-release"
-      await axios.post(url1, info, {headers})
-      .then(response=>{
-        // setdata(data.concat(response.data));
-        console.log(response.data.data.id);
-        abrirCerrarModalInsertar();
-      }).catch(error=>{
-        console.log(error);
-      })
+    console.log("post2");
+  
+    const f = new FormData()   
+  
+  
+    
+    console.log(info);
+    // console.log(selectedFilesPost.length > 0);
+      
+            // if (selectedFilesPost) {
+              
+            //   f.append("image", selectedFilesPost)
+            // }
+  
+  
+        f.append("publicationDate", info.publicationDate)
+        f.append("description", info.description)
+        f.append("title", info.title)
+        f.append("typeReleaseId", info.typeReleaseId)
+        
+  
+      // console.log(f);
+  
+      const headers = {
+        'Content-type': 'multipart/form-data',
+        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+    }
+  
+      const url1= "https://back2.tinpad.com.pe/public/api/new-release"
+        await axios.post(url1, f, {headers})
+        .then(response=>{
+          // setdata(data.concat(response.data));
+          // abrirCerrarModalInsertar();
+  
+          setSelectedFilesPost([])
+          console.log("exito -1");
+        }).catch(error=>{
+          console.log(error);
+  
+          setSelectedFilesPost([])
+        })
+  
+    // console.log(filesImg);
       buscarCotizacion()
     }
 
@@ -253,6 +285,10 @@ const [infoType, setInfoType] = useState({
         }).catch(error=>{
           console.log(error);
         })
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000);
       }
 
 
@@ -341,6 +377,10 @@ const [infoType, setInfoType] = useState({
 
             abrirCerrarModalInsertar();
         }
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000);
         
     }
     const onSubmitEditar = (e) => {
@@ -355,6 +395,10 @@ const [infoType, setInfoType] = useState({
             console.log(e.target.files[0]);
             setSelectedFilesPost(e.target.files[0])
           }
+          setLoading(true)
+          setTimeout(() => {
+            setLoading(false)
+          }, 2000);
       };
     
     // useEffect(() => {
@@ -411,8 +455,7 @@ const [infoType, setInfoType] = useState({
             <input type="date" className={styles.inputMaterial} name="publicationDate" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
 
             {/* agregar pdf */}
-            <div className='mt-5'>
-                {/* <label>Choose File to Upload: </label> */}
+            {/* <div className='mt-5'>
                 <input type="file"  onChange={imageChange} id="file" name='image'/>
             <div className="label-holder">
           <label htmlFor="file" className="label">
@@ -421,22 +464,7 @@ const [infoType, setInfoType] = useState({
         </div>
                 </div> <br/>
      
-                {/* cambiar a pdf  */}
-            {/* {selectedImage && (
-          <div className='eliminarImg'>
-            <img
-              src={URL.createObjectURL(selectedImage)}
-              className='foto1'
-              alt="Thumb"
-            />
-            <button onClick={removeSelectedImage} style={styles.delete}>
-              Eliminar
-            </button>
-          </div>
-        )} */}
-            {/* agregar imagen */}
             <div className='mt-5'>
-                {/* <label>Choose File to Upload: </label> */}
                 <input type="file"  onChange={imageChange} id="file" name='image'/>
             <div className="label-holder">
           <label htmlFor="file" className="label">
@@ -457,7 +485,7 @@ const [infoType, setInfoType] = useState({
               Eliminar
             </button>
           </div>
-        )}
+        )} */}
 
             <br /><br />
             <div align="right">
@@ -594,6 +622,10 @@ const [infoType, setInfoType] = useState({
                     </button>
                    
                 </div>
+                { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
+           
+           <CircularProgress color="success" size={80}/>
+           </Box> : null}
 
                  <div className="mt-10"><Table2 
                  title="" 

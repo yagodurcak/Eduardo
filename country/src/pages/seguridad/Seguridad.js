@@ -8,6 +8,8 @@ import "../users/Users.css"
 import {Button, Modal, TextField} from '@material-ui/core';
 import React,{useEffect, useState}  from 'react';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -64,6 +66,7 @@ function Seguridad() {
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false);
  
     
     const [info, setInfo] = useState({
@@ -186,6 +189,10 @@ function Seguridad() {
             console.log(error);
           })
           buscarProperty()
+          setLoading(true)
+          setTimeout(() => {
+            setLoading(false)
+          }, 2000);
         }
 
         const peticionPut=async()=>{       
@@ -207,7 +214,7 @@ function Seguridad() {
         }
       
 
- 
+        
 
     const onSubmitInsertar = (e) => {
 
@@ -241,6 +248,10 @@ function Seguridad() {
             // }, 1000);
             // abrirCerrarModalInsertar()
         }
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000);
         
     }
     const onSubmitEditar = (e) => {
@@ -251,6 +262,10 @@ function Seguridad() {
             // setTimeout(() => {
             //   window.location.reload();
             // }, 2000);
+            setLoading(true)
+            setTimeout(() => {
+              setLoading(false)
+            }, 2000);
         }
 
     
@@ -339,7 +354,11 @@ function Seguridad() {
                     </button>
                    
                 </div>
-
+                { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
+           
+           <CircularProgress color="success" size={80}/>
+           </Box> : null}
+               
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 

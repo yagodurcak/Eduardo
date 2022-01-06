@@ -9,6 +9,8 @@ import {
 } from '@material-ui/pickers';
 import React,{useEffect, useState}  from 'react';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import DateMomentUtils from '@date-io/moment';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
@@ -48,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
     {
         title:"Tipo de visita",
-        field: "typeVisitId",       
+        render: data => data.type_visit.name         
        
     },
     {
@@ -61,8 +63,7 @@ const useStyles = makeStyles((theme) => ({
     },
     {
         title:"Rango de horario",
-        render: data => data.startingTimeRange +":00" + " - " +data.endingTimeRange +":00"
-        
+        render: data => data.startingTimeRange + " - " +data.endingTimeRange       
   
     },
     // {
@@ -72,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
     // },
     {
         title:"Dias disponibles",
-        field: "availableDays"
+        render: data => data.startingDayRange + " - " +data.endingDayRange 
     },
 ]
 
@@ -92,7 +93,7 @@ function Visita() {
     const [horaInicio, setHoraInicio] = useState(0);
     const [horaFinal, setHoraFinal] = useState(new Date());
     const [ visitTypes, setVisitTypes] = useState([])
-
+    const [loading, setLoading] = useState(false);
 
     
     const [info, setInfo] = useState({
@@ -102,8 +103,8 @@ function Visita() {
       endingTimeRange: 12,
       availableDays: "{\"day1\": \"lunes\",\"day2\": \"jueves\"}",
       maximunNumberPerson: "",
-      // monday: "0",
-      // tusday: "0",
+      startingDayRange: "",
+      endingDayRange: "",
       // wednesday: "0",
       // thursday: "0",
       // friday: "0",
@@ -116,38 +117,38 @@ function Visita() {
     const diasSemana = [
       {
         label: 'Lunes',
-        value: 'Mon',
+        value: 'Lunes',
       },
       {
         label: 'Martes',
-        value: 'Tue',
+        value: 'Martes',
       },
       {
         label: 'Miercoles',
-        value: 'Wed',
+        value: 'Miercoles',
       },
       {
         label: 'Jueves',
-        value: 'Thu',
+        value: 'Jueves',
       },
       {
         label: 'Viernes',
-        value: 'Fri',
+        value: 'Viernes',
       },
       {
         label: 'Sabado',
-        value: 'Sat',
+        value: 'Sabado',
       },
       {
         label: 'Domingo',
-        value: 'dom',
+        value: 'Domingo',
       },
     ];
 
     
     const [error, setError] = useState(false)
     
-    const{typeVisitId, startingTimeRange, description, endingTimeRange, availableDays, maximunNumberPerson} = info;
+    const{typeVisitId, startingTimeRange, description, endingTimeRange, availableDays, maximunNumberPerson, startingDayRange, endingDayRange} = info;
     
     
     const baseUrl="https://back2.tinpad.com.pe/public/api/rules-visit-provider";
@@ -246,35 +247,46 @@ function Visita() {
     }
 
       const peticionDelete=async()=>{
-        await axios.delete(baseUrl+"/"+info.id, info)
+
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
+      }
+        await axios.delete(baseUrl+"/"+info.id, {headers}, info) 
         .then(response=>{
-          setdata(data.filter(artista=>artista.id!==info.id));
+          // setdata(data.filter(artista=>artista.id!==info.id));
           abrirCerrarModalEliminar();
-        }).catch(error=>{
+        }).catch(error=>{ 
           console.log(error);
         })
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000);
+        buscarCotizacion()
       }
 
 
-      const peticionPut=async()=>{
-        await axios.put(baseUrl+"/"+info.id, info)
+      const peticionPut=async()=>{       
+
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
+      }
+      const url2 = `https://back2.tinpad.com.pe/public/api/rules-visit-provider`
+      console.log(info);
+        await axios.put(url2+"/"+info.id,  info , {headers: headers})
         .then(response=>{
-          var dataNueva= data;
-          dataNueva.map(artista=>{
-            if(artista.id===info.id){
-              artista.type=info.type;
-              artista.hs=info.hs;
-              artista.description=info.description;
-              artista.max=info.max;
-              artista.days=info.days
-  
-            }
-          });
-          setdata(dataNueva);
+       
           abrirCerrarModalEditar();
+         
         }).catch(error=>{
           console.log(error);
         })
+     
+        buscarCotizacion()
       }
 
       const handleChangeSwitch = () => {
@@ -313,11 +325,19 @@ function Visita() {
             abrirCerrarModalInsertar()
    
         }
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000);
         
     }
-    const onSubmitEditar = () => {
-
+    const onSubmitEditar = (e) => {
+            e.preventDefault()
             peticionPut()
+            setLoading(true)
+            setTimeout(() => {
+              setLoading(false)
+            }, 2000);
            
         }
 
@@ -335,6 +355,7 @@ function Visita() {
         setShowModalEditar(!showModalEditar);
       }
       const abrirCerrarModalEliminar=()=>{
+        console.log(info);
         setShowModalEliminar(!showModalEliminar);
       }
       const styles= useStyles();
@@ -384,7 +405,7 @@ function Visita() {
             <br /><br />
             <input type="time" name="endingTimeRange"  onChange={handleChangeInsert}/>
             <br /><br />
-            <select className='select1' onChange={handleChangeInsert} name="typeVisitId" value={typeVisitId}>
+            <select className='select1' onChange={handleChangeInsert} name="startingDayRange">
 
 
 
@@ -397,7 +418,7 @@ function Visita() {
 
             </select>
             <br /><br />
-            <select className='select1' onChange={handleChangeInsert} name="typeVisitId" value={typeVisitId}>
+            <select className='select1' onChange={handleChangeInsert} name="endingDayRange" >
 
 
 
@@ -425,16 +446,58 @@ function Visita() {
       <div className={styles.modal}>
         <h3 className="my-5">Editar Regla</h3>
         {error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null}
+        <select className='select1' onChange={handleChangeInsert} name="typeVisitId" value={info && info.typeVisitId}>
 
-        <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} value={info && info.type} label="Tipo*" />
+          <option value="" >Seleccione un tipo de visita</option>
+          {visitTypes.map(tipos => (
+            <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
+          ))}
+
+        </select>
         <br />
         <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} value={info && info.description} label="Descripción*" />
         <br />
-        <TextField className={styles.inputMaterial} name="hs" onChange={handleChangeInsert} value={info && info.hs} label="Rango de horario*" />
+        <TextField className={styles.inputMaterial} name="startingTimeRange" onChange={handleChangeInsert} value={info && info.startingTimeRange} label="Rango de horario*" />
+        <br />
+        <TextField className={styles.inputMaterial} name="endingTimeRange" onChange={handleChangeInsert} value={info && info.endingTimeRange} label="Rango de horario*" />
         <br />
         <TextField className={styles.inputMaterial} name="days" onChange={handleChangeInsert} value={info && info.days} label="Días disponibles*" />
-        <TextField className={styles.inputMaterial} name="max" onChange={handleChangeInsert} value={info && info.max} label="Max. Personas*" />
+        <TextField className={styles.inputMaterial} name="maximunNumberPerson" onChange={handleChangeInsert} value={info && info.maximunNumberPerson} label="Max. Personas*" />
         <br /><br />
+        <label htmlFor="">"Rango horario - Inicio"</label>
+            <br /><br />
+            <input type="time" name="startingTimeRange" value={info && info.startingTimeRange} onChange={handleChangeInsert}/>
+            <br /><br />
+            <label htmlFor="">"Rango horario - Final"</label>
+            <br /><br />
+            <input type="time" name="endingTimeRange" value={info && info.endingTimeRange}  onChange={handleChangeInsert}/>
+            <br /><br />
+
+            <select className='select1' onChange={handleChangeInsert} name="startingDayRange" value={info && info.startingDayRange}>
+
+
+
+              <option value="" >Rango de días - Inicio</option>
+              {diasSemana.map(tipos => (
+                <option value={tipos.value} key={tipos.value} >{tipos.label}</option>
+              ))}
+  
+
+
+            </select>
+            <br /><br />
+            <select className='select1' onChange={handleChangeInsert} name="endingDayRange"  value={info && info.endingDayRange}>
+
+
+
+              <option value="" >Rango de días - Final</option>
+              {diasSemana.map(tipos => (
+                <option value={tipos.value} key={tipos.value} >{tipos.label}</option>
+              ))}
+
+
+
+            </select>
         <div align="right">
           <Button color="primary" type="submit" >Editar</Button>
           <Button onClick={() => abrirCerrarModalEditar()}> Cancelar</Button>
@@ -447,7 +510,7 @@ function Visita() {
 
         const bodyEliminar=(
             <div className={styles.modal}>
-              <p>Estás seguro que deseas eliminar  <b>{info&&info.type}</b>? </p>
+              <p>Estás seguro que deseas eliminar  <b>{info&&info.description}</b>? </p>
               <div align="right">
                 <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
                 <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
@@ -469,6 +532,10 @@ function Visita() {
                     </button>
                    
                 </div>
+                { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
+           
+           <CircularProgress color="success" size={80}/>
+           </Box> : null}
 
                  <div className="mt-10"><Table2 
                  title="" 

@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 import React , {useState} from 'react';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import adjunto from "../../IMG/sidebar/adjunto.svg"
 import agua from "../../IMG//sidebar/agua.svg"
 import calendario from "../../IMG/CalendarioActividades 1calendario.svg"
@@ -38,6 +40,7 @@ function Sidebar() {
     const [activeVisitas, setActiveVisitas] = useState(false)
     const [activeInformacion, setActiveInformacion] = useState(false)
     const [activeGastos, setActiveGastos] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const abrirSubmenuUser = () => {
         setSubMenuUser(!submenuUser)
@@ -55,6 +58,13 @@ function Sidebar() {
     const abrirSubmenuGastos = () => {
         setSubmenuGastos(!submenuGastos)
         setActiveGastos(!activeGastos)
+    }
+
+    const changeLoading = () => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1500);
     }
 
 
@@ -118,7 +128,7 @@ function Sidebar() {
                     <div>
                         <Link to="/Users" style={{ textDecoration: 'none' }}>
                             <li className='submenu'>
-                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Users">
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Users" >
                                     <img src={propietario} alt="" className='logo3' />
                                     <h1 className="title1">Propietarios</h1>
                                     {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}

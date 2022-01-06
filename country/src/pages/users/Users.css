@@ -202,8 +202,11 @@ border: none;
     width: fit-content;
     background-color: #2a3eb1;
     display: grid;
-    justify-content: center;
+    justify-content: center;    
     
+}
+.eliminarImg h4{
+color: aliceblue;
     
 }
 
@@ -214,6 +217,12 @@ border: none;
 }
 .estilosmodalDetails h3{
     color: #317143;
+    margin: 10px;
+    text-align: justify;
+
+}
+.estilosmodalDetails h4{
+    color: white;
     margin: 10px;
     text-align: justify;
 

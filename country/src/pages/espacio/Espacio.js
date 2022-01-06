@@ -7,6 +7,8 @@ import '../users/Users.css'
 import {Button, Modal, TextField} from '@material-ui/core';
 import React,{Component, useEffect, useState}  from 'react';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import Input from '@material-ui/core/Input';
 import ModalAdd from '../../components/pageComponents/ModalAdd';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
@@ -78,6 +80,7 @@ function Espacio() {
     const [selectedImage, setSelectedImage] = useState();
     const [pathImg, setPathImg] = useState()
     const [infoImg, setInfoImg] = useState()
+    const [loading, setLoading] = useState(false);
 
 
     // console.log(data);
@@ -625,28 +628,21 @@ console.log("eliminjar todos 2");
           
           console.log(error);
         })
+        buscarCotizacion()
 
         buscarSpaceId()
         console.log("eliminjar todos");
         setTimeout(() => {
           
           eliminarTodos()
+        }, 4000);
+
+    
+
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
         }, 2000);
-
-      
-
-     
-      //  const url2 = "https://back2.tinpad.com.pe/public/api/space-image"
-      //   await axios.delete(url2+"/"+info.spaceTypeId, {headers}) 
-      //   .then(response=>{
-      //     // setdata(data.filter(artista=>artista.id!==info.id));
-      //     console.log("eliminado de space-image");
-      //     // abrirCerrarModalEliminar();
-      //   }).catch(error=>{ 
-      //     console.log(error);
-      //   })
-
-        buscarCotizacion()
       }
 
 
@@ -718,6 +714,10 @@ console.log("eliminjar todos 2");
 
             abrirCerrarModalInsertar();
             buscarCotizacion()
+            setLoading(true)
+            setTimeout(() => {
+              setLoading(false)
+            }, 2000);
 
             // setTimeout(() => {
             //   window.location.reload();
@@ -744,6 +744,10 @@ console.log("eliminjar todos 2");
      
             peticionPut()
             setSelectedImage()
+            setLoading(true)
+            setTimeout(() => {
+              setLoading(false)
+            }, 2000);
             // window.location.reload();
  
         }
@@ -989,6 +993,10 @@ console.log("eliminjar todos 2");
                     </button>
                    
                 </div>
+                { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
+           
+           <CircularProgress color="success" size={80}/>
+           </Box> : null}
 
                  <div className="mt-10"><Table2 
                  title="" 

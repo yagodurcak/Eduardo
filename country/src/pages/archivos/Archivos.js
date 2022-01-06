@@ -3,6 +3,8 @@ import '../users/Users.css'
 import {Button, Modal, TextField} from '@material-ui/core';
 import React,{useEffect, useState}  from 'react';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -44,11 +46,11 @@ const useStyles = makeStyles((theme) => ({
   const customerTableHead = [
     {
         title:"Fecha",
-        field: "publicationDate"
+        render: data => (data.publicationDate).split(" ")[0].split("-").reverse().join("-")
     },
     {
         title:"Tamaño",
-        field: "size",       
+        render: data => parseInt(data.size / 1000) + " kb"     
        
     },
     {
@@ -67,17 +69,21 @@ function Archivos() {
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
-    const [selectedFilesPost, setSelectedFilesPost] = useState([]);
-
+    const [selectedFilesPost, setSelectedFilesPost] = useState();
+    const [loading, setLoading] = useState(false);
+    const [pathImg, setPathImg] = useState()
 
 
 
     
     const [info, setInfo] = useState({
         
-        date: "",
-        title:"" ,  
-        size: ""
+        publicationDate: "",
+        internalCode: "",
+        description:"" ,
+        internalCode: "1",
+       phone: "1"      
+   
     })
 
     const [error, setError] = useState(false)
@@ -86,7 +92,7 @@ function Archivos() {
 
 
 
-    const{title, size} = info;
+    const{description, publicationDate} = info;
 
   
     const baseUrl="https://back2.tinpad.com.pe/public/api/useful-information";
@@ -96,36 +102,40 @@ function Archivos() {
             ...info,
             [e.target.name]: e.target.value
         })
+        
     }
 
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
+        console.log(info);  
+        
+  
         (caso==="Editar")?abrirCerrarModalEditar()
         : 
         abrirCerrarModalEliminar() 
       }
 
+      const buscarCotizacion = async() => {
+        
+          const url = `https://back2.tinpad.com.pe/public/api/useful-information`;
+
+          const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+          }
+  
+  
+          const rtdo = await axios.get(url, {headers})
+ 
+          // console.log(rtdo.data.data[0]);
+        
+          setdata((rtdo.data.data).filter(artista=> (artista.phone === null || artista.phone === "1")));
+
+  
+      }
       useEffect(() => {
       
-        const buscarCotizacion = async() => {
-          
-            const url = `https://back2.tinpad.com.pe/public/api/useful-information`;
-  
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-  
-            }
-    
-    
-            const rtdo = await axios.get(url, {headers})
-   
-            // console.log(rtdo.data.data[0]);
-          
-            setdata(rtdo.data.data)
-  
-    
-        }
 
         buscarCotizacion()
   }, []);
@@ -134,50 +144,152 @@ function Archivos() {
     setSelectedImage();
 };
 
-    const peticionPost=async()=>{
-        await axios.post(baseUrl, info)
-        .then(response=>{
-          setdata(data.concat(response.data));
-          abrirCerrarModalInsertar();
-        }).catch(error=>{
-          console.log(error);
-        })
-      }
+const peticionPost=async()=>{
+  console.log("post2");
 
-      const peticionDelete=async()=>{
-        await axios.delete(baseUrl+"/"+info.id, info)
-        .then(response=>{
-          setdata(data.filter(artista=>artista.id!==info.id));
-          abrirCerrarModalEliminar();
-        }).catch(error=>{
-          console.log(error);
-        })
-      }
+  const f = new FormData()   
 
 
-      const peticionPut=async()=>{
-        await axios.put(baseUrl+"/"+info.id, info)
-        .then(response=>{
-          var dataNueva= data;
-          dataNueva.map(artista=>{
-            if(artista.id===info.id){
-              artista.title=info.title;
-              artista.size=info.size 
-            }
-          });
-          setdata(dataNueva);
-          abrirCerrarModalEditar();
-        }).catch(error=>{
-          console.log(error);
-        })
-      }
+  
+  console.log(info);
+  // console.log(selectedFilesPost.length > 0);
+    
+          if (selectedFilesPost) {
+            
+            f.append("attached", selectedFilesPost)
+          }
 
+
+      f.append("publicationDate", info.publicationDate)
+      f.append("description", info.description)
+      f.append("internalCode", "1")
+      f.append("phone", "1")
+      
+
+    // console.log(f);
+
+    const headers = {
+      'Content-type': 'multipart/form-data',
+      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+  }
+
+    const url1= "https://back2.tinpad.com.pe/public/api/useful-information"
+      await axios.post(url1, f, {headers})
+      .then(response=>{
+        // setdata(data.concat(response.data));
+        // abrirCerrarModalInsertar();
+
+        setSelectedFilesPost([])
+        console.log("exito -1");
+      }).catch(error=>{
+        console.log(error);
+
+        setSelectedFilesPost([])
+      })
+
+  // console.log(filesImg);
+    buscarCotizacion()
+  }
+
+// const peticionPost=async()=>{
+//   const headers = {
+//     'Content-Type': 'application/json',
+//     'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+// }
+//     await axios.post(baseUrl, info, {headers})
+//     .then(response=>{
+//       // setdata(data.concat(response.data));
+//       abrirCerrarModalInsertar();
+//     }).catch(error=>{
+//       console.log(error);
+//     })
+//    buscarCotizacion()
+//   }
+  const peticionDelete=async()=>{
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+  }
+    await axios.delete(baseUrl+"/"+info.id, {headers}, info) 
+    .then(response=>{
+      // setdata(data.filter(artista=>artista.id!==info.id));
+      abrirCerrarModalEliminar();
+    }).catch(error=>{ 
+      console.log(error);
+    })
+   buscarCotizacion()
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000);
+  }
+  const eliminarImg = async () => {
+
+    console.log("borrandoimg");
+    const url = `https://back2.tinpad.com.pe/public/api/useful-information`;
+  
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+  }
+  
+  // console.log(result2.id);
+  
+  
+    await axios.put(url+"/"+info.id,{atached:null}, {headers}) 
+    .then(response=>{
+      // setdata(data.filter(artista=>artista.id!==info.id));
+     
+      console.log("cambiado a null");
+    }).catch(error=>{ 
+      
+      console.log(error);
+      
+    })
+    setPathImg()
+    
+  
+  }
+
+
+
+  const peticionPut=async()=>{       
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+  }
+  const info2 = {
+        
+    publicationDate: info.publicationDate,
+  
+    description: info.description 
+    
+
+}
+
+    await axios.put(baseUrl+"/"+info.id,  info2 , {headers: headers})
+    .then(response=>{
+
+      abrirCerrarModalEditar();
+     
+    }).catch(error=>{
+      console.log(error);
+    })
+
+    buscarCotizacion()
+  }
 
       
       const onSubmitInsertar = (e) => {
                     e.preventDefault();
 
-        if (title.trim() === "") {
+        if (description.trim() === "") {
         
          setError(true);
          return
@@ -185,23 +297,41 @@ function Archivos() {
             setError(false);
 
             peticionPost()
+            setPathImg()
+            setSelectedImage()
             setInfo({
-                date: "",
-                title:"" ,  
-                size: ""
+                publicationDate: "",
+                description:"" ,  
+
             });
 
-            // abrirCerrarModalInsertar()
+            abrirCerrarModalInsertar()
         }
+        buscarCotizacion()
+
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000);
         
     }
-    const onSubmitEditar = () => {
-
+    const onSubmitEditar = (e) => {
+      e.preventDefault();
             peticionPut()
+            setLoading(true)
+            setTimeout(() => {
+              setLoading(false)
+            }, 2000);
            
         }
 
-
+        const abrirCerrarInsertar = () => {
+          abrirCerrarModalInsertar();
+          setPathImg()
+          setSelectedImage()
+  
+         
+        }
 
     
     const abrirCerrarModalInsertar = () => {
@@ -211,6 +341,7 @@ function Archivos() {
 
       const abrirCerrarModalEditar=()=>{
         setShowModalEditar(!showModalEditar);
+   
       }
       const abrirCerrarModalEliminar=()=>{
         setShowModalEliminar(!showModalEliminar);
@@ -225,6 +356,10 @@ function Archivos() {
         }
     };
 
+    useEffect(() => {
+      setPathImg("https://back2.tinpad.com.pe/public/" + info.attached)
+    }, [abrirCerrarModalEditar]);
+
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
       
@@ -234,10 +369,13 @@ function Archivos() {
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
 
     
-            <TextField className={styles.inputMaterial} name="title" onChange={handleChangeInsert} label="Titulo*"  />
+            <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} label="Titulo*"  />
+            <br />
+            <br />
             <br />
               
-            
+            <input type="date" className={styles.inputMaterial} name="publicationDate" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
+
    
             <div className='mt-5'>
                 {/* <label>Choose File to Upload: </label> */}
@@ -266,7 +404,7 @@ function Archivos() {
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>
-              <Button onClick= {abrirCerrarModalInsertar}> Cancelar</Button>
+              <Button onClick= {abrirCerrarInsertar}> Cancelar</Button>
             </div>
           </div>
         </form>
@@ -280,32 +418,13 @@ function Archivos() {
         <h3 className="my-5">Editar archivo</h3>
         {error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null}
 
-        <TextField className={styles.inputMaterial} name="title" onChange={handleChangeInsert} value={info && info.title} label="Titulo*" />
+        <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} value={info && info.description} label="Titulo*" />
+        <br />  <br />  <br />
+        <input type="date" className={styles.inputMaterial} name="publicationDate" onChange={handleChangeInsert} value={info && info.publicationDate} label="Fecha de Publicación*" />
         <br />
-        <div className='mt-5'>
-                {/* <label>Choose File to Upload: </label> */}
-                <input type="file"  onChange={imageChange} id="file" name='image'/>
-            <div className="label-holder">
-          <label htmlFor="file" className="label">
-            <i className="material-icons">add_a_photo</i>
-          </label>
-        </div>
-                </div> <br/>
-     
 
-            {selectedImage && (
-          <div className='eliminarImg'>
-            <img
-              src={URL.createObjectURL(selectedImage)}
-              className='foto1'
-              alt="Thumb"
-            />
-            <button onClick={removeSelectedImage} style={styles.delete}>
-              Eliminar
-            </button>
-          </div>
-        )}
-             
+      
+
         <br /><br />
         <div align="right">
           <Button color="primary" type="submit" >Editar</Button>
@@ -341,7 +460,10 @@ function Archivos() {
                     </button>
                    
                 </div>
-
+                { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
+           
+           <CircularProgress color="success" size={80}/>
+           </Box> : null}
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 

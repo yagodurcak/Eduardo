@@ -3,6 +3,8 @@ import './Users.css'
 import {Button, Modal, TextField} from '@material-ui/core';
 import React,{useEffect, useState}  from 'react';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -56,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
    const [refresh, setrefresh] = useState(false)
    const [postSuccess, setpostSuccess] = useState(false)
    const [postSuccess2, setpostSuccess2] = useState(false)
+   const [loading, setLoading] = useState(false);
    
   
    const nuevoArray = () => {
@@ -302,6 +305,10 @@ const useStyles = makeStyles((theme) => ({
               
     
             }
+            setLoading(true)
+            setTimeout(() => {
+              setLoading(false)
+            }, 2000);
             
             // console.log(infoid, infoPropertyId);
         }
@@ -373,6 +380,10 @@ const useStyles = makeStyles((theme) => ({
         });
 
         buscarApi()
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000);
 
         // set1
             //  setTimeout(() => {
@@ -477,7 +488,11 @@ const useStyles = makeStyles((theme) => ({
             peticionPut()
             abrirCerrarModalEditar();
             console.log("exit");
-            buscarApi()           
+            buscarApi()    
+            setLoading(true)
+            setTimeout(() => {
+              setLoading(false)
+            }, 2000);       
            
         }
 
@@ -574,6 +589,10 @@ const useStyles = makeStyles((theme) => ({
                     </button>
                    
                 </div>
+                { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
+           
+           <CircularProgress color="success" size={80}/>
+           </Box> : null}
 
                  <div className="mt-10"><Table2 
                  title="" 
