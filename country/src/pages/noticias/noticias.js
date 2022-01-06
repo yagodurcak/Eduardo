@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
     {
         title:"Tipo",
-        // render: data => data.type_release.name       
+        render: data => data.type_release.name       
        
     },
     {
@@ -77,6 +77,8 @@ function Noticias() {
     const [showModalAdd, setShowModalAdd] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
     const [selectedFilesPost, setSelectedFilesPost] = useState([]);
+    const [selectedPdf, setSelectedPdf] = useState();
+    const [selectedPdfPost, setSelectedPdfPost] = useState([]);
     const [loading, setLoading] = useState(false);
     // const [showModalAdd, setShowModalAdd] = useState(false);
 
@@ -85,10 +87,10 @@ function Noticias() {
       typeReleaseId: "",
         title:"" ,  
         description: "",
-  
-     
+        file:"",
+        image:""
+   })
 
-    })
 
     const [error, setError] = useState(false)
 
@@ -111,9 +113,13 @@ function Noticias() {
     const removeSelectedImage = () => {
       setSelectedImage();
   };
+    const removeSelectedPdf = () => {
+      setSelectedPdf();
+  };
        
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
+        console.log(info);
         (caso==="Editar")?abrirCerrarModalEditar()
         : 
         abrirCerrarModalEliminar() 
@@ -239,16 +245,22 @@ const [infoType, setInfoType] = useState({
     console.log(info);
     // console.log(selectedFilesPost.length > 0);
       
-            // if (selectedFilesPost) {
+            if (selectedFilesPost) {
               
-            //   f.append("image", selectedFilesPost)
-            // }
+              f.append("image", selectedFilesPost)
+            }
+  
+            if (selectedPdfPost) {
+              
+              f.append("file", selectedPdfPost)
+            }
   
   
         f.append("publicationDate", info.publicationDate)
         f.append("description", info.description)
         f.append("title", info.title)
-        f.append("typeReleaseId", info.typeReleaseId)
+        f.append("typeReleaseId", info.typeReleaseId) 
+        f.append("visibility", "1") 
         
   
       // console.log(f);
@@ -277,19 +289,27 @@ const [infoType, setInfoType] = useState({
       buscarCotizacion()
     }
 
-      const peticionDelete=async()=>{
-        await axios.delete(baseUrl+"/"+info.id, info)
-        .then(response=>{
-          setdata(data.filter(artista=>artista.id!==info.id));
-          abrirCerrarModalEliminar();
-        }).catch(error=>{
-          console.log(error);
-        })
-        setLoading(true)
-        setTimeout(() => {
-          setLoading(false)
-        }, 2000);
-      }
+    const peticionDelete=async()=>{
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  
+    }
+    const urld ="https://back2.tinpad.com.pe/public/api/new-release"
+      await axios.delete(urld+"/"+info.id, {headers}, info) 
+      .then(response=>{
+        // setdata(data.filter(artista=>artista.id!==info.id));
+        abrirCerrarModalEliminar();
+      }).catch(error=>{ 
+        console.log(error);
+      })
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000);
+      buscarCotizacion()
+    }
 
 
       const peticionPut=async()=>{       
@@ -395,10 +415,15 @@ const [infoType, setInfoType] = useState({
             console.log(e.target.files[0]);
             setSelectedFilesPost(e.target.files[0])
           }
-          setLoading(true)
-          setTimeout(() => {
-            setLoading(false)
-          }, 2000);
+
+      };
+        const pdfChange = (e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            setSelectedPdf(e.target.files[0].name);
+            console.log(e.target.files[0]);
+            setSelectedPdfPost(e.target.files[0])
+          }
+
       };
     
     // useEffect(() => {
@@ -409,6 +434,7 @@ const [infoType, setInfoType] = useState({
     const abrirCerrarModalInsertar = () => {
           
         setShowModalInsertar(!showModalInsertar)
+        console.log(info);
         
       }
 
@@ -455,17 +481,28 @@ const [infoType, setInfoType] = useState({
             <input type="date" className={styles.inputMaterial} name="publicationDate" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
 
             {/* agregar pdf */}
-            {/* <div className='mt-5'>
-                <input type="file"  onChange={imageChange} id="file" name='image'/>
+            <div className='mt-5'>
+                <input type="file"  onChange={pdfChange} id="file" name='file'/>
             <div className="label-holder">
           <label htmlFor="file" className="label">
             <i className="material-icons">attach_file</i>
           </label>
         </div>
+                {selectedPdf && (
+              <div className='eliminarImg mt-5'>
+                {/* <h4>{selectedImage}</h4> */}
+          <h4 ><span className="detailsInfo">{selectedPdf}</span></h4>
+                <button onClick={removeSelectedPdf} style={styles.delete}>
+                  Eliminar
+                </button>
+              </div>
+            )}
                 </div> <br/>
+
+
      
             <div className='mt-5'>
-                <input type="file"  onChange={imageChange} id="file" name='image'/>
+                <input type="file"  onChange={imageChange} id="file1" name='image'/>
             <div className="label-holder">
           <label htmlFor="file" className="label">
             <i className="material-icons">add_a_photo</i>
@@ -485,7 +522,7 @@ const [infoType, setInfoType] = useState({
               Eliminar
             </button>
           </div>
-        )} */}
+        )}
 
             <br /><br />
             <div align="right">
@@ -539,61 +576,14 @@ const [infoType, setInfoType] = useState({
         <br />
         <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} value={info && info.description} label="Descripción*" multiline rows={3} />
         <br />
-         {/* agregar pdf */}
-         <div className='mt-5'>
-                {/* <label>Choose File to Upload: </label> */}
-                <input type="file"  onChange={imageChange} id="file" name='image'/>
-            <div className="label-holder">
-          <label htmlFor="file" className="label">
-            <i className="material-icons">attach_file</i>
-          </label>
-        </div>
-                </div> <br/>
-     
-                {/* cambiar a pdf  */}
-            {/* {selectedImage && (
-          <div className='eliminarImg'>
-            <img
-              src={URL.createObjectURL(selectedImage)}
-              className='foto1'
-              alt="Thumb"
-            />
-            <button onClick={removeSelectedImage} style={styles.delete}>
-              Eliminar
-            </button>
-          </div>
-        )} */}
-            {/* agregar imagen */}
-            <div className='mt-5'>
-                {/* <label>Choose File to Upload: </label> */}
-                <input type="file"  onChange={imageChange} id="file" name='image'/>
-            <div className="label-holder">
-          <label htmlFor="file" className="label">
-            <i className="material-icons">add_a_photo</i>
-          </label>
-        </div>
-                </div> <br/>
-     
-
-            {selectedImage && (
-          <div className='eliminarImg'>
-            <img
-              src={URL.createObjectURL(selectedImage)}
-              className='foto1'
-              alt="Thumb"
-            />
-            <button onClick={removeSelectedImage} style={styles.delete}>
-              Eliminar
-            </button>
-          </div>
-        )}
+         
         <br /><br />
         <div align="right">
           <Button color="primary" type="submit" >Editar</Button>
           <Button onClick={() => abrirCerrarModalEditar()}> Cancelar</Button>
         </div>
       </div>
-    </form>
+    </form> 
         )
 
         

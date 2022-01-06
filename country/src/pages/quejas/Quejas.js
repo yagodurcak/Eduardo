@@ -69,6 +69,9 @@ function Quejas() {
     const [infoScope, setInfoScope] = useState({});
     const [selectedImage, setSelectedImage] = useState();
     const [selectedFilesPost, setSelectedFilesPost] = useState();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false)
+    const [responseId, setResponseId] = useState("");
 
 
 
@@ -82,6 +85,13 @@ function Quejas() {
           file:""      
   
       })
+    const [infoResp, setInfoResp] = useState({
+        subject: "",
+        attached:""      
+  
+      })
+
+      const{subject, attached} = infoResp;
     
     const abrirCerrarModalDetails=()=>{
         setShowModalDetails(!showModalDetails);
@@ -122,27 +132,27 @@ function Quejas() {
     //     traerFrase()
     // }, [])
 
+    const buscarCotizacion = async() => {
+      
+        const url = `https://back2.tinpad.com.pe/public/api/complaint-claim`;
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+        }
+
+
+        const rtdo = await axios.get(url, {headers})
+
+        console.log(rtdo.data.data[0]);
+      
+        setdata(rtdo.data.data)
+
+    }
     useEffect(() => {
      
     
-        const buscarCotizacion = async() => {
-          
-            const url = `https://back2.tinpad.com.pe/public/api/complaint-claim`;
-  
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-  
-            }
-    
-    
-            const rtdo = await axios.get(url, {headers})
-   
-            console.log(rtdo.data.data[0]);
-          
-            setdata(rtdo.data.data)
-    
-        }
     
         buscarCotizacion()
         
@@ -153,6 +163,64 @@ function Quejas() {
       const removeSelectedImage = () => {
         setSelectedImage();
     };
+
+    useEffect(() => {
+  peticionPost2()
+    }, [responseId]);
+    const peticionPost2=async()=>{
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
+      }
+      const info3 ={
+        "complaintClaimId":info.id,
+        "responseComplaintClaimId":responseId
+      }
+     const url2 = "https://back2.tinpad.com.pe/public/api/response-association"
+          await axios.post(url2, info3, {headers})
+          .then(response=>{
+            // setdata(data.concat(response.data));
+            console.log(response.data.data.id);
+     
+            // setSpaceId(response.data.data.id)
+          }).catch(error=>{
+            console.log(error);
+          })
+    
+          buscarCotizacion()
+        
+        }
+
+    const onSubmitInsertar = (e) => {
+             e.preventDefault();
+     
+     if (subject.trim() === "") {
+     
+     setError(true);
+     return
+     }else {
+     setError(false);
+     
+     peticionPost()
+     
+     setSelectedImage()
+     setInfoResp({
+         subject: "",
+         attached:""    
+     
+     });
+     
+     abrirCerrarModalRespuestaQueja()
+     }
+     buscarCotizacion()
+     
+     setLoading(true)
+     setTimeout(() => {
+     setLoading(false)
+     }, 2000);
+
+    }
     const imageChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
   
@@ -169,6 +237,65 @@ function Quejas() {
           [e.target.name]: e.target.value
         })
       }
+
+      const handleChangeInsert2 = (e) => {
+      
+        setInfoResp({
+          ...infoResp,
+          [e.target.name]: e.target.value
+        })
+      }
+
+      const peticionPost=async()=>{
+        console.log("post2");
+      
+        const f = new FormData()   
+      
+      
+        
+        console.log(info);
+        // console.log(selectedFilesPost.length > 0);
+          
+                if (selectedFilesPost) {
+                  
+                    
+                  f.append("attached", selectedFilesPost)
+                  f.append("subject", infoResp.subject)
+                }else{
+                 
+                   f.append("subject", infoResp.subject)
+                }
+      
+      
+            
+      
+          // console.log(f);
+      
+          const headers = {
+            'Content-type': 'multipart/form-data',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      
+        }
+      
+          const url1= "https://back2.tinpad.com.pe/public/api/response"
+            await axios.post(url1, f, {headers})
+            .then(response=>{
+                console.log(response);
+              // setdata(data.concat(response.data));
+              // abrirCerrarModalInsertar();
+              setResponseId(response.data.data.id)
+              setSelectedFilesPost([])
+              console.log("exito -1");
+            }).catch(error=>{
+              console.log(error);
+      
+              setSelectedFilesPost([])
+            })
+      
+        // console.log(filesImg);
+          buscarCotizacion()
+     
+        }
 
       const bodyDetails =(
         <div className={styles.modal}>
@@ -195,41 +322,46 @@ function Quejas() {
         </div>
         )
       const bodyRespuestaQueja =(
+        <form action="" onSubmit={onSubmitInsertar}>
+      
         <div className={styles.modal}>
-            <div className="estilosmodalDetails">
-                <h1>Respuesta a la Queja o Reclamo</h1>
-                <div className='linea'></div>
+          <h3 className="my-5">Agregar archivo</h3>
 
-                <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} label="Respuesta*" multiline rows={3} />
+          { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
 
+  
+          <TextField className={styles.inputMaterial} name="subject" onChange={handleChangeInsert2} label="Titulo*"  />
+          <br />
+          <br />
+          <br /> 
+          <div className='mt-5'>
+              {/* <label>Choose File to Upload: </label> */}
+              <input type="file"  onChange={imageChange} id="file" name='image'/>
+          <div className="label-holder">
+        <label htmlFor="file" className="label">
+          <i className="material-icons">attach_file</i>
+        </label>
+      </div>
+              </div> <br/>
+   
 
-     
-                <div className='mt-5'>
-                {/* <label>Choose File to Upload: </label> */}
-                <input type="file"   id="file" name='image' onChange={imageChange} />
-            <div className="label-holder">
-          <label htmlFor="file" className="label">
-            <i className="material-icons">attach_file</i>
-          </label>
-        </div>
-                </div> <br/>
-                {selectedImage && (
-          <div className='eliminarImg'>
-        <h4>{selectedImage}</h4>
-            <button onClick={removeSelectedImage} style={styles.delete}>
-              Eliminar
-            </button>
-          </div>
-        )}
-        
-     
-
-                <button className='btn btn-2 mt-10' >Responder</button>
-
-
+          {selectedImage && (
+        <div className='eliminarImg'>
+      <h4 ><span className="detailsInfo">{info&&info.attached}</span></h4>
+          <button onClick={removeSelectedImage} style={styles.delete}>
+            Eliminar
+          </button>
+        </div>  )}
+            
+            <br /><br />
+            <div align="right">
+              <Button color="primary" type="submit" >Insertar</Button>
+              <Button onClick= {abrirCerrarModalRespuestaQueja}> Cancelar</Button>
             </div>
-        </div>
+          </div>
+        </form>
         )
+
 
     return (
         <div>

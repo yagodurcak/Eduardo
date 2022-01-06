@@ -158,6 +158,9 @@ border: none;
   #file[type="file"] {
 	display: none;
 }
+  #file1[type="file"] {
+	display: none;
+}
 .label-holder {
 	width: 100%;
 	height: 50px;
@@ -241,3 +244,4 @@ color: aliceblue;
     position: relative;
     z-index: 0;
 }
+
