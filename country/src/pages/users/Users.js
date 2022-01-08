@@ -455,6 +455,10 @@ const useStyles = makeStyles((theme) => ({
 
       const buscarApi = async() => {
         
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000);
         const url = `https://back2.tinpad.com.pe/public/api/property-user`;
 
         const headers = {

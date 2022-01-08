@@ -8,6 +8,7 @@ import React , {useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import Vectorinfo from "../../IMG/sidebar/Vectorinfo1.svg"
 import adjunto from "../../IMG/sidebar/adjunto.svg"
 import agua from "../../IMG//sidebar/agua.svg"
 import calendario from "../../IMG/CalendarioActividades 1calendario.svg"
@@ -232,7 +233,7 @@ function Sidebar() {
                     <li className='listahover'>
                     <div className="dropdown">
                             <div className="logoContainter1" >
-                                <img src={informacion} alt="" className='logo1' />
+                                <img src={Vectorinfo} alt="" className='logo1' />
                                 <h1 className="title1">Información útil </h1>
                             </div>
                             { activeInformacion ? <a href=""><img src={right} alt="" className='chevronright' /></a> :  <a href="" ><img src={down} alt="" className='logo2' /></a>}
@@ -316,9 +317,9 @@ function Sidebar() {
                                 </NavLink>
                             </li>
                         </Link>
-                        <Link to="/Telefonos" style={{ textDecoration: 'none' }}>
+                        <Link to="/Energia" style={{ textDecoration: 'none' }}>
                             <li className='submenu'>
-                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Telefonos">
+                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Energia">
                                     <img src={energy} alt="" className='logo3' />
                                     <h1 className="title1">Energía</h1>
                                     {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}

@@ -3,6 +3,8 @@ import '../users/Users.css'
 import {Button, Modal, TextField,} from '@material-ui/core';
 import React,{useEffect, useState}  from 'react';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import ModalDetails from '../../components/pageComponents/ModalDetails';
 import ModalRespuestaQueja from "../../components/pageComponents/ModalRespuestaQueja"
 import Table2 from '../../components/Table2';
@@ -112,11 +114,7 @@ function Tramites() {
     
       }
 
-      // useEffect(() => {
-      //   setinfoPropertiesUser(data.properties[0].users[0])
-      //   setInfoProperties(data.properties[0])
-      //   setInfoProject(data.proyect)
-      // }, [showModalDetails]);
+
       const seleccionarUser2=()=>{
 
     
@@ -142,6 +140,10 @@ function Tramites() {
 
     const buscarCotizacion = async() => {
       
+      setLoading(true)
+      setTimeout(() => {
+      setLoading(false)
+      }, 1500);
         const url = `https://back2.tinpad.com.pe/public/api/owner-process`;
 
         const headers = {
@@ -155,6 +157,8 @@ function Tramites() {
 
         console.log(rtdo.data.data[0]);
       
+        setdata(rtdo.data.data)
+
         setdata(rtdo.data.data)
 
     }
@@ -344,7 +348,7 @@ function Tramites() {
           <br /> 
           <div className='mt-5'>
               {/* <label>Choose File to Upload: </label> */}
-              <input type="file"  onChange={ (e)=>{imageChange()}} id="file" name='image'/>
+              <input type="file"  onChange={imageChange} id="file" name='image'/>
           <div className="label-holder">
         <label htmlFor="file" className="label">
           <i className="material-icons">attach_file</i>
@@ -375,6 +379,10 @@ function Tramites() {
         <div>
             <div className='Container'>
                 <TitlePage titulo="Tramites" />
+                { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
+           
+           <CircularProgress color="success" size={80}/>
+           </Box> : null}
 
             
                  <div className="mt-10"><Table2 

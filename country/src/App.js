@@ -10,6 +10,7 @@ import Archivos from "./pages/archivos/Archivos";
 import Calculos from "./pages/gastos/Calculos";
 import Calendar from "./pages/calendar/Calendar";
 import DetalleTramite from "./pages/tramites/DetalleTramite";
+import Energia from "./pages/gastos/Energia";
 import Espacio from "./pages/espacio/Espacio";
 import GastosComunes from "./pages/gastos/GastosComunes";
 import Home from "./pages/home/Home";
@@ -86,6 +87,9 @@ function App() {
           </Route>
           <Route path="/Calendario">
           <Calendar/>
+          </Route>
+          <Route path="/Energia">
+          <Energia/>
           </Route>
           </div>
         </Switch>

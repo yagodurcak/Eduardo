@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-    //   display: "grid"
+      display: "grid"
     },
     iconos:{
       cursor: 'pointer'
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
     {
         title:"Tipo de visita",
-        render: data => data.type_visit.name         
+        render: data => data.type_visit.name        
        
     },
     {
@@ -181,6 +181,11 @@ function Visita() {
     //   setdata(frase)
     
       const buscarCotizacion = async() => {
+
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000);
         
           const url = `https://back2.tinpad.com.pe/public/api/rules-visit-provider`;
 
@@ -192,7 +197,7 @@ function Visita() {
   
           const rtdo = await axios.get(url, {headers})
  
-          console.log(rtdo.data.data[0]);
+          console.log(rtdo.data.data);
           setdata(rtdo.data.data)
   
       }
@@ -260,10 +265,7 @@ function Visita() {
         }).catch(error=>{ 
           console.log(error);
         })
-        setLoading(true)
-        setTimeout(() => {
-          setLoading(false)
-        }, 2000);
+     
         buscarCotizacion()
       }
 

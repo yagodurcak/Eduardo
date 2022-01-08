@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   
   
   
-  function Calculos() {
+  function Energia() {
       
       
       const [data, setdata] = useState([]);
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
         
         {
             title:"Propietario",
-            render: data => data.user.name     
+            render: data => data.user.name + " " +data.user.lastName
         },
         {
             title:"Doc de Identidad",
@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
         ,
         {
             title:"Total",
-            render: data => parseFloat(((parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2))*total)/100 + 10).toFixed(2)
+            render: data => ((parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2))*total)/100 + 10
         }
 
     ]
@@ -548,4 +548,4 @@ useEffect(() => {
     )
 }
 
-export default Calculos
+export default Energia

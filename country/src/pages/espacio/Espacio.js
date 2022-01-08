@@ -212,26 +212,8 @@ function Espacio() {
       }
 
       useEffect(() => {
+  
       
-      const buscarCotizacion = async() => {
-        
-          const url = `https://back2.tinpad.com.pe/public/api/space`;
-
-          const headers = {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-
-          }
-  
-  
-          const rtdo = await axios.get(url, {headers})
- 
-          // console.log(rtdo.data.data[0]);
-        
-          setdata(rtdo.data.data)
-
-  
-      }
      
     
   
@@ -243,6 +225,12 @@ function Espacio() {
 
         
     const buscarCotizacion = async() => {
+
+
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000);
         
       const url = `https://back2.tinpad.com.pe/public/api/space`;
 
@@ -639,10 +627,7 @@ console.log("eliminjar todos 2");
 
     
 
-        setLoading(true)
-        setTimeout(() => {
-          setLoading(false)
-        }, 2000);
+
       }
 
 
@@ -714,10 +699,8 @@ console.log("eliminjar todos 2");
 
             abrirCerrarModalInsertar();
             buscarCotizacion()
-            setLoading(true)
-            setTimeout(() => {
-              setLoading(false)
-            }, 2000);
+           
+   
 
             // setTimeout(() => {
             //   window.location.reload();
@@ -744,10 +727,7 @@ console.log("eliminjar todos 2");
      
             peticionPut()
             setSelectedImage()
-            setLoading(true)
-            setTimeout(() => {
-              setLoading(false)
-            }, 2000);
+        
             // window.location.reload();
  
         }
