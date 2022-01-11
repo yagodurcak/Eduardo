@@ -328,9 +328,9 @@ function Sidebar() {
                                 </NavLink>
                             </li>
                         </Link>
-                        <Link to="/Telefonos" style={{ textDecoration: 'none' }}>
+                        <Link to="/Prueba" style={{ textDecoration: 'none' }}>
                             <li className='submenu'>
-                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Telefonos">
+                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Prueba">
                                     <img src={agua} alt="" className='logo3' />
                                     <h1 className="title1">Agua</h1>
                                     {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}

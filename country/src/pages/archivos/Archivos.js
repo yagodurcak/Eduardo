@@ -388,7 +388,7 @@ const peticionPost=async()=>{
                 </div> <br/>
      
 
-            {selectedImage && (
+            {selectedImage && ( 
           <div className='eliminarImg'>
             <img
               src={URL.createObjectURL(selectedImage)}

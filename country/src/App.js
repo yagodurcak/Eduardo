@@ -18,6 +18,7 @@ import Login from "./components/Login"
 import Modal from 'react-modal';
 import Noticias from "./pages/noticias/noticias";
 import Personal from "./pages/personal/Personal";
+import Prueba from "./pages/gastos/Prueba";
 import Quejas from "./pages/quejas/Quejas";
 import Seguridad from "./pages/seguridad/Seguridad";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -90,6 +91,9 @@ function App() {
           </Route>
           <Route path="/Energia">
           <Energia/>
+          </Route>
+          <Route path="/Prueba">
+          <Prueba/>
           </Route>
           </div>
         </Switch>

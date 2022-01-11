@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   
   
   
-  function Energia() {
+  function Prueba() {
       
       
       const [data, setdata] = useState([]);
@@ -68,31 +68,28 @@ const useStyles = makeStyles((theme) => ({
         
         {
             title:"Propietario",
-            render: data => data.user.name + " " +data.user.lastName
+            render: data => data.users.name + " " +data.users.lastName
         },
         {
             title:"Doc de Identidad",
-            render: data => data.user.document   
+            render: data => data.users.document   
         },
         {
             title:"Mz.",
-            render: data => data.property.block   
+            render: data => data.block   
         },
         {
             title:"Lte.",
-            render: data => data.property.lot  
+            render: data => data.lot  
         },  
-        {
-            title:"Área(m2)",
-            render: data =>parseInt(data.property.area)  
-        },
+    
         {
             title:"Pariticipacion (%)",
-            render: data => parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2)
+            // render: data => parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2)
         },
         {
             title:"Subtotal(S/)",
-            render: data => parseFloat((((data.property.area/ totalArea  ) * 100)*total)/100).toFixed(2)
+            // render: data => parseFloat((((data.property.area/ totalArea  ) * 100)*total)/100).toFixed(2)
         }
         ,
         {
@@ -102,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
         ,
         {
             title:"Total",
-            render: data => ((parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2))*total)/100 + 10
+            // render: data => ((parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2))*total)/100 + 10
         }
 
     ]
@@ -129,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
 
     const{document, amount,  date, invoiceNumber, propertyId, transactionCost, concept } = info;
   
-    const baseUrl="https://back2.tinpad.com.pe/public/api/property-user";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/property";
     const handleChangeInsert = (e) => {
       setInfo({
         ...info,
@@ -148,24 +145,24 @@ const useStyles = makeStyles((theme) => ({
             console.log(suma);
             setTotal(suma)
     }
-    const sumarAreaTotales = () => {
-        let area = 0
-        for (let i = 0; i < data.length; i++) {
-             area = area + parseFloat(data[i].property.area) 
+    // const sumarAreaTotales = () => {
+    //     let area = 0
+    //     for (let i = 0; i < data.length; i++) {
+    //          area = area + parseFloat(data[i].property.area) 
              
-            }
-            console.log(area);
-            setTotalArea(area)
-    }
+    //         }
+    //         console.log(area);
+    //         setTotalArea(area)
+    // }
     
-    useEffect(() => {
-        console.log("ahora");
-        sumarGastosTotales()
-      }, [data2.length >= 1]);
-    useEffect(() => {
-        console.log("ahora2");
-        sumarAreaTotales()
-      }, [data.length >= 1]);
+    // useEffect(() => {
+    //     console.log("ahora");
+    //     sumarGastosTotales()
+    //   }, [data2.length >= 1]);
+    // useEffect(() => {
+    //     console.log("ahora2");
+    //     sumarAreaTotales()
+    //   }, [data.length >= 1]);
 
     const buscarCotizacion = async() => {
 
@@ -174,7 +171,7 @@ const useStyles = makeStyles((theme) => ({
         setLoading(false)
       }, 2000);
             
-      const url = `https://back2.tinpad.com.pe/public/api/property-user`;
+      const url = `https://back2.tinpad.com.pe/public/api/property`;
 
       const headers = {
           'Content-Type': 'application/json',
@@ -514,6 +511,18 @@ useEffect(() => {
                  title="" 
                  columns={customerTableHead} 
                  data={data}
+                 actions= {[
+
+              
+   
+                              {
+                          icon:() => <i class="material-icons edit">edit</i>,
+                          tooltip:"Editar",
+                          onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
+                      }
+    
+            
+                  ] }
                 
 
                  /></div>
@@ -548,4 +557,4 @@ useEffect(() => {
     )
 }
 
-export default Energia
+export default Prueba

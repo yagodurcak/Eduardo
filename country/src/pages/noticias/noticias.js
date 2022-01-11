@@ -245,10 +245,10 @@ const [infoType, setInfoType] = useState({
     console.log(info);
     // console.log(selectedFilesPost.length > 0);
       
-            if (selectedFilesPost) {
+            // if (selectedFilesPost) {
               
-              f.append("image", selectedFilesPost)
-            }
+            //   f.append("image", selectedFilesPost)
+            // }
   
             if (selectedPdfPost) {
               
@@ -319,9 +319,15 @@ const [infoType, setInfoType] = useState({
           'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
     
       }
+
       const url2 = `https://back2.tinpad.com.pe/public/api/new-release`
-      console.log(info);
-        await axios.put(url2+"/"+info.id,  info , {headers: headers})
+      const info2 = {     
+      typeReleaseId: info.typeReleaseId,
+        title: info.title,  
+        description: info.description
+
+      }
+        await axios.put(url2+"/"+info.id,  info2 , {headers: headers})
         .then(response=>{
        
           abrirCerrarModalEditar();
@@ -490,7 +496,6 @@ const [infoType, setInfoType] = useState({
         </div>
                 {selectedPdf && (
               <div className='eliminarImg mt-5'>
-                {/* <h4>{selectedImage}</h4> */}
           <h4 ><span className="detailsInfo">{selectedPdf}</span></h4>
                 <button onClick={removeSelectedPdf} style={styles.delete}>
                   Eliminar
@@ -501,7 +506,7 @@ const [infoType, setInfoType] = useState({
 
 
      
-            <div className='mt-5'>
+            {/* <div className='mt-5'>
                 <input type="file"  onChange={imageChange} id="file1" name='image'/>
             <div className="label-holder">
           <label htmlFor="file" className="label">
@@ -522,7 +527,7 @@ const [infoType, setInfoType] = useState({
               Eliminar
             </button>
           </div>
-        )}
+        )} */}
 
             <br /><br />
             <div align="right">
