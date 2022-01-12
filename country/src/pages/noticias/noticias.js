@@ -383,8 +383,9 @@ const [infoType, setInfoType] = useState({
       
       const onSubmitInsertar = (e) => {
                     e.preventDefault();
+               
 
-        if (title.trim() === "" ||description.trim() === ""||typeReleaseId.trim() === "" ) {
+        if (title.trim() === "" ||description.trim() === ""||typeReleaseId.trim() === ""||publicationDate.trim() === "" ) {
         
          setError(true);
          return
@@ -480,7 +481,7 @@ const [infoType, setInfoType] = useState({
                 
             <br />
             <br />
-            <label htmlFor="" className='mt-5'>Fecha de publicación</label>
+            <label htmlFor="" className='mt-5'>Fecha de publicación*</label>
             <br />
             <br />
             

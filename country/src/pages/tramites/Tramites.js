@@ -52,10 +52,11 @@ const customerTableHead = [
     },
     {
         title:"Estado",
-        // render: data => data.state.name},
+        render: data => data.state.name
     },
     {
         title:"Actualiz.",
+        render: data => ((data.state.updated_at).slice(0,10)).split(" ")[0].split("-").reverse().join("-")
         }
     
 ]
@@ -312,14 +313,15 @@ function Tramites() {
       const bodyDetails =(
         <div className={styles.modal}>
             <div className="estilosmodalDetails">
-                <h1>Detalle de Queja o Reclamo</h1>
+                <h1>Detalle</h1>
                 <div className='linea'></div>
                 {/* <h3 >Propietario: <span className="mt-5 detailsInfo">{info.properties.users&&info.properties.users.lastName}</span></h3> */}
-                <h3 >Manzana: <span className="mt-5 detailsInfo">{info.property&&info.property.block}</span></h3>
-                <h3 >Lote: <span className="mt-5 detailsInfo">{info.property&&info.property.lot}</span></h3>
-                <h3 >Doc de Identidad: <span className="mt-5 detailsInfo">{info&&info.subject}</span></h3>
-                <h3 >Proceso: <span className="mt-5 detailsInfo">{info.state&&info.state.scope}</span></h3>
-                <h3 >Asunto: <span className="mt-5 detailsInfo">{info&&info.subject}</span></h3>
+                <h3 >Manzana: <span className="mt-5 detailsInfo">{info.properties&&info.properties[0].block}</span></h3>
+                <h3 >Lote: <span className="mt-5 detailsInfo">{info.properties&&info.properties[0].lot}</span></h3>
+                <h3 >Propietario <span className="mt-5 detailsInfo">{info.properties&&info.properties[0].users[0].name} {info.properties&&info.properties[0].users[0].lastName} </span></h3>
+                <h3 >Doc de Identidad: <span className="mt-5 detailsInfo">{info.properties&&info.properties[0].users[0].document}</span></h3>
+                <h3 >Proyecto: <span className="mt-5 detailsInfo">{info.proyect&&info.proyect.name}</span></h3>
+                <h3 >Asunto: <span className="mt-5 detailsInfo">{info.proyect&&info.proyect.description}</span></h3>
                 <h3 >Descripción: <span className="mt-5 detailsInfo">{info&&info.description}</span></h3>
                 <h3 >Documentos Adjuntos:</h3>
                 <div className='mt-5 flex justify-start items-center'>

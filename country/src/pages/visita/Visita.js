@@ -300,7 +300,7 @@ function Visita() {
 
         e.preventDefault();
 
-        if (description.trim() === "" ) {
+        if (description.trim() === "" ||typeVisitId.trim() === "" ||startingTimeRange.trim() === "" ||endingTimeRange.trim() === "" ||maximunNumberPerson.trim() === "" ||startingDayRange.trim() === "" || endingDayRange.trim() === ""  ) {
         
          setError(true);
          return
@@ -373,7 +373,7 @@ function Visita() {
 
             <select className='select1' onChange={handleChangeInsert} name="typeVisitId">
 
-              <option value="" >Seleccione un tipo de visita</option>
+              <option value="" >Seleccione un tipo de visita *</option>
               {visitTypes.map(tipos => (
                 <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
               ))}
@@ -399,11 +399,11 @@ function Visita() {
 
               <br /><br />
             </MuiPickersUtilsProvider>
-            <label htmlFor="">"Rango horario - Inicio"</label>
+            <label htmlFor="">"Rango horario - Inicio*"</label>
             <br /><br />
             <input type="time" name="startingTimeRange"  onChange={handleChangeInsert}/>
             <br /><br />
-            <label htmlFor="">"Rango horario - Final"</label>
+            <label htmlFor="">"Rango horario - Final*"</label>
             <br /><br />
             <input type="time" name="endingTimeRange"  onChange={handleChangeInsert}/>
             <br /><br />
@@ -411,7 +411,7 @@ function Visita() {
 
 
 
-              <option value="" >Rango de días - Inicio</option>
+              <option value="" >Rango de días - Inicio*</option>
               {diasSemana.map(tipos => (
                 <option value={tipos.value} key={tipos.value} >{tipos.label}</option>
               ))}
@@ -424,7 +424,7 @@ function Visita() {
 
 
 
-              <option value="" >Rango de días - Final</option>
+              <option value="" >Rango de días - Final*</option>
               {diasSemana.map(tipos => (
                 <option value={tipos.value} key={tipos.value} >{tipos.label}</option>
               ))}

@@ -289,7 +289,7 @@ const peticionPost=async()=>{
       const onSubmitInsertar = (e) => {
                     e.preventDefault();
 
-        if (description.trim() === "") {
+        if (description.trim() === ""||publicationDate.trim() === "") {
         
          setError(true);
          return
@@ -373,7 +373,7 @@ const peticionPost=async()=>{
             <br />
             <br />
             <br />
-              
+              <label htmlFor="">Fecha de Publicación*</label>
             <input type="date" className={styles.inputMaterial} name="publicationDate" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
 
    

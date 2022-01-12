@@ -73,289 +73,257 @@ function Sidebar() {
 
     return (
         <div className="sidebarContainer">
-            <div className="logoContainter">
-                <img src={logo} alt="" className='logo' />
-                <h1 className="title">NOMBRE DEL CONDOMINIO</h1>
-            </div>
-            <div className="linea"></div>
-            <div className="logoContainter">
-
-                <img src={imagen} alt="" className='logo1' />
-                <h1 className="title1">Admin</h1>
-            </div>
-            <div className="linea"></div>
-            <div className='lista'>
-                <ul className='lista1'>
-
-
-                    <Link to="/Home" style={{ textDecoration: 'none' }}>
-                        <li className='listahover'>
-                            <NavLink className="logoContainter1" exact to="/Home" activeClassName="linkactivo">
-
-   
-                                <img src={dashnoard} alt="" className='logo1' />
-                                <h1 className="title1">Dashboards</h1>
-                                {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                      
-                                {/* <h1 className="title1">Dashboards</h1> */}
-
-
-
-                            </NavLink>
-                        </li>
-                    </Link>
-
-                    <Link style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuUser()}>
-                        <li className='listahover'>
-                        <div className="dropdown" >
-
-                                <div className="logoContainter1" >
-                                    <img src={users} alt="" className='logo1' />
-                                    <h1 className="title1">Usuarios</h1>
-                                </div>
-
-                                { activeUser ? <a href=""><img src={right} alt="" className='chevronright' /></a> :  <a href="" ><img src={down} alt="" className='logo2' /></a>}
-
-                               
-                                
-
-                            </div>
-                        </li>
-                    </Link>
-                    {submenuUser 
-                    
-                    ? (
-                    
-                    <div>
-                        <Link to="/Users" style={{ textDecoration: 'none' }}>
-                            <li className='submenu'>
-                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Users" >
-                                    <img src={propietario} alt="" className='logo3' />
-                                    <h1 className="title1">Propietarios</h1>
-                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                                </NavLink>
-                            </li>
-                        </Link>
-                        <Link to="/Seguridad" style={{ textDecoration: 'none' }}>
-                            <li className='submenu'>
-                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Seguridad">
-                                    <img src={seguridad} alt="" className='logo3' />
-                                    <h1 className="title1">Seguridad</h1>
-                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                                </NavLink>
-                            </li>
-                        </Link>
+            <div className="sublogocontainer">
+                <div className="logoContainter">
+                    <img src={logo} alt="" className='logo' />
+                    <h1 className="title">NOMBRE DEL CONDOMINIO</h1>
+                </div>
+                {/* <div className="linea"></div> */}
+                <div className="adminContainer">
+                    <hr className="linea" />
+                    <div className="logoContainter">
+                        <img src={imagen} alt="" className='logo1' />
+                        <h1 className="title2">Admin</h1>
                     </div>
-                    
-                    ) 
-                    : null}
-
-                    <Link to="/Personal" style={{ textDecoration: 'none' }}>
-
-                        <li className='listahover'>
-                        <NavLink className="logoContainter1" exact to="/Personal" activeClassName="linkactivo">
-
-                                <img src={personal} alt="" className='logo1' />
-                                <h1 className="title1">Personal</h1>
-                                {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-
-                            </NavLink>
-                        </li>
-                    </Link>
-                    <Link to="/Espacio" style={{ textDecoration: 'none' }}>
-                        <li className='listahover'>
-                        <NavLink className="logoContainter1" exact to="/Espacio" activeClassName="linkactivo">
-
-                                <img src={espacio} alt="" className='logo1' />
-                                <h1 className="title1">Espacios</h1>
-                                {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-
-                            </NavLink>
-                        </li>
-                    </Link>
-                    <Link to="/Visita" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuVisitas()}>
-                        <li className='listahover'>
-              
-
-                                <div className="dropdown">
+                <hr className="linea" />
+                </div>
+                {/* <div className="linea"></div> */}
+                <div className='lista'>
+                    <ul className='lista1'>
+                        <Link to="/Home" style={{ textDecoration: 'none' }}>
+                            <li className='listahover'>
+                                <NavLink className="logoContainter1" exact to="/Home" activeClassName="linkactivo">
+                                    <img src={dashnoard} alt="" className='logo1' />
+                                    <h1 className="title1">Dashboards</h1>
+                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                
+                                    {/* <h1 className="title1">Dashboards</h1> */}
+                                </NavLink>
+                            </li>
+                        </Link>
+                        <Link style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuUser()}>
+                            <li className='listahover'>
+                            <div className="dropdown" >
                                     <div className="logoContainter1" >
-                                        <img src={visitas} alt="" className='logo1' />
-                                        <h1 className="title1">Visitas</h1>
+                                        <img src={users} alt="" className='logo1' />
+                                        <h1 className="title1">Usuarios</h1>
                                     </div>
-                                    { activeVisitas ? <a href=""><img src={right} alt="" className='chevronright' /></a> :  <a href="" ><img src={down} alt="" className='logo2' /></a>}
+                                    { activeUser ? <a href=""><img src={right} alt="" className='chevronright' /></a> :  <a href="" ><img src={down} alt="" className='logo2' /></a>}
+                
+                
                                 </div>
-
-
-                    
-                        </li>
-                    </Link>
-                    {submenuVisitas
-                    
-                    ? (
-                    
-                    <div>
-                        <Link to="/Visita" style={{ textDecoration: 'none' }}>
-                            <li className='submenu'>
-                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Visita">
-                                    <img src={propietario} alt="" className='logo3' />
-                                    <h1 className="title1">Reglas</h1>
+                            </li>
+                        </Link>
+                        {submenuUser
+                
+                        ? (
+                
+                        <div>
+                            <Link to="/Users" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                    <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Users" >
+                                        <img src={propietario} alt="" className='logo3' />
+                                        <h1 className="title1">Propietarios</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                                    </NavLink>
+                                </li>
+                            </Link>
+                            <Link to="/Seguridad" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Seguridad">
+                                        <img src={seguridad} alt="" className='logo3' />
+                                        <h1 className="title1">Seguridad</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                                    </NavLink>
+                                </li>
+                            </Link>
+                        </div>
+                
+                        )
+                        : null}
+                        <Link to="/Personal" style={{ textDecoration: 'none' }}>
+                            <li className='listahover'>
+                            <NavLink className="logoContainter1" exact to="/Personal" activeClassName="linkactivo">
+                                    <img src={personal} alt="" className='logo1' />
+                                    <h1 className="title1">Personal</h1>
                                     {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                                 </NavLink>
                             </li>
                         </Link>
-                        <Link to="/2" style={{ textDecoration: 'none' }}>
-                            <li className='submenu'>
-                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/2">
-                                    <img src={seguridad} alt="" className='logo3' />
-                                    <h1 className="title1">Invitados</h1>
+                        <Link to="/Espacio" style={{ textDecoration: 'none' }}>
+                            <li className='listahover'>
+                            <NavLink className="logoContainter1" exact to="/Espacio" activeClassName="linkactivo">
+                                    <img src={espacio} alt="" className='logo1' />
+                                    <h1 className="title1">Espacios</h1>
                                     {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                           
-
                                 </NavLink>
                             </li>
                         </Link>
-                    </div>
-                    
-                    ) 
-                    : null}
-                    <Link to="/Noticias" style={{ textDecoration: 'none' }}>
+                        <Link to="/Visita" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuVisitas()}>
+                            <li className='listahover'>
+                
+                                    <div className="dropdown">
+                                        <div className="logoContainter1" >
+                                            <img src={visitas} alt="" className='logo1' />
+                                            <h1 className="title1">Visitas</h1>
+                                        </div>
+                                        { activeVisitas ? <a href=""><img src={right} alt="" className='chevronright' /></a> :  <a href="" ><img src={down} alt="" className='logo2' /></a>}
+                                    </div>
+                
+                            </li>
+                        </Link>
+                        {submenuVisitas
+                
+                        ? (
+                
+                        <div>
+                            <Link to="/Visita" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                    <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Visita">
+                                        <img src={propietario} alt="" className='logo3' />
+                                        <h1 className="title1">Reglas</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                                    </NavLink>
+                                </li>
+                            </Link>
+                            <Link to="/2" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/2">
+                                        <img src={seguridad} alt="" className='logo3' />
+                                        <h1 className="title1">Invitados</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                
+                                    </NavLink>
+                                </li>
+                            </Link>
+                        </div>
+                
+                        )
+                        : null}
+                        <Link to="/Noticias" style={{ textDecoration: 'none' }}>
+                            <li className='listahover'>
+                            <NavLink className="logoContainter1" exact to="/Noticias" activeClassName="linkactivo">
+                                    <img src={noticias} alt="" className='logo1' />
+                                    <h1 className="title1">Noticias</h1>
+                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                                </NavLink>
+                            </li>
+                        </Link>
+                        <Link to="/Archivos" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuVInformacion()}>
                         <li className='listahover'>
-                        <NavLink className="logoContainter1" exact to="/Noticias" activeClassName="linkactivo">
-
-                                <img src={noticias} alt="" className='logo1' />
-                                <h1 className="title1">Noticias</h1>
-                                {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-
-                            </NavLink>
-                        </li>
-                    </Link>
-                    <Link to="/Archivos" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuVInformacion()}>
-                    <li className='listahover'>
-                    <div className="dropdown">
-                            <div className="logoContainter1" >
-                                <img src={Vectorinfo} alt="" className='logo1' />
-                                <h1 className="title1">Información útil </h1>
-                            </div>
-                            { activeInformacion ? <a href=""><img src={right} alt="" className='chevronright' /></a> :  <a href="" ><img src={down} alt="" className='logo2' /></a>}
-                            </div>
-                    </li>
-                        </Link>
-                        {submenuInformacion
-                    
-                    ? (
-                    
-                    <div>
-                        <Link to="/Archivos" style={{ textDecoration: 'none' }}>
-                            <li className='submenu'>
-                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Archivos">
-                                    <img src={adjunto} alt="" className='logo3' />
-                                    <h1 className="title1">Archivos</h1>
-                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                                </NavLink>
-                            </li>
-                        </Link>
-                        <Link to="/Telefonos" style={{ textDecoration: 'none' }}>
-                            <li className='submenu'>
-                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Telefonos">
-                                    <img src={phone} alt="" className='logo3' />
-                                    <h1 className="title1">Teléfonos</h1>
-                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                           
-
-                                </NavLink>
-                            </li>
-                        </Link>
-                    </div>
-                    
-                    ) 
-                    : null}
-                    <Link to="/Tramites" style={{ textDecoration: 'none' }}>
-                        <li className='listahover'>
-                        <NavLink className="logoContainter1" exact to="/Tramites" activeClassName="linkactivo">
-
-                                <img src={tramites} alt="" className='logo1' />
-                                <h1 className="title1">Trámites</h1>
-                                {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-
-                            </NavLink>
-                        </li>
-                    </Link>
-                    <Link to="/Quejas" style={{ textDecoration: 'none' }}>
-                        <li className='listahover'>
-                        <NavLink className="logoContainter1" exact to="/Quejas" activeClassName="linkactivo">
-
-                                <img src={quejas} alt="" className='logo1' />
-                                <h1 className="title1">Quejas y Reclamos</h1>
-                                {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-
-                            </NavLink>
-                        </li>
-                    </Link>
-                    <Link to="/GastosComunes" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuGastos()}>
-                    <li className='listahover'>
-                            <div className="dropdown">
-                                <div className="logoContainter1">
-                                    <img src={gastos} alt="" className='logo1' />
-                                    <h1 className="title1">Gastos y pagos</h1>
+                        <div className="dropdown">
+                                <div className="logoContainter1" >
+                                    <img src={Vectorinfo} alt="" className='logo1' />
+                                    <h1 className="title1">Información útil </h1>
                                 </div>
                                 { activeInformacion ? <a href=""><img src={right} alt="" className='chevronright' /></a> :  <a href="" ><img src={down} alt="" className='logo2' /></a>}
-                            </div>
-
-                    </li>
-                        </Link>
-                        {submenuGastos
-                    
-                    ? (
-                    
-                    <div>
-                        <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
-                            <li className='submenu'>
-                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/GastosComunes">
-                                    <img src={adjunto} alt="" className='logo3' />
-                                    <h1 className="title1">Condominio</h1>
+                                </div>
+                        </li>
+                            </Link>
+                            {submenuInformacion
+                
+                        ? (
+                
+                        <div>
+                            <Link to="/Archivos" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                    <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Archivos">
+                                        <img src={adjunto} alt="" className='logo3' />
+                                        <h1 className="title1">Archivos</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                                    </NavLink>
+                                </li>
+                            </Link>
+                            <Link to="/Telefonos" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Telefonos">
+                                        <img src={phone} alt="" className='logo3' />
+                                        <h1 className="title1">Teléfonos</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                
+                                    </NavLink>
+                                </li>
+                            </Link>
+                        </div>
+                
+                        )
+                        : null}
+                        <Link to="/Tramites" style={{ textDecoration: 'none' }}>
+                            <li className='listahover'>
+                            <NavLink className="logoContainter1" exact to="/Tramites" activeClassName="linkactivo">
+                                    <img src={tramites} alt="" className='logo1' />
+                                    <h1 className="title1">Trámites</h1>
                                     {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                                 </NavLink>
                             </li>
                         </Link>
-                        <Link to="/Energia" style={{ textDecoration: 'none' }}>
-                            <li className='submenu'>
-                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Energia">
-                                    <img src={energy} alt="" className='logo3' />
-                                    <h1 className="title1">Energía</h1>
+                        <Link to="/Quejas" style={{ textDecoration: 'none' }}>
+                            <li className='listahover'>
+                            <NavLink className="logoContainter1" exact to="/Quejas" activeClassName="linkactivo">
+                                    <img src={quejas} alt="" className='logo1' />
+                                    <h1 className="title1">Quejas y Reclamos</h1>
                                     {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                           
-
                                 </NavLink>
                             </li>
                         </Link>
-                        <Link to="/Prueba" style={{ textDecoration: 'none' }}>
-                            <li className='submenu'>
-                            <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Prueba">
-                                    <img src={agua} alt="" className='logo3' />
-                                    <h1 className="title1">Agua</h1>
-                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                           
-
-                                </NavLink>
-                            </li>
-                        </Link>
-                    </div>
-                    
-                    ) 
-                    : null}
-                    <li className='listahover'>
-                    <NavLink className="logoContainter1" exact to="/Calendario" activeClassName="linkactivo">
-
-                            <img src={calendario} alt="" className='logo1' />
-                            <h1 className="title1">Calendario</h1>
-                            {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-
-                        </NavLink>
-                    </li>
-
-                </ul>
+                        <Link to="/GastosComunes" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuGastos()}>
+                        <li className='listahover'>
+                                <div className="dropdown">
+                                    <div className="logoContainter1">
+                                        <img src={gastos} alt="" className='logo1' />
+                                        <h1 className="title1">Gastos y pagos</h1>
+                                    </div>
+                                    { activeInformacion ? <a href=""><img src={right} alt="" className='chevronright' /></a> :  <a href="" ><img src={down} alt="" className='logo2' /></a>}
+                                </div>
+                        </li>
+                            </Link>
+                            {submenuGastos
+                
+                        ? (
+                
+                        <div>
+                            <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                    <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/GastosComunes">
+                                        <img src={adjunto} alt="" className='logo3' />
+                                        <h1 className="title1">Condominio</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                                    </NavLink>
+                                </li>
+                            </Link>
+                            <Link to="/Energia" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Energia">
+                                        <img src={energy} alt="" className='logo3' />
+                                        <h1 className="title1">Energía</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                
+                                    </NavLink>
+                                </li>
+                            </Link>
+                            <Link to="/Prueba" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Prueba">
+                                        <img src={agua} alt="" className='logo3' />
+                                        <h1 className="title1">Agua</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                
+                                    </NavLink>
+                                </li>
+                            </Link>
+                        </div>
+                        )
+                        : null}
+                        <li className='listahover'>
+                        <NavLink className="logoContainter1" exact to="/Calendario" activeClassName="linkactivo">
+                                <img src={calendario} alt="" className='logo1' />
+                                <h1 className="title1">Calendario</h1>
+                                {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                            </NavLink>
+                        </li>
+                    </ul>
+                </div>
             </div>
-
 
         </div>
     )

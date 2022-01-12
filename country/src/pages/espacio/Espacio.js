@@ -22,18 +22,6 @@ import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
 import mas from "../../IMG/space/mas.svg"
 
-// import Select from '@mui/material/Select';
-
-
-
-
-
-
-
-// import { Switch } from 'antd';
-
-
-
 const useStyles = makeStyles((theme) => ({
     modal: {
       position: 'absolute',
@@ -774,7 +762,7 @@ console.log("eliminjar todos 2");
 
 
               {/* <label htmlFor=""  value="">Seleccione un tipo*</label>  */}
-              <option value="" >Seleccione un tipo de espacio</option>
+              <option value="" >Seleccione un tipo de espacio*</option>
               {spaceTypes.map(tipos => (
                 <option value={tipos.id} key={tipos.id} >{tipos.name}</option>
               ))}
@@ -796,7 +784,7 @@ console.log("eliminjar todos 2");
 
 
               {/* <label htmlFor=""  value="">Seleccione un tipo*</label>  */}
-              <option value="" >Tiempo previo para reservar</option>
+              <option value="" >Tiempo previo para reservar*</option>
   
                       {gustos.map(tipos => (
                 <option value={tipos.value} key={tipos.value} >{tipos.label}</option>

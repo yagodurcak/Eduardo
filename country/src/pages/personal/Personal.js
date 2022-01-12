@@ -193,7 +193,7 @@ useEffect(() => {
 
         e.preventDefault();
 
-        if (document.trim() === "" || lastName.trim() === "" ||name.trim() === "" ||email.trim() === "" ) {
+        if (document.trim() === "" || lastName.trim() === "" ||name.trim() === "" ||email.trim() === ""||phone.trim() === "") {
         
          setError(true);
          return

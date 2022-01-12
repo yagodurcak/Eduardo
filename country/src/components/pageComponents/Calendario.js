@@ -8,6 +8,8 @@ import AgregarEvento from './AgregarEvento'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import axios from 'axios'
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
+import esLocale from '@fullcalendar/core/locales/es';
+import listPlugin from '@fullcalendar/list'; //For List View
 import moment from "moment"
 import timeGridPlugin from '@fullcalendar/timegrid';
 
@@ -87,14 +89,14 @@ function Calendario() {
             <button onClick={()=> setModalOpen(true)}>Agregar Evento</button>
             <div className='FullCalendar'>
                 <FullCalendar
+                locale={esLocale}
                 ref={calendarRef}
                 events={data}
-                plugins={[dayGridPlugin]}
-                    header={{
-                        left: "prev,next",
-                        center: "title",
-                        right: "dayGridMonth,timeGridWeek,timeGridDay"
-                      }}
+                plugins={[ dayGridPlugin, listPlugin ]}                headerToolbar={{
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
+                  }}
                     defaultView="dayGridMonth"
                     eventAdd={event=>handleEventAdd(event)}
                     // datesSet={(date )=> handleDateSet(date)}
