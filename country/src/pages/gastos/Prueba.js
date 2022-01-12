@@ -18,6 +18,7 @@ import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
 import Table2 from '../../components/Table2';
+import { TableCell } from '@mui/material';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
@@ -47,77 +48,74 @@ const useStyles = makeStyles((theme) => ({
 
   
   
-  
+
   function Prueba() {
+
       
-      
-      const [data, setdata] = useState([]);
-      const [data2, setdata2] = useState([]);
-      const [totalAmount, setTotalAmount] = useState([]);
-      const [total, setTotal] = useState(0);
-      const [totalArea, setTotalArea] = useState(0);
-      const [showModalInsertar, setShowModalInsertar] = useState(false);
-      const [showModalEditar, setShowModalEditar] = useState(false);
-      const [showModalEliminar, setShowModalEliminar] = useState(false);
-      const [error, setError] = useState(false)
-      const [loading, setLoading] = useState(false);
-      const [selectedImage, setSelectedImage] = useState();
-      const [selectedFilesPost, setSelectedFilesPost] = useState();
-      
-      const customerTableHead = [
+    const [data, setdata] = useState([]);
+    const [data2, setdata2] = useState([]);
+    const [totalAmount, setTotalAmount] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [showModalInsertar, setShowModalInsertar] = useState(false);
+    const [showModalEditar, setShowModalEditar] = useState(false);
+    const [showModalEliminar, setShowModalEliminar] = useState(false);
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState();
+    const [selectedFilesPost, setSelectedFilesPost] = useState();
+
+   
+    
+    const [info, setInfo] = useState({
         
+        // propertyId: "",
+        
+        consume: "",
+        
+        // unitCost: "",
+        transactionCost: "0"
+        
+    })
+    
+    const customerTableHead = [
+    
         {
             title:"Propietario",
-            render: data => data.users.name + " " +data.users.lastName
+            render: data => data.user.name + " " +   data.user.lastName   
         },
         {
             title:"Doc de Identidad",
-            render: data => data.users.document   
+            render: data => data.user.document   
         },
         {
             title:"Mz.",
-            render: data => data.block   
-        },
+            render: data => data.property.block     },
         {
             title:"Lte.",
-            render: data => data.lot  
-        },  
-    
-        {
-            title:"Pariticipacion (%)",
-            // render: data => parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2)
+            render: data => data.property.lot  
         },
         {
+            title:"Consumo (KW)",
+            render: data => data.consume 
+        },
+    
+        
+        {
             title:"Subtotal(S/)",
-            // render: data => parseFloat((((data.property.area/ totalArea  ) * 100)*total)/100).toFixed(2)
+            render: data => data.consume + 20
+            
         }
         ,
         {
             title:"Cobranza(S/)",
-            render: data => "10.00"
-        }
+            render: data => data.transactionCost         }
         ,
         {
             title:"Total",
-            // render: data => ((parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2))*total)/100 + 10
+            render: data => data.consume + 20 + data.transactionCost  
         }
-
     ]
-      const [info, setInfo] = useState({
-          
-          amount: "",
-       
-        concept: "",
-       
-        date: "",
-        document: "",
-        id: "",
-        invoiceNumber: "",
-      
-        propertyId: "",
-        transactionCost: ""
 
-    })
 
 
 
@@ -126,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
 
     const{document, amount,  date, invoiceNumber, propertyId, transactionCost, concept } = info;
   
-    const baseUrl="https://back2.tinpad.com.pe/public/api/property";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/property-user";
     const handleChangeInsert = (e) => {
       setInfo({
         ...info,
@@ -136,42 +134,14 @@ const useStyles = makeStyles((theme) => ({
     }
     
         
-    const sumarGastosTotales = () => {
-        let suma = 0
-        for (let i = 0; i < data2.length; i++) {
-             suma = suma + parseFloat(data2[i].amount) 
-             
-            }
-            console.log(suma);
-            setTotal(suma)
-    }
-    // const sumarAreaTotales = () => {
-    //     let area = 0
-    //     for (let i = 0; i < data.length; i++) {
-    //          area = area + parseFloat(data[i].property.area) 
-             
-    //         }
-    //         console.log(area);
-    //         setTotalArea(area)
-    // }
-    
-    // useEffect(() => {
-    //     console.log("ahora");
-    //     sumarGastosTotales()
-    //   }, [data2.length >= 1]);
-    // useEffect(() => {
-    //     console.log("ahora2");
-    //     sumarAreaTotales()
-    //   }, [data.length >= 1]);
-
     const buscarCotizacion = async() => {
 
       setLoading(true)
       setTimeout(() => {
         setLoading(false)
       }, 2000);
-            
-      const url = `https://back2.tinpad.com.pe/public/api/property`;
+
+      const url = `https://back2.tinpad.com.pe/public/api/property-user`;
 
       const headers = {
           'Content-Type': 'application/json',
@@ -179,42 +149,26 @@ const useStyles = makeStyles((theme) => ({
       }
 
       const rtdo = await axios.get(url, {headers})
+      const rtdo2 = rtdo.data.data
+     const rtdo3=  rtdo2.map(obj=> ({ ...obj, consume: 0, transactionCost: 0 }))
       
-      console.log(rtdo.data.data);
-      setdata(rtdo.data.data)
-    
-      
+      console.log(rtdo3);
+      setdata(rtdo3)
+     
 
   }
-  const buscarCotizacion2 = async() => {
 
-
-
-    const url = `https://back2.tinpad.com.pe/public/api/condominium-expense`;
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-    }
-
-    const rtdo = await axios.get(url, {headers})
-    
-    console.log(rtdo.data.data);
-    setdata2(rtdo.data.data)
-
-
-}
+  const AgregarDato = () => {
+    data.map(obj=> ({ ...obj, consume: 'false' }))
+  }
 // }
-// useEffect(() => {
-//     console.log("ahora");
-//     sumarAreaTotales()
-//   }, [data.length >= 1]);
-  
 useEffect(() => {
-  buscarCotizacion()
-  buscarCotizacion2()
-  sumarGastosTotales()
+   buscarCotizacion()
+  
+   AgregarDato()
 
+  
+  console.log(data);
 }, []);
 
     
@@ -251,14 +205,7 @@ useEffect(() => {
             f.append("amount", parseInt(info.amount) )
             f.append("transactionCost",parseInt(info.transactionCost) )
        
-            
-            
-            
-            
-      
-      
-      
-          // console.log(f);
+       
       
           const headers = {
             'Content-type': 'multipart/form-data',
@@ -266,7 +213,7 @@ useEffect(() => {
       
         }
       
-          const url1= "https://back2.tinpad.com.pe/public/api/property-user"
+          const url1= "https://back2.tinpad.com.pe/public/api/condominium-expense"
             await axios.post(url1, f, {headers})
             .then(response=>{
               // setdata(data.concat(response.data));
@@ -366,11 +313,12 @@ useEffect(() => {
     const onSubmitEditar = (e) => {
 
       e.preventDefault();
-            peticionPut()
+            peticionPost()
             // window.location.reload();
             // setTimeout(() => {
             //   window.location.reload();
             // }, 2000);
+            abrirCerrarModalEditar()
         }
 
     
@@ -390,45 +338,13 @@ useEffect(() => {
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
           <div className={styles.modal}>
-            <h3 className="my-5">Agregar Nuevo Usuario</h3>
+            <h3 className="my-5">Agregar detalles de Consumo y gestión</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            <TextField className={styles.inputMaterial} name="concept" onChange={handleChangeInsert} label="Concepto*"  />
+            <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" />
             <br />
-            <TextField className={styles.inputMaterial} name="invoiceNumber" onChange={handleChangeInsert}  label="N° de Factura*" />          
+            <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  label="Costo de transacción*" type="number" />          
               <br />
-              <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert}  label="Monto" />
-            <br />
-              <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  label="Costo de Transacción*" />
-              <br />
-            <br />
-              <label htmlFor="" className='mt-5'>Fecha de publicación</label>
-         
-            
-            <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
-
-            <br />
-            {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
-            {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
-
-            <div className='mt-5'>
-                {/* <label>Choose File to Upload: </label> */}
-                <input type="file"  onChange={imageChange} id="file" name='file'/>
-            <div className="label-holder">
-          <label htmlFor="file" className="label">
-            <i className="material-icons">attach_file</i>
-          </label>
-        </div>
-                </div> <br/>
-     
-
-            {selectedImage && (
-          <div className='eliminarImg'>
-      <h4 ><span className="detailsInfo">{info&&info.attached}</span></h4>
-            <button onClick={removeSelectedImage} style={styles.delete}>
-              Eliminar
-            </button>
-          </div>
-        )}
+              
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>
@@ -442,30 +358,21 @@ useEffect(() => {
       const bodyEditar=(
         <form action="" onSubmit={onSubmitEditar}>
           <div className={styles.modal}>
-            <h3 className="my-5">Registrar usuario nuevo</h3>
+            <h3 className="my-5">Registrar consumo y gestión</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            <TextField className={styles.inputMaterial} name="concept" onChange={handleChangeInsert} label="Concepto*" value= {info&&info.concept} />
+            { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
+            <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" />
             <br />
-            <TextField className={styles.inputMaterial} name="invoiceNumber" onChange={handleChangeInsert}  label="N° de Factura*"  value= {info&&info.invoiceNumber}/>          
+            <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  label="Costo de transacción*" type="number" />          
               <br />
-              <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert}  value= {info&&info.amount} label="Monto" />
-            <br />
-              <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  value= {info&&info.transactionCost} label="Costo de Transacción*" />
-              <br />
-            
-              <label htmlFor="" className='mt-5'>Fecha de publicación</label>
-         
-            
-            <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*" value= {info&&info.date} />
-
             <br />
             <br />
      
             <br /><br />
             <div align="right">
-              <Button color="primary" type="submit" >Editar</Button>
-              <Button onClick= {()=>sumarGastosTotales()}> Cancelar</Button>
+              <Button color="primary" type="submit" >Insertar</Button>
+              <Button> Cancelar</Button>
             </div>
           </div>
         </form>
@@ -486,44 +393,43 @@ useEffect(() => {
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Calculo Gastos" />
+                <TitlePage titulo="Gastos Comunes" />
                 <div className="flex justify-between">
-                            <button className='btn' >
-                                <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
-                                        <NavLink className="logoContainter1" exact to="/GastosComunes" activeClassName="linkactivo">
+                            <button className='btn btn-2' >
+                                <Link to="/Calculos" style={{ textDecoration: 'none' }}>
+                                        <NavLink className="logoContainter1" exact to="/Calculos" activeClassName="linkactivo">
                                             {/* <img src={tramites} alt="" className='logo1' /> */}
-                                            <h1 className="title1">Gastos Comunes</h1>
+                                            <h1 className="title1">Calculos</h1>
                                             {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                                         </NavLink>
                                 </Link>
                             </button>
-               
+                                            <button className="btn"  onClick={()=>abrirCerrarModalInsertar()}>
+                            Agregar gasto
+                                                </button>
                         </div>
-                { loading ?  <Box sx={{ position: 'absolute' , left: 600, top:500, zIndex:100}}>
+                { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:100}}>
            
            <CircularProgress color="success" size={80}/>
            </Box> : null}
 
                 <div className="flex justify-end mt-5 text-gray-400">
-                    <h2>Subtotal de gastos: $ {total}</h2>
+                    <h2>Total de gastos: $ {total}</h2>
                 </div>
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
                  data={data}
-                 actions= {[
-
-              
-   
-                              {
-                          icon:() => <i class="material-icons edit">edit</i>,
-                          tooltip:"Editar",
-                          onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
-                      }
-    
-            
-                  ] }
+                 
+                 actions= {[                    
                 
+                            {
+                        icon:() => <i class="material-icons edit">edit</i>,
+                        tooltip:"Editar",
+                        onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
+                    }
+          
+                ] }
 
                  /></div>
             </div>
