@@ -11,15 +11,30 @@ import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import moment from "moment"
 import timeGridPlugin from '@fullcalendar/timegrid';
 
+// import "@fullcalendar/core/main.css";
+
+
+
+
+
+
+
+
+
+
+
+
+// import timeGridPlugin from "@fullcalendar/timegrid";
+
+
 function Calendario() {
-    
+
     const [data, setdata] = useState([]);
-    
+
     const [modalOpen, setModalOpen] = useState(false)
     const [events, setEvents] = useState([]);
     const calendarRef = useRef(null)
-    
-    const calendarComponentRef = React.createRef();
+
 
     const onEventAdded = event => {
         let calendarApi = calendarRef.current.getApi()
@@ -72,7 +87,7 @@ function Calendario() {
             <button onClick={()=> setModalOpen(true)}>Agregar Evento</button>
             <div className='FullCalendar'>
                 <FullCalendar
-                ref={calendarComponentRef}
+                ref={calendarRef}
                 events={data}
                 plugins={[dayGridPlugin]}
                     header={{
