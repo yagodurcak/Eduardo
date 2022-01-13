@@ -5,7 +5,7 @@ function Featured() {
     return (
         <div>
 
-            <FeaturedCard/>
+            {/* <FeaturedCard/> */}
             
         </div>
     )

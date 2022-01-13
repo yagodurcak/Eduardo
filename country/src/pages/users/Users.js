@@ -598,7 +598,7 @@ const useStyles = makeStyles((theme) => ({
            <CircularProgress color="success" size={80}/>
            </Box> : null}
 
-                 <div className="mt-10"><Table2 
+                 <div className="mt-5 "><Table2 
                  title="" 
                  columns={customerTableHead} 
                  data={data}

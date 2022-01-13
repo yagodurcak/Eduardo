@@ -95,31 +95,32 @@ function Login() {
      
             <div className="Containers">
                     <div>
-                        <ContainersImg>
-                        <Icono src={imagen} alt="" />
-                        { wrongPassword ? <h2 className="bg-red-500 text-white py-3 px-5">Contraseña incorrecta</h2> : null}
+                        {/* <ContainersImg> */}
+                        {/* <Icono src={imagen} alt="" /> */}
+                        { wrongPassword ? <h2 className="bg-red-500 text-white py-3 px-5">USuario/Contraseña incorrecta</h2> : null}
                         { wrongEmail ? <h2 className="bg-red-500 text-white py-3 px-5">Usuario incorrecto</h2> : null}
                         { notExist ? <h2 className="bg-red-500 text-white py-3 px-5">Complete todos los datos</h2> : null}
-                        
-                        </ContainersImg>
+{/*                         
+                        </ContainersImg> */}
                                         
-                                        <form action="" className="mt-1" onSubmit={iniciarSesion}>
-                        <div className="inputContainer">
-                            <i class="fa fa-user fa-2x icon"> </i>
-                            <input type="text" placeholder="USERNAME"  className="mt-5 placeholder-white Field" name="email" onChange={e=> setemail(e.target.value)} value={email}/>
-                        </div>
-                        <div className="inputContainer">
-                            <i class="fa fa-lock fa-2x icon"> </i>
-                            <input type= "password" placeholder="PASSWORD"  className="mt-5 placeholder-white Field" name="password" onChange={e=> setpassword(e.target.value)}  value={password}/>
-                        </div>
-                        <button className="boton" type="submit">LOGIN</button>
-                        <div className="ForgotContainer">
-                            <a href="" >
-                                <h3 className="forgot">Forgot password? </h3>
-                                </a>
-                        </div>
-                                
-                                        </form>
+                                        <div className="formContainer">
+                                            <form action="" className="mt-1" onSubmit={iniciarSesion}>
+                                                                    <div className="inputContainer">
+                                                                        {/* <i class="fa fa-user fa-2x icon"> </i> */}
+                                                                        <input type="text" placeholder="USERNAME"  className="mt-5 placeholder-white Field" name="email" onChange={e=> setemail(e.target.value)} value={email}/>
+                                                                    </div>
+                                                                    <div className="inputContainer">
+                                                                        {/* <i class="fa fa-lock fa-2x icon"> </i> */}
+                                                                        <input type= "password" placeholder="PASSWORD"  className="mt-5 placeholder-white Field" name="password" onChange={e=> setpassword(e.target.value)}  value={password}/>
+                                                                    </div>
+                                                                    <button className="boton" type="submit">LOGIN</button>
+                                                                    <div className="ForgotContainer">
+                                                                        <a href="" >
+                                                                            <h3 className="forgot">Forgot password? </h3>
+                                                                            </a>
+                                                                    </div>
+                                            </form>
+                                        </div>
       
                         
                     </div>

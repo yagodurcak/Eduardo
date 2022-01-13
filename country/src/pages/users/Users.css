@@ -1,11 +1,15 @@
 .Container{
     margin-top: 100px;
-    /* background-color: violet; */
+    /* background-color: blue; */
     padding: 40px;
     display: grid;
+    align-content: flex-start;
+    width: 70vw;
+    height: 80vh;
+
     
   
-    flex: 1;
+    /* flex: 1; */
     border-radius: 30px;
     -webkit-box-shadow: 1px 0px 15px -2px #000000; 
 box-shadow: 1px 0px 15px -8px #000000;
@@ -116,7 +120,7 @@ border: none;
 }
 .btn-2{
 
-    width: 180px;
+    width: fit-content;
     height: 53.36px;
     left: 602px;
     top: 35px;

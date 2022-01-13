@@ -153,19 +153,17 @@ const useStyles = makeStyles((theme) => ({
      const rtdo3=  rtdo2.map(obj=> ({ ...obj, consume: 0, transactionCost: 0 }))
       
       console.log(rtdo3);
-      setdata(rtdo3)
-     
+      setdata(rtdo3)    
+    
 
   }
 
-  const AgregarDato = () => {
-    data.map(obj=> ({ ...obj, consume: 'false' }))
-  }
+
 // }
 useEffect(() => {
    buscarCotizacion()
   
-   AgregarDato()
+  //  AgregarDato()
 
   
   console.log(data);
@@ -260,6 +258,8 @@ useEffect(() => {
           await axios.put("https://back2.tinpad.com.pe/public/api/condominium-expense"+"/"+info.id,  info , {headers: headers})
           .then(response=>{
 
+            
+
             abrirCerrarModalEditar();
            
           }).catch(error=>{
@@ -269,16 +269,6 @@ useEffect(() => {
         }
       
 
-        const removeSelectedImage = () => {
-            setSelectedImage();
-        };
-        const imageChange = (e) => {
-            if (e.target.files && e.target.files.length > 0) {
-              setSelectedImage(e.target.files[0]);
-              console.log(e.target.files[0]);
-              setSelectedFilesPost(e.target.files[0])
-            }
-        };
 
     const onSubmitInsertar = (e) => {
 
@@ -312,7 +302,8 @@ useEffect(() => {
     }
     const onSubmitEditar = (e) => {
 
-      e.preventDefault();
+      e.preventDefault();       
+
             peticionPost()
             // window.location.reload();
             // setTimeout(() => {

@@ -3,12 +3,12 @@
         flex: 1;
     background-color: #317143;
     color: white;
-    padding: 10px 20px;
+    padding: 5px 20px;
     display: grid;
     align-items: center;
 
     position: relative;
-    top: 40px;
+    top: 10px;
   left: 10px;
   border-radius: 10px;
 }
@@ -39,10 +39,11 @@
 
 .adminContainer{
     /* background-color: #F88703; */
+    height: fit-content;
     display: grid;
     align-items: center;
     justify-content: center;
-    margin: 15px 0px;
+    margin: 7px 0px;
 }
 .logo{
     height: 70px;
@@ -110,7 +111,7 @@
     width: 100%;
 }
 .lista1 li{
-    margin-top: 20px;
+    margin-top: 10px;
     
 }
 
