@@ -101,6 +101,13 @@ const useStyles = makeStyles((theme) => ({
             render: data => data.lot  
         },
         {
+            title:"Fecha",
+            render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
+              return (data.light_expenditures[i-1].date) 
+              
+            }   } 
+        },
+        {
             title:"Consumo (KW)",
             render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
               return parseInt(data.light_expenditures[i-1].consume) 
@@ -109,8 +116,8 @@ const useStyles = makeStyles((theme) => ({
         }
         ,  {
           title:"SubTotal",
-          render: data => {for (let i = 0; i < data.light_expenditures.length; i++) {
-            return data.light_expenditures[0].consume * data.light_expenditures[0].unitCost
+          render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
+            return data.light_expenditures[i-1].consume * data.light_expenditures[0].unitCost
             
           }   } 
       },
@@ -200,18 +207,18 @@ useEffect(() => {
         console.log(info);
         // console.log(selectedFilesPost.length > 0);
           
-                if (selectedFilesPost) {
+                // if (selectedFilesPost) {
                   
-                  f.append("file", selectedFilesPost)
-                }
+                //   f.append("file", selectedFilesPost)
+                // }
       
       
-            f.append("propertyId", 1)
+            f.append("propertyId", info.id)
             f.append("date", info.date)
-            f.append("concept", info.concept)
-            f.append("invoiceNumber", info.invoiceNumber)
-            f.append("amount", parseInt(info.amount) )
-            f.append("transactionCost",parseInt(info.transactionCost) )
+            f.append("consume", info.consume)
+            f.append("unitCost", "1")
+            f.append("transactionCost", "1" )
+            f.append("unit","kw" )
        
        
       
@@ -221,7 +228,7 @@ useEffect(() => {
       
         }
       
-          const url1= "https://back2.tinpad.com.pe/public/api/condominium-expense"
+          const url1= "https://back2.tinpad.com.pe/public/api/light-expenditure"
             await axios.post(url1, f, {headers})
             .then(response=>{
               // setdata(data.concat(response.data));
@@ -345,6 +352,8 @@ useEffect(() => {
             <br />
             <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  label="Costo de transacción*" type="number" />          
               <br />
+              <input type="date" className={styles.inputMaterial} name="publicationDate" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
+
               
             <br /><br />
             <div align="right">
@@ -365,8 +374,15 @@ useEffect(() => {
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" />
             <br />
-            <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  label="Costo de transacción*" type="number" />          
+                
               <br />
+              <br />
+            <label htmlFor="" className='mt-5'>Fecha de Consumo*</label>
+            <br />
+            <br />
+            
+              <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
+
             <br />
             <br />
      
@@ -396,15 +412,7 @@ useEffect(() => {
             <div className='Container'>
                 <TitlePage titulo="Gastos Comunes" />
                 <div className="flex justify-between">
-                            <button className='btn btn-2' >
-                                <Link to="/Calculos" style={{ textDecoration: 'none' }}>
-                                        <NavLink className="logoContainter1" exact to="/Calculos" activeClassName="linkactivo">
-                                            {/* <img src={tramites} alt="" className='logo1' /> */}
-                                            <h1 className="title1">Calculos</h1>
-                                            {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                                        </NavLink>
-                                </Link>
-                            </button>
+  
                                             <button className="btn"  onClick={()=>abrirCerrarModalInsertar()}>
                             Agregar gasto
                                                 </button>
@@ -425,8 +433,8 @@ useEffect(() => {
                  actions= {[                    
                 
                             {
-                        icon:() => <i class="material-icons edit">edit</i>,
-                        tooltip:"Editar",
+                        icon:() => <i class="material-icons edit">add</i>,
+                        tooltip:"Agregar",
                         onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
                     }
           
