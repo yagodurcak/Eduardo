@@ -16,16 +16,17 @@ const Table2 = props => {
             data = {props.data}      
             title={props.title}   
             actions={props.actions}
-            style={{ width: "87%", maxWith: "87%"}}
+            // style={{ width: "87%", maxWith: "87%"}}
             // parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
             // parentChildData={(row, rows) =>
             //     rows.find(a => a.id === row.parentId)
             //   }
             options={{
+                // tableLayout: "fixed",
                 maxBodyHeight: "150vh",
                 // maxBodyWidth: "20vw",
                 actionsColumnIndex : -1,
-                columnResizable: true,
+                // columnResizable: true,
                     headerStyle: {
                     //   backgroundColor: '#01579b',
 

@@ -71,31 +71,31 @@ const useStyles = makeStyles((theme) => ({
    
      {
            title:"Nombres",
-           render: data => data.user.name
+           render: data => data.user.name, width: "30px" 
           },
           {
            title:"Apellidos",
-           render: data => data.user.lastName
+           render: data => data.user.lastName, width: "1%"
        },
        {
            title:"Doc. de Identidad",
-           render: data => data.user.document
+           render: data => data.user.document, width: "10%"
        },  
        {
            title:"Teléfono",
-           render: data => data.user.phone
+           render: data => data.user.phone, width: "10%"
        },
        {
          title:"Mz.",
-         render: data => data.property.block
+         render: data => data.property.block, width: "5%"
        },
        { 
          title:"Lte.",
-         render: data => data.property.lot
+         render: data => data.property.lot, width: "5%"
         },
         {
           title:"Correo",
-          render: data => data.user.email
+          render: data => data.user.email, width: "20%"
         }
       ]
       

@@ -81,38 +81,48 @@ const useStyles = makeStyles((theme) => ({
     
         {
             title:"Propietario",
-            render: data => data.user.name + " " +   data.user.lastName   
+            render: data => {for (let i = 0; i < data.users.length; i++) {
+              return data.users[i].name + " " + data.users[i].lastName
+              
+            }   }
         },
         {
             title:"Doc de Identidad",
-            render: data => data.user.document   
-        },
+            render: data => {for (let i = 0; i < data.users.length; i++) {
+              return data.users[i].document
+              
+            }   }
+            },
         {
             title:"Mz.",
-            render: data => data.property.block     },
+            render: data => data.block     },
         {
             title:"Lte.",
-            render: data => data.property.lot  
+            render: data => data.lot  
         },
         {
             title:"Consumo (KW)",
-            render: data => data.consume 
-        },
-    
-        
-        {
-            title:"Subtotal(S/)",
-            render: data => data.consume + 20
-            
+            render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
+              return parseInt(data.light_expenditures[i-1].consume) 
+              
+            }   } 
         }
-        ,
+        ,  {
+          title:"SubTotal",
+          render: data => {for (let i = 0; i < data.light_expenditures.length; i++) {
+            return data.light_expenditures[0].consume * data.light_expenditures[0].unitCost
+            
+          }   } 
+      },
         {
             title:"Cobranza(S/)",
-            render: data => data.transactionCost         }
-        ,
+            render: data => "$10"},
         {
             title:"Total",
-            render: data => data.consume + 20 + data.transactionCost  
+            render: data => {for (let i = 0; i < data.light_expenditures.length; i++) {
+              return data.light_expenditures[0].consume * data.light_expenditures[0].unitCost + 10
+              
+            }   } 
         }
     ]
 
@@ -124,7 +134,7 @@ const useStyles = makeStyles((theme) => ({
 
     const{document, amount,  date, invoiceNumber, propertyId, transactionCost, concept } = info;
   
-    const baseUrl="https://back2.tinpad.com.pe/public/api/property-user";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/property";
     const handleChangeInsert = (e) => {
       setInfo({
         ...info,
@@ -141,7 +151,7 @@ const useStyles = makeStyles((theme) => ({
         setLoading(false)
       }, 2000);
 
-      const url = `https://back2.tinpad.com.pe/public/api/property-user`;
+      const url = `https://back2.tinpad.com.pe/public/api/property`;
 
       const headers = {
           'Content-Type': 'application/json',
