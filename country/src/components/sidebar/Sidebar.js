@@ -311,6 +311,16 @@ function Sidebar() {
                                     </NavLink>
                                 </li>
                             </Link>
+                            <Link to="/Configuracion" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Configuracion">
+                                        <img src={agua} alt="" className='logo3' />
+                                        <h1 className="title1">Configuración</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                
+                                    </NavLink>
+                                </li>
+                            </Link>
                         </div>
                         )
                         : null}

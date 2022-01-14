@@ -9,6 +9,7 @@ import {
 import Archivos from "./pages/archivos/Archivos";
 import Calculos from "./pages/gastos/Calculos";
 import Calendar from "./pages/calendar/Calendar";
+import Configuracion from "./pages/gastos/Configuracion";
 import DetalleTramite from "./pages/tramites/DetalleTramite";
 import Energia from "./pages/gastos/Energia";
 import Espacio from "./pages/espacio/Espacio";
@@ -94,6 +95,9 @@ function App() {
           </Route>
           <Route path="/Prueba">
           <Prueba/>
+          </Route>
+          <Route path="/Configuracion">
+          <Configuracion/>
           </Route>
           </div>
         </Switch>

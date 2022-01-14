@@ -23,7 +23,7 @@ const Table2 = props => {
             //   }
             options={{
                 // tableLayout: "fixed",
-                maxBodyHeight: "150vh",
+                // maxBodyHeight: "150vh",
                 // maxBodyWidth: "20vw",
                 actionsColumnIndex : -1,
                 // columnResizable: true,
