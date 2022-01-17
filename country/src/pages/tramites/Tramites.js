@@ -36,26 +36,50 @@ const customerTableHead = [
 
     {
         title:"Fecha",
+                       cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },
         render: data => ((data.proyectDate).slice(0,10)).split(" ")[0].split("-").reverse().join("-")
     },
     {
         title:"Tipo",
+                       cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },
         render: data => data.proyect.projectTypeId
     },
     {
         title:"Proyecto",
+                       cellStyle: {
+        minWidth: 150,
+        maxWidth: 150
+      },
         render: data => data.proyect.name
     },
     {
         title:"Propietario",
+                       cellStyle: {
+        minWidth: 150,
+        maxWidth: 150
+      },
         render: data => data.properties[0].users[0].name + " " + data.properties[0].users[0].lastName
     },
     {
         title:"Estado",
+                       cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },
         render: data => data.state.name
     },
     {
         title:"Actualiz.",
+                       cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },
         render: data => ((data.state.updated_at).slice(0,10)).split(" ")[0].split("-").reverse().join("-")
         }
     

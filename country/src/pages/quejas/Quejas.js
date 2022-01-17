@@ -35,27 +35,51 @@ const useStyles = makeStyles((theme) => ({
 const customerTableHead = [
 
     {
-        title:"Fecha",
+                 cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },  
+      title:"Fecha",
         render: data => ((data.created_at).slice(0,10)).split(" ")[0].split("-").reverse().join("-")
     },
     {
-        title:"Tipo",
+                 cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },  
+      title:"Tipo",
         render: data => data.state.name
     },
     {
-        title:"Asunto",
+                 cellStyle: {
+        minWidth:150,
+        maxWidth:150
+      },  
+      title:"Asunto",
         field: "subject"
     },
     {
-        title:"Propietario",
+                 cellStyle: {
+        minWidth: 50,
+        maxWidth: 50
+      },  
+      title:"Propietario",
         field: "propertyId"
     },
     {
-        title:"Estado",
+                 cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },  
+      title:"Estado",
         render: data => data.state.name},
     
     {
-        title:"Actualiz.",
+                 cellStyle: {
+        minWidth: 60,
+        maxWidth: 60
+      },  
+      title:"Actualiz.",
         render: data => ((data.state.updated_at).slice(0,10)).split(" ")[0].split("-").reverse().join("-")}
     
 ]

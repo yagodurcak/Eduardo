@@ -14,6 +14,7 @@ import DetalleTramite from "./pages/tramites/DetalleTramite";
 import Energia from "./pages/gastos/Energia";
 import Espacio from "./pages/espacio/Espacio";
 import GastosComunes from "./pages/gastos/GastosComunes";
+import Historial from "./pages/gastos/Historial";
 import Home from "./pages/home/Home";
 import Login from "./components/Login"
 import Modal from 'react-modal';
@@ -98,6 +99,9 @@ function App() {
           </Route>
           <Route path="/Configuracion">
           <Configuracion/>
+          </Route>
+          <Route path="/Historial">
+          <Historial/>
           </Route>
           </div>
         </Switch>

@@ -27,13 +27,13 @@
 .topbarContainer{
   /* background-color: lightblue; */
   flex: 7;
-  /* height: 50px; */
+  /* height: 3.125rem; */
   display: grid;
   align-items: flex-start;
   align-content: flex-start;
-  padding: 20px 30px;
+  padding: 1.25rem 1.875rem;
   position: sticky;
-  margin-top: -100px;
+  margin-top: -6.25rem;
   
 }
 
@@ -48,16 +48,16 @@
 
 .switch{
   /* background-color: aqua; */
-  /* border: 1px solid gray; */
+  /* border: 0.0625rem solid gray; */
   color: "red";
-  border-radius: 30px;
-  padding: 1px;
+  border-radius: 1.875rem;
+  padding: 0.0625rem;
   
 }
 
 
 .toggle-button{
   background-color: rgb(211, 204, 204);
-  border-radius: 30px;
+  border-radius: 1.875rem;
 
 }

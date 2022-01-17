@@ -68,40 +68,69 @@ const useStyles = makeStyles((theme) => ({
         
         {
             title:"Propietario",
-            render: data => data.user.name     
+                cellStyle: {
+        minWidth: 150,
+        maxWidth: 150
+      },
+            render: data => data.user.name  + " " +  data.user.lastName    , 
         },
-        {
-            title:"Doc de Identidad",
-            render: data => data.user.document   
-        },
+
         {
             title:"Mz.",
+                cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },
             render: data => data.property.block   
         },
         {
             title:"Lte.",
+                cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },
             render: data => data.property.lot  
         },
         {
             title:"Área(m2)",
+                cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },
             render: data =>parseInt(data.property.area)  
         },
         {
             title:"Pariticipacion (%)",
+                cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },
             render: data => parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2)
         },
         {
             title:"Subtotal(S/)",
+                cellStyle: {
+        minWidth: 100,
+        maxWidth: 100
+      },
             render: data => parseFloat((((data.property.area/ totalArea  ) * 100)*total)/100).toFixed(2)
         }
         ,
         {
             title:"Cobranza(S/)",
+                cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },
             render: data => "10.00"
         }
         ,
         {
             title:"Total",
+                cellStyle: {
+        minWidth: 80,
+        maxWidth: 80
+      },
             render: data => parseFloat(((parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2))*total)/100 + 10).toFixed(2)
         }
 
@@ -507,7 +536,7 @@ useEffect(() => {
            <CircularProgress color="success" size={80}/>
            </Box> : null}
 
-                <div className="flex justify-end mt-5 text-gray-400">
+                <div className="mt-5 text-gray-400">
                     <h2>Subtotal de gastos: $ {total}</h2>
                 </div>
                  <div className="mt-10"><Table2 

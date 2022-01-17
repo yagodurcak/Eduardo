@@ -54,12 +54,13 @@ const useStyles = makeStyles((theme) => ({
     },
     {
         title:"Tipo",
-        render: data => data.type_release.name       
+        render: data => data.type_release.name,       
        
     },
     {
         title:"Titulo",
-        field: "title"
+        field: "title",
+        filtering: false,
     }]
 
 

@@ -47,10 +47,10 @@ const useStyles = makeStyles((theme) => ({
 
 const customerTableHead = [
 
-{
-    title:"Item",
-    field: "id"
-},
+// {
+//     title:"Item",
+//     field: "id"
+// },
 {
     title:"Concepto",
     field: "concept"
@@ -430,53 +430,83 @@ sumarGastosTotales()
       )
 
     return (
-        <div>
-            <div className='Container'>
-                <TitlePage titulo="Gastos Comunes" />
-                <div className="flex justify-between">
-                            <button className='btn btn-2' >
-                                <Link to="/Calculos" style={{ textDecoration: 'none' }}>
-                                        <NavLink className="logoContainter1" exact to="/Calculos" activeClassName="linkactivo">
-                                            {/* <img src={tramites} alt="" className='logo1' /> */}
-                                            <h1 className="title1">Calculos</h1>
-                                            {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                                        </NavLink>
-                                </Link>
-                            </button>
-                                            <button className="btn"  onClick={()=>abrirCerrarModalInsertar()}>
-                            Agregar gasto
-                                                </button>
-                        </div>
-                { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:100}}>
-           
-           <CircularProgress color="success" size={80}/>
-           </Box> : null}
+      <div>
+        <div className='Container'>
+          <TitlePage titulo="Gastos Comunes" />
+          <div className="flex justify-center">
+            <button className='btn-3' >
+              <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/GastosComunes" activeClassName="linkactivo">
+                  {/* <img src={tramites} alt="" className='logo1' /> */}
+                  <h1 className="title1">Condominio</h1>
+                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                </NavLink>
+              </Link>
+            </button>
+            <button className='btn-3' >
+              <Link to="/Energia" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/Energia" activeClassName="linkactivo">
+                  {/* <img src={tramites} alt="" className='logo1' /> */}
+                  <h1 className="title1">Energia</h1>
+                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                </NavLink>
+              </Link>
+            </button>
+            <button className='btn-3' >
+              <Link to="/Prueba" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/Prueba" activeClassName="linkactivo">
+                  {/* <img src={tramites} alt="" className='logo1' /> */}
+                  <h1 className="title1">Agua</h1>
+                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                </NavLink>
+              </Link>
+            </button>
+      
+          </div>
+          <div className="flex justify-between mt-5">
+            <button className='btn btn-2' >
+              <Link to="/Calculos" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/Calculos" activeClassName="linkactivo">
+                  {/* <img src={tramites} alt="" className='logo1' /> */}
+                  <h1 className="title1">Calculos</h1>
+                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                </NavLink>
+              </Link>
+            </button>
+            <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
+              Agregar gasto
+            </button>
+          </div>
+          {loading ? <Box sx={{ position: 'absolute', left: 500, top: 500, zIndex: 100 }}>
 
-                <div className="flex justify-end mt-5 text-gray-400">
-                    <h2>Total de gastos: $ {total}</h2>
-                </div>
-                 <div className="mt-10"><Table2 
-                 title="" 
-                 columns={customerTableHead} 
-                 data={data}
-                 actions= {[                    
-                
-                            {
-                        icon:() => <i class="material-icons edit">edit</i>,
-                        tooltip:"Editar",
-                        onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
-                    },
-                    {
-                        icon:() => <i class="material-icons delete">highlight_off</i>,
-                        tooltip:"Eliminar",
-                        // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
-                        onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
-                    }
-          
-                ] }
+            <CircularProgress color="success" size={80} />
+          </Box> : null}
 
-                 /></div>
-            </div>
+          <div className="flex justify-end mt-5 text-gray-400">
+            <h2>Total de gastos: $ {total}</h2>
+          </div>
+          <div className="mt-10"><Table2
+            title=""
+            columns={customerTableHead}
+            data={data}
+            actions={[
+
+              {
+                icon: () => <i class="material-icons edit">edit</i>,
+                tooltip: "Editar",
+                onClick: (event, rowData) => seleccionarUser(rowData, "Editar")
+              },
+              {
+                icon: () => <i class="material-icons delete">highlight_off</i>,
+                tooltip: "Eliminar",
+                // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
+                onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
+              }
+
+            ]}
+
+          /></div>
+        </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}
             functionShow= {abrirCerrarModalInsertar}

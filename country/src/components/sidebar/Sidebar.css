@@ -3,21 +3,21 @@
         flex: 1;
     background-color: #317143;
     color: white;
-    padding: 5px 20px;
+    padding: 0.3125rem 1.25rem;
     display: grid;
     align-items: center;
 
     position: relative;
-    top: 10px;
-  left: 10px;
-  border-radius: 10px;
+    top: 0.625rem;
+  left: 0.625rem;
+  border-radius: 0.625rem;
 }
 .sublogocontainer{
     height: 100%;
   
     /* background-color: #F88703; */
     color: white;
-    /* padding: 10px 30px; */
+    /* padding: 0.625rem 1.875rem; */
     /* flex: 1; */
     background-color: #317143;
 
@@ -32,7 +32,7 @@
     display: flex;
     justify-content: start;
     align-items: center;
-    margin: 15px 0px;
+    margin: 0.9375rem 0rem;
     
     
 }
@@ -43,24 +43,24 @@
     display: grid;
     align-items: center;
     justify-content: center;
-    margin: 7px 0px;
+    margin: 0.4375rem 0rem;
 }
 .logo{
-    height: 70px;
-    width: 80px;
-    /* margin-right: 5px; */
+    height: 4.375rem;
+    width: 5rem;
+    /* margin-right: 0.3125rem; */
 }
 
 .title{
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
     text-align: center;
-    font-size: 20px;
-    padding: 0px 5px;
+    font-size: 1.25rem;
+    padding: 0rem 0.3125rem;
 }
 
 .linea{
-  height: 0.5px;
+  height: 0.0313rem;
   color: lightgray;
   width: 100%;
   text-align: center;
@@ -70,8 +70,8 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     text-align: center;
-    font-size: 20px;
-    padding: 0px 30px;
+    font-size: 1.25rem;
+    padding: 0rem 1.875rem;
     color: white;
     text-decoration: none;
     
@@ -80,8 +80,8 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     text-align: center;
-    font-size: 25px;
-    padding: 0px 30px;
+    font-size: 1.5625rem;
+    padding: 0rem 1.875rem;
     color: white;
     text-decoration: none;
     
@@ -90,8 +90,8 @@
 
 
 .logo1{
-    height: 35px;
-    width: 30px;
+    height: 2.1875rem;
+    width: 1.875rem;
     
 }
 
@@ -100,7 +100,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: -40px;
+    margin-left: -2.5rem;
     /* background-color: mediumblue; */
 
    
@@ -111,19 +111,19 @@
     width: 100%;
 }
 .lista1 li{
-    margin-top: 10px;
+    margin-top: 0.625rem;
     
 }
 
 
 .logo2{
-    height: 15px;
-    width: 15px;
+    height: 0.9375rem;
+    width: 0.9375rem;
 }
 
 .logo3{
-    height: 25px;
-    width: 25px;
+    height: 1.5625rem;
+    width: 1.5625rem;
 }
 
 .logoContainter1{
@@ -136,7 +136,7 @@
     text-decoration: none;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
-    font-size: 25px;
+    font-size: 1.5625rem;
     
 }
 
@@ -146,33 +146,33 @@
     background-color: #F88703;
 
     cursor: pointer;
-    padding: 10px 0px;
+    padding: 0.625rem 0rem;
 }
 
 .submenu{
-    padding: 10px 0px 10px 25px;
-    margin: -10px 0px;
+    padding: 0.625rem 0rem 0.625rem 1.5625rem;
+    margin: -0.625rem 0rem;
     
 }
 
 
 .submenu:hover{
     background-color: #F88703;
-    /* padding: 10px 10px; */
+    /* padding: 0.625rem 0.625rem; */
     cursor: pointer;
     
 }
 
 .linkactivo{
     background-color: #F88703;
-    padding: 10px 0px;
+    padding: 0.625rem 0rem;
  
 }
 .linkactivo1{
     background-color: #F88703;
 
     cursor: pointer;
-    padding: 15px 0px 15px 0px;
+    padding: 0.9375rem 0rem 0.9375rem 0rem;
 }
  
 

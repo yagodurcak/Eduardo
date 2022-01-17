@@ -71,12 +71,12 @@ const useStyles = makeStyles((theme) => ({
    
      {
            title:"Nombres",
-           render: data => data.user.name, width: "30px" 
+           render: data => data.user.name + " " + data.user.lastName 
           },
-          {
-           title:"Apellidos",
-           render: data => data.user.lastName, width: "1%"
-       },
+      //     {
+      //      title:"Apellidos",
+      //      render: data => data.user.lastName, width: "1%"
+      //  },
        {
            title:"Doc. de Identidad",
            render: data => data.user.document, width: "10%"
@@ -92,11 +92,11 @@ const useStyles = makeStyles((theme) => ({
        { 
          title:"Lte.",
          render: data => data.property.lot, width: "5%"
-        },
-        {
-          title:"Correo",
-          render: data => data.user.email, width: "20%"
         }
+        // {
+        //   title:"Correo",
+        //   render: data => data.user.email, width: "20%"
+        // }
       ]
       
 

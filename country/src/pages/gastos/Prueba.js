@@ -96,27 +96,48 @@ const useStyles = makeStyles((theme) => ({
     
         {
             title:"Propietario",
+                            cellStyle: {
+        minWidth: 50,
+        maxWidth: 50
+      },
+            field: 'name',
             render: data => {for (let i = 0; i < data.users.length; i++) {
               return data.users[i].name + " " + data.users[i].lastName
               
-            }   }
-        },
-        {
-            title:"Doc de Identidad",
-            render: data => {for (let i = 0; i < data.users.length; i++) {
-              return data.users[i].document
+            }   }},
+
+        // {
+        //     title:"Doc de Identidad",
+ 
+
+        //     render: data => {for (let i = 0; i < data.users.length; i++) {
+        //       return data.users[i].document
               
-            }   }
-            },
+        //     }   }
+        //     },
         {
             title:"Mz.",
+                            cellStyle: {
+        minWidth: 10,
+        maxWidth: 10
+      },
             render: data => data.block     },
         {
             title:"Lte.",
+                            cellStyle: {
+        minWidth: 10,
+        maxWidth: 10
+      },
             render: data => data.lot  
         },
         {
             title:"Fecha",
+                            cellStyle: {
+        minWidth: 50,
+        maxWidth: 50
+      },
+            field: 'date',
+       
             render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
               return (data.light_expenditures[i-1].date).split(" ")[0].split("-").reverse().join("-").slice(3, 10)  
               
@@ -124,6 +145,10 @@ const useStyles = makeStyles((theme) => ({
         },
         {
             title:"Consumo (KW)",
+                            cellStyle: {
+        minWidth: 50,
+        maxWidth: 50
+      },
             render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
               return parseInt(data.light_expenditures[i-1].consume) 
               
@@ -131,6 +156,10 @@ const useStyles = makeStyles((theme) => ({
         }
         ,  {
           title:"SubTotal",
+                          cellStyle: {
+        minWidth: 50,
+        maxWidth: 50
+      },
           render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
             return data.light_expenditures[i-1].consume * unitCost
             
@@ -138,9 +167,17 @@ const useStyles = makeStyles((theme) => ({
       },
         {
             title:"Cobranza(S/)",
+                            cellStyle: {
+        minWidth: 50,
+        maxWidth: 50
+      },
             render: data => data3.amount},
         {
             title:"Total",
+                            cellStyle: {
+        minWidth: 50,
+        maxWidth: 50
+      },
             render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
               return parseInt(data.light_expenditures[i-1].consume * unitCost)  + parseInt(data3.amount) 
               
@@ -313,8 +350,8 @@ useEffect(() => {
             f.append("propertyId", info.id)
             f.append("date", info.date)
             f.append("consume", info.consume)
-            f.append("unitCost", "1")
-            f.append("transactionCost", "1" )
+            f.append("unitCost", unitCost)
+            f.append("transactionCost", data3.amount )
             f.append("unit","kw" )
        
        
@@ -490,7 +527,7 @@ useEffect(() => {
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Insertar</Button>
-              <Button> Cancelar</Button>
+              <Button onClick= {abrirCerrarModalEditar}> Cancelar</Button>
             </div>
           </div>
         </form>
@@ -514,6 +551,36 @@ useEffect(() => {
         <div>
             <div className='Container'>
                 <TitlePage titulo="Gasto Energía" />
+                <div className="flex justify-center">
+            <button className='btn-3' >
+              <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/GastosComunes" activeClassName="linkactivo">
+                  {/* <img src={tramites} alt="" className='logo1' /> */}
+                  <h1 className="title1">Condominio</h1>
+                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                </NavLink>
+              </Link>
+            </button>
+            <button className='btn-3' >
+              <Link to="/Energia" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/Energia" activeClassName="linkactivo">
+                  {/* <img src={tramites} alt="" className='logo1' /> */}
+                  <h1 className="title1">Energia</h1>
+                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                </NavLink>
+              </Link>
+            </button>
+            <button className='btn-3' >
+              <Link to="/Prueba" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/Prueba" activeClassName="linkactivo">
+                  {/* <img src={tramites} alt="" className='logo1' /> */}
+                  <h1 className="title1">Agua</h1>
+                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                </NavLink>
+              </Link>
+            </button>
+      
+          </div>
                 <div className="flex justify-between">
   
                                             <button className="btn"  onClick={()=>abrirCerrarModalInsertar()}>

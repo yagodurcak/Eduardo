@@ -6,6 +6,7 @@
 import "../users/Users.css"
 
 import {Button, Modal, TextField} from '@material-ui/core';
+import {Checkbox, MenuItem, Select} from '@material-ui/core'
 import React,{useEffect, useState}  from 'react';
 
 import Box from '@mui/material/Box';
@@ -41,33 +42,21 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-const customerTableHead = [
-
-{
-    title:"Nombres",
-    field: "name"
-},
-{
-    title:"Apellidos",
-    field: "lastName",
-    
-},
-{
-    title:"Doc. de Identidad",
-    field: "document"
-}
-]
 
 
 
-function Personal() {
 
-    const [data, setdata] = useState([]);
-    const [showModalInsertar, setShowModalInsertar] = useState(false);
-    const [showModalEditar, setShowModalEditar] = useState(false);
-    const [showModalEliminar, setShowModalEliminar] = useState(false);
-    const [error, setError] = useState(false)
-    const [loading, setLoading] = useState(false);
+function Historial() {
+  const [data, setdata] = useState([]);
+  const [showModalInsertar, setShowModalInsertar] = useState(false);
+  const [showModalEditar, setShowModalEditar] = useState(false);
+  const [showModalEliminar, setShowModalEliminar] = useState(false);
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [dates, setDates] = useState([]);
+  const [filter, setFilter]=useState(true)
+  const [year,setYear]=useState('all')
+  const [filteredData,setFilteredData]=useState(data)
     
     const [info, setInfo] = useState({
 
@@ -78,11 +67,46 @@ function Personal() {
       phone:""
     })
 
+    useEffect(()=>{
+      setFilteredData(year===''?data:data.filter(dt=>dt.date===year))
+      console.log(year);
+        },[year])
+    const customerTableHead = [
+
+      {
+          title:"Propietario",
+          
+          render: data => data.property.users[0].name +  " " + data.property.users[0].lastName },
+          
+      
+      {
+          title:"Fecha",
+          // field: "date",
+          render: data => (data.date).slice(0,7)
+      },
+      
+      {
+          title:"Consumo kw",
+          field: "consume"
+      },
+      {
+          title:"Costo por kw",
+          field: "unitCost"
+      },
+      {
+          title:"Cobranza",
+          field: "transactionCost"
+      },
+      {
+          title:"Total",
+          render: data => parseInt(data.consume)  * parseInt(data.unitCost) + parseInt(data.transactionCost) 
+      }
+      ]
    
 
     const{document, lastName,  name, email, phone } = info;
   
-    const baseUrl="https://back2.tinpad.com.pe/public/api/employe";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/light-expenditure";
     const handleChangeInsert = (e) => {
       setInfo({
         ...info,
@@ -99,7 +123,7 @@ function Personal() {
         setLoading(false)
       }, 2000);
         
-      const url = `https://back2.tinpad.com.pe/public/api/employe`;
+      const url = `https://back2.tinpad.com.pe/public/api/light-expenditure`;
 
       const headers = {
           'Content-Type': 'application/json',
@@ -109,10 +133,24 @@ function Personal() {
 
       const rtdo = await axios.get(url, {headers})
 
-      console.log(rtdo.data.data[0]);
+      console.log(rtdo.data.data);
       setdata(rtdo.data.data)
+      
 
   }
+  let fechas = []
+
+  useEffect(() => {
+    for (let i = 0; i < data.length; i++) {
+      console.log(data[i].date);      
+      fechas = [...fechas, data[i].date]
+      // setDates([...dates, data[i].date])
+    }
+    setDates(fechas)
+   console.log(fechas);
+  }, [data])
+
+  // console.log(dates);
 // }
 useEffect(() => {
  
@@ -140,7 +178,7 @@ useEffect(() => {
           'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
     
       }
-          await axios.post("https://back2.tinpad.com.pe/public/api/employe", info, {headers})
+          await axios.post("https://back2.tinpad.com.pe/public/api/light-expenditure", info, {headers})
           .then(response=>{
             // setdata(data.concat(response.data));
             abrirCerrarModalInsertar();
@@ -176,7 +214,7 @@ useEffect(() => {
             'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
       
         }
-          await axios.put("https://back2.tinpad.com.pe/public/api/employe"+"/"+info.id,  info , {headers: headers})
+          await axios.put("https://back2.tinpad.com.pe/public/api/light-expenditure"+"/"+info.id,  info , {headers: headers})
           .then(response=>{
 
             abrirCerrarModalEditar();
@@ -307,16 +345,14 @@ useEffect(() => {
         </div>
       )
 
+
+      let fechasss= new Date().getFullYear();
+
     return (
         <div>
             <div className='Container'>
-                <TitlePage titulo="Personal de Servicio" />
-                <div className="flex justify-end ">
-                    <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
-                        Agregar
-                    </button>
-                   
-                </div>
+                <TitlePage titulo="Historial de cobros de luz" />
+ 
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>
@@ -326,20 +362,28 @@ useEffect(() => {
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={filteredData}
                  actions= {[                    
                 
-                            {
-                        icon:() => <i class="material-icons edit">edit</i>,
-                        tooltip:"Editar",
-                        onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
-                    },
-                    {
-                        icon:() => <i class="material-icons delete">highlight_off</i>,
-                        tooltip:"Eliminar",
-                        // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
-                        onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
-                    }
+                  {
+                    icon:()=><Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    // defaultValue={"all"}
+                    style={{width:100}}
+                    value={year}
+                    onChange={(e)=>setYear(e.target.value)}
+                  >
+                     <MenuItem value={""}><em>{fechasss }</em></MenuItem>
+                     {data.map(tipos => (
+                // <option value={tipos.date} key={tipos.id} >{tipos.date}</option>
+                <MenuItem value={tipos.date} key={tipos.date}>{(tipos.date).slice(0,7)}</MenuItem>
+              ))}
+                 
+                  </Select>,
+                  tooltip:"Filter Year",
+                  isFreeAction:true
+                  }
           
                 ] }
 
@@ -375,4 +419,4 @@ useEffect(() => {
     )
 }
 
-export default Personal
+export default Historial

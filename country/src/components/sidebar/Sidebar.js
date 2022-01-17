@@ -26,6 +26,7 @@ import phone from "../../IMG/sidebar/phone.svg"
 import propietario from "../../IMG/users/user1.svg"
 import quejas from "../../IMG/QuejasSvg 1quejas.svg"
 import right from "../../IMG/sidebar/chevron_right_black_24dp.svg"
+import rosca from "../../IMG/sidebar/rosca.svg"
 import seguridad from "../../IMG/users/seguridad.svg"
 import tramites from "../../IMG/Tramites 3tramites.svg"
 import users from "../../IMG/Users 2users.svg"
@@ -266,7 +267,7 @@ function Sidebar() {
                                 </NavLink>
                             </li>
                         </Link>
-                        <Link to="/GastosComunes" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuGastos()}>
+                        <Link style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuGastos()}>
                         <li className='listahover'>
                                 <div className="dropdown">
                                     <div className="logoContainter1">
@@ -282,12 +283,11 @@ function Sidebar() {
                         ? (
                 
                         <div>
-                            <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
+                            {/* <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
                                 <li className='submenu'>
                                     <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/GastosComunes">
                                         <img src={adjunto} alt="" className='logo3' />
                                         <h1 className="title1">Condominio</h1>
-                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                                     </NavLink>
                                 </li>
                             </Link>
@@ -296,8 +296,6 @@ function Sidebar() {
                                 <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Energia">
                                         <img src={energy} alt="" className='logo3' />
                                         <h1 className="title1">Energía</h1>
-                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                
                                     </NavLink>
                                 </li>
                             </Link>
@@ -306,7 +304,24 @@ function Sidebar() {
                                 <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Prueba">
                                         <img src={agua} alt="" className='logo3' />
                                         <h1 className="title1">Agua</h1>
-                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                
+                                    </NavLink>
+                                </li>
+                            </Link> */}
+                            <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/GastosComunes">
+                                <i class="material-icons">receipt_long</i>
+                                        <h1 className="title1">Registrar Gastos</h1>
+                
+                                    </NavLink>
+                                </li>
+                            </Link>
+                            <Link to="/Historial" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Historial">
+                                <i class="material-icons">fact_check</i>
+                                        <h1 className="title1">Historial</h1>
                 
                                     </NavLink>
                                 </li>
@@ -314,9 +329,8 @@ function Sidebar() {
                             <Link to="/Configuracion" style={{ textDecoration: 'none' }}>
                                 <li className='submenu'>
                                 <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Configuracion">
-                                        <img src={agua} alt="" className='logo3' />
+                                        <img src={rosca} alt="" className='logo3' />
                                         <h1 className="title1">Configuración</h1>
-                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                 
                                     </NavLink>
                                 </li>
