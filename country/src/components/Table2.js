@@ -27,7 +27,7 @@ const Table2 = props => {
             options={{
                 search: false,
                 // tableLayout: "fixed",
-                // rowStyle: {
+                // rowStyle: {s
                 //     overflowWrap: 'break-word'
                 //   },
                 maxBodyHeight: "150vh",

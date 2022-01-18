@@ -8,6 +8,7 @@ import {
 
 import Archivos from "./pages/archivos/Archivos";
 import Calculos from "./pages/gastos/Calculos";
+import Invitados from "./pages/invitados/Invitados";
 import Calendar from "./pages/calendar/Calendar";
 import Configuracion from "./pages/gastos/Configuracion";
 import DetalleTramite from "./pages/tramites/DetalleTramite";
@@ -105,6 +106,9 @@ function App() {
           </Route>
           <Route path="/Historial">
           <Historial/>
+          </Route>
+          <Route path="/Invitados">
+          <Invitados/>
           </Route>
           </div>
         </Switch>

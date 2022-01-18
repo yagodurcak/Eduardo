@@ -190,9 +190,9 @@ function Sidebar() {
                                     </NavLink>
                                 </li>
                             </Link>
-                            <Link to="/2" style={{ textDecoration: 'none' }}>
+                            <Link to="/Invitados" style={{ textDecoration: 'none' }}>
                                 <li className='submenu'>
-                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/2">
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Invitados">
                                         <img src={seguridad} alt="" className='logo3' />
                                         <h1 className="title1">Invitados</h1>
                                         {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
