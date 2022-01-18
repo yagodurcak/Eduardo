@@ -1,11 +1,14 @@
 import "./Login.css"
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 
 import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import imagen from "../IMG/Groupicono.svg"
 import styled from '@emotion/styled';
+import { userContext } from '../context/UserContext';
+
+
 
 const Icono = styled.img`
     height: 200px;
@@ -35,6 +38,7 @@ function Login() {
     const [notExist, setnotExist] = useState(false)
     const [redirect, setRedirect] = useState(false);
     
+    const { dataUser, setdataUser } = useContext(userContext);
 
 
     const iniciarSesion = (e) => {
@@ -64,8 +68,8 @@ function Login() {
 										 localStorage.setItem('user', JSON.stringify(response.data.user)) 
                                          setRedirect(true)
                  }
-                 setdata(response.data.user)
-                 console.log(response.data);
+                 console.log(response.data.user);
+                 setdataUser(response.data.user)
                  
              })
              .catch(err => {

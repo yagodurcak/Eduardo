@@ -403,7 +403,7 @@ function Tramites() {
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Tramites" />
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            

@@ -300,7 +300,7 @@ function Configuracion() {
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Personal de Configuracion" />
                 {/* <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>

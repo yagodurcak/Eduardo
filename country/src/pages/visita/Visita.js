@@ -526,7 +526,7 @@ function Visita() {
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Reglas para visitas y proveedoress" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>

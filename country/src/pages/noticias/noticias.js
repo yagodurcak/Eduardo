@@ -611,7 +611,7 @@ const [infoType, setInfoType] = useState({
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Noticias y comunicados" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>

@@ -138,19 +138,24 @@ const useStyles = makeStyles((theme) => ({
       },
             field: 'date',
        
-            render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
-              return (data.light_expenditures[i-1].date).split(" ")[0].split("-").reverse().join("-").slice(3, 10)  
+            render: data => {for (let i = data.water_expenditures.length; i = data.water_expenditures.length; i++) {
+              if ((data.water_expenditures).length > 0 ) {
+                
+                return (data.water_expenditures[i-1].date).split(" ")[0].split("-").reverse().join("-").slice(3, 10)  
+              } else {
+                return " "
+              }
               
             }   } 
         },
         {
-            title:"Consumo (KW)",
+            title:"Consumo (lts)",
                             cellStyle: {
         minWidth: 50,
         maxWidth: 50
       },
-            render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
-              return parseInt(data.light_expenditures[i-1].consume) 
+            render: data => {for (let i = data.water_expenditures.length; i = data.water_expenditures.length; i++) {
+              return parseInt(data.water_expenditures[i-1].consume) 
               
             }   } 
         }
@@ -160,8 +165,8 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 50,
         maxWidth: 50
       },
-          render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
-            return data.light_expenditures[i-1].consume * unitCost
+          render: data => {for (let i = data.water_expenditures.length; i = data.water_expenditures.length; i++) {
+            return data.water_expenditures[i-1].consume * unitCost
             
           }   } 
       },
@@ -178,8 +183,8 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 50,
         maxWidth: 50
       },
-            render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
-              return parseInt(data.light_expenditures[i-1].consume * unitCost)  + parseInt(data3.amount) 
+            render: data => {for (let i = data.water_expenditures.length; i = data.water_expenditures.length; i++) {
+              return parseInt(data.water_expenditures[i-1].consume * unitCost)  + parseInt(data3.amount) 
               
             }   } 
         }
@@ -246,7 +251,7 @@ const useStyles = makeStyles((theme) => ({
         setLoading(false)
       }, 2000);
 
-      const url = `https://back2.tinpad.com.pe/public/api/total-light-expenditure`;
+      const url = `https://back2.tinpad.com.pe/public/api/total-water-expenditure`;
 
       const headers = {
           'Content-Type': 'application/json',
@@ -320,7 +325,7 @@ useEffect(() => {
           'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
     
       }
-          await axios.post("https://back2.tinpad.com.pe/public/api/total-light-expenditure", info2, {headers})
+          await axios.post("https://back2.tinpad.com.pe/public/api/total-water-expenditure", info2, {headers})
           .then(response=>{
             // setdata(data.concat(response.data));
             abrirCerrarModalInsertar();
@@ -362,7 +367,7 @@ useEffect(() => {
       
         }
       
-          const url1= "https://back2.tinpad.com.pe/public/api/light-expenditure"
+          const url1= "https://back2.tinpad.com.pe/public/api/water-expenditure"
             await axios.post(url1, f, {headers})
             .then(response=>{
               // setdata(data.concat(response.data));
@@ -476,14 +481,22 @@ useEffect(() => {
       }
       const styles= useStyles();
 
+
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
           <div className={styles.modal}>
             <h3 className="my-5">Agregar detalles de Consumo y gestión</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert2}  label="Monto total*" type="number" />          
+            <label htmlFor="">Monto total*</label> <br />
+            <input type="number" name="amount" onChange={handleChangeInsert2}  label="Monto total*" type="number" step="any"/>
+            {/* <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert2}  label="Monto total*" type="number" step="0.1"/>           */}
               <br />
-            <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert2} label="Costo Unitario kw*" type="number" />
+              <br />
+              <label htmlFor="">Costo Unitario lts*</label>
+            <input className={styles.inputMaterial} name="consume" onChange={handleChangeInsert2} label="Costo Unitario kw*" type="number" step="any"/>
+            {/* <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert2}  label="Monto total*" type="number" />           */}
+        
+            {/* <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert2} label="Costo Unitario kw*" type="number" /> */}
             <br />
               <br />
               
@@ -510,8 +523,12 @@ useEffect(() => {
             { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" />
+            {/* <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Litros consumidos*" type="number" /> */}
+            <label htmlFor="">Litros consumidos*</label> 
             <br />
+            <br />
+            <input className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} type="number" step="any"/>
+            
                 
               <br />
               <br />
@@ -549,7 +566,7 @@ useEffect(() => {
 
     return (
         <div>
-            <div className='Container'>
+            <div >
                 <TitlePage titulo="Gasto Energía" />
                 <div className="flex justify-center">
             <button className='btn-3' >
@@ -610,7 +627,7 @@ useEffect(() => {
 <div className="flex justify-end mt-1 text-gray-400">
                 {data2.length > 0 ?    <div className="flex justify-end mt-1 text-gray-400">
 
-<h3>Costo unitario (kw): {unitCost}</h3>
+<h3>Costo unitario (lts): {unitCost}</h3>
 
 </div> 
                 :

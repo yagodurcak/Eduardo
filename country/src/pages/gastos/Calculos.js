@@ -10,7 +10,7 @@ import {
     Link,
     NavLink,
 } from "react-router-dom";
-import React,{useEffect, useState}  from 'react';
+import React,{useEffect, useState, useContext}  from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -21,6 +21,7 @@ import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import { TotalCondoContext } from "../../context/TotalCondContext";
 
 // import { Switch } from 'antd';
 
@@ -64,7 +65,11 @@ const useStyles = makeStyles((theme) => ({
       const [loading, setLoading] = useState(false);
       const [selectedImage, setSelectedImage] = useState();
       const [selectedFilesPost, setSelectedFilesPost] = useState();
-      
+
+
+      const { totalCondo } = useContext(TotalCondoContext);
+
+
       const customerTableHead = [
         
         {
@@ -114,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 100,
         maxWidth: 100
       },
-            render: data => parseFloat((((data.property.area/ totalArea  ) * 100)*total)/100).toFixed(2)
+            render: data => parseFloat((((data.property.area/ totalArea  ) * 100)*totalCondo)/100).toFixed(2)
         }
         ,
         {
@@ -541,25 +546,23 @@ useEffect(() => {
         <div>
             <div >
                 <TitlePage titulo="Calculo Gastos" />
-                <div className="flex justify-between">
+                {/* <div className="flex justify-between">
                             <button className='btn' >
                                 <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
                                         <NavLink className="logoContainter1" exact to="/GastosComunes" activeClassName="linkactivo">
-                                            {/* <img src={tramites} alt="" className='logo1' /> */}
                                             <h1 className="title1">Gastos Comunes</h1>
-                                            {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                                         </NavLink>
                                 </Link>
                             </button>
                
-                        </div>
+                        </div> */}
                 { loading ?  <Box sx={{ position: 'absolute' , left: 600, top:500, zIndex:100}}>
            
            <CircularProgress color="success" size={80}/>
            </Box> : null}
 
-                <div className="mt-5 text-gray-400">
-                    <h2>Subtotal de gastos: $ {total}</h2>
+                <div className="mt-5 text-gray-400 flex justify-end">
+                    <h2>Subtotal de gastos: $ {totalCondo}</h2>
                 </div>
                  <div className="mt-10"><Table2 
                  title="" 

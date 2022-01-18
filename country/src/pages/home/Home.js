@@ -1,41 +1,24 @@
 import './Home.css'
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 
 import Featured from '../../components/featuredInfo/Featured'
 import Table from "../../components/table/Table"
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from 'axios';
+import { userContext } from '../../context/UserContext';
 
 function Home() {
 
-    useEffect(() => {
-     
-    
-        const buscarCotizacion = async() => {
-          
-            const url = `https://back2.tinpad.com.pe/public/api/project/1`;
+    const { dataUser } = useContext(userContext);
 
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-
-            }
-    
-    
-            const rtdo = await axios.get(url, {headers})
-   
-            console.log(rtdo);
-    
-    
-        }
-    
-        buscarCotizacion()     }, []);
+    console.log(dataUser);
     return (    
         <div className='homeContainer'>        
             <TitlePage titulo="Dashboards"/>
             <Featured/>            
             <Table/>
+            {/* <h1>{dataUser.id}</h1> */}
         </div>
     )
 }

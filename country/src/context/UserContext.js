@@ -1,39 +1,23 @@
-import React, {createContext} from 'react'
+import React, {createContext, useState} from 'react'
 
-function UserContext() {
 
-    useEffect(() => {
-     
-    
-        const buscarCotizacion = async() => {
-          
-            const url = `https://back2.tinpad.com.pe/public/api/project/1`;
+export const userContext = createContext()
 
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
 
-            }
-    
-    
-            const rtdo = await axios.get(url, {headers})
-   
-            console.log(rtdo);
-    
-    
-        }
-    
-        buscarCotizacion()
-        
-      
-      }, []);
 
-      
+const UserProvider = (props) => {
+
+
+    const [dataUser, setdataUser] = useState({});
+
     return (
-        <div>
-            
-        </div>
+        <userContext.Provider value={{dataUser, setdataUser}}>
+
+{props.children}
+
+        </userContext.Provider>
     )
+
 }
 
-export default UserContext
+export default UserProvider

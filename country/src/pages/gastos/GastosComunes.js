@@ -4,13 +4,15 @@
 // falta loi de mail en editar
 
 import "../users/Users.css"
-
+import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
 import {Button, Modal, TextField} from '@material-ui/core';
 import {
     Link,
     NavLink,
 } from "react-router-dom";
-import React,{useEffect, useState}  from 'react';
+import DatePicker from "react-datepicker";
+import React,{useEffect, useState, useContext}  from 'react';
 import {Checkbox, MenuItem, Select} from '@material-ui/core'
 
 import Box from '@mui/material/Box';
@@ -22,6 +24,7 @@ import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import { TotalCondoContext } from "../../context/TotalCondContext";
 
 // import { Switch } from 'antd';
 
@@ -91,11 +94,22 @@ function GastosComunes() {
     const [selectedImage, setSelectedImage] = useState();
     const [selectedFilesPost, setSelectedFilesPost] = useState();
     const [year,setYear]=useState('all')
-    const [filteredData,setFilteredData]=useState(data)
+    const [filteredData,setFilteredData]=useState('all')
+    const [startDate, setStartDate] = useState(new Date());
+
+
+    const { totalCondo, setTotalCondo } = useContext(TotalCondoContext);
+
+    useEffect(() => {
+ 
+     console.log(moment(startDate).format("YYYY-MM-DD").slice(0, 7));
+     setYear(moment(startDate).format("YYYY-MM-DD"))
+    }, [startDate])
 
     useEffect(()=>{
-      setFilteredData(year===''?data:data.filter(dt=>dt.date===year))
+      setFilteredData(year==='all' ? data : data.filter(dt=>dt.date===year))
       console.log(year);
+      suma = 0
         },[year])
     
     const [info, setInfo] = useState({
@@ -120,21 +134,22 @@ function GastosComunes() {
    
        console.log(data);
         
-            for (let i = 0; i < data.length; i++) {
+            for (let i = 0; i < filteredData.length; i++) {
     
-                suma = suma + parseFloat(data[i].amount) 
+                suma = suma + parseFloat(filteredData[i].amount) 
                 
-                console.log(suma);
+                // console.log(suma);
                }
-               console.log(suma);
+              //  console.log(suma);
                setTotal(suma)
+               setTotalCondo(suma)
 
     }
 
     useEffect(() => {
       console.log("ahora");
       sumarGastosTotales()
-    }, [data.length >= 1]);
+    }, [filteredData]);
 
 
 
@@ -171,13 +186,21 @@ function GastosComunes() {
       
       console.log(rtdo.data.data);
       setdata(rtdo.data.data)
+     
 
   }
 // }
+
+useEffect(() => {
+  setFilteredData(data)
+}, [data])
+
+
 useEffect(() => {
    buscarCotizacion()
   
 sumarGastosTotales()
+
 
   
   console.log(data);
@@ -448,6 +471,7 @@ sumarGastosTotales()
       <div>
         <div >
           <TitlePage titulo="Gastos Comunes" />
+
           <div className="flex justify-center">
             <button className='btn-3' >
               <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
@@ -488,6 +512,7 @@ sumarGastosTotales()
                 </NavLink>
               </Link>
             </button>
+
             <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
               Agregar gasto
             </button>
@@ -496,10 +521,26 @@ sumarGastosTotales()
 
             <CircularProgress color="success" size={80} />
           </Box> : null}
+         
+          <div className="pickFecha">
+            <div className="flex">
+              <h3>Filtrar: </h3> <br />
+              <DatePicker
+              wrapperClassName="datePicker"
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    dateFormat="MM/yyyy"
+                    showMonthYearPicker
+                  />
+            </div>
+          </div>
+        
 
           <div className="flex justify-end mt-5 text-gray-400">
             <h2>Total de gastos: $ {total}</h2>
+            
           </div>
+   
           <div className="mt-10"><Table2
             title=""
             columns={customerTableHead}
@@ -516,26 +557,28 @@ sumarGastosTotales()
                 tooltip: "Eliminar",
                 // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
                 onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
-              },
-              {
-                icon:()=><Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                // defaultValue={"all"}
-                style={{width:100}}
-                value={year}
-                onChange={(e)=>setYear(e.target.value)}
-              >
-                 <MenuItem value={""}><em>{fechasss }</em></MenuItem>
-                 {data.map(tipos => (
-            // <option value={tipos.date} key={tipos.id} >{tipos.date}</option>
-            <MenuItem value={tipos.date} key={tipos.date}>{(tipos.date).slice(0,7)}</MenuItem>
-          ))}
-             
-              </Select>,
-              tooltip:"Filter Year",
-              isFreeAction:true
               }
+              // {
+              //   icon:()=><Select
+              //   labelId="demo-simple-select-label"
+              //   id="demo-simple-select"
+              //   // defaultValue={"all"}
+              //   style={{width:100}}
+              //   value={year}
+              //   onChange={(e)=>setYear(e.target.value)}
+              // >
+            
+              //    {data.map(tipos => (
+              //      // <option value={tipos.date} key={tipos.id} >{tipos.date}</option>
+              //      <MenuItem value={tipos.date} key={tipos.date}>{(tipos.date).slice(0,7)}</MenuItem>
+              //      ))}
+              //      <MenuItem value={'all'}><em>Todos</em></MenuItem>
+             
+              // </Select>,
+              // tooltip:"Filter Year",
+              // isFreeAction:true
+              // }
+              
 
             ]}
 

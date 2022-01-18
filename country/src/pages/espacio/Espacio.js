@@ -953,7 +953,7 @@ console.log("eliminjar todos 2");
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Espacios de uso común" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>

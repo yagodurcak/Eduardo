@@ -4,10 +4,13 @@
 // falta loi de mail en editar
 
 import "../users/Users.css"
+import "react-datepicker/dist/react-datepicker.css";
 
 import {Button, Modal, TextField} from '@material-ui/core';
 import {Checkbox, MenuItem, Select} from '@material-ui/core'
 import React,{useEffect, useState}  from 'react';
+import moment from "moment";
+import DatePicker from "react-datepicker";
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -57,7 +60,7 @@ function Historial() {
   const [filter, setFilter]=useState(true)
   const [year,setYear]=useState('all')
   const [filteredData,setFilteredData]=useState(data)
-    
+  const [startDate, setStartDate] = useState(new Date());
     const [info, setInfo] = useState({
 
       name: "",
@@ -66,11 +69,19 @@ function Historial() {
       email:"",
       phone:""
     })
-
+    useEffect(() => {
+ 
+      console.log(moment(startDate).format("YYYY-MM-DD").slice(0, 7));
+      setYear(moment(startDate).format("YYYY-MM-DD"))
+     }, [startDate])
     useEffect(()=>{
-      setFilteredData(year===''?data:data.filter(dt=>dt.date===year))
+      setFilteredData(year==='all' ? data : data.filter(dt=>dt.date===year))
       console.log(year);
+   
         },[year])
+
+ 
+
     const customerTableHead = [
 
       {
@@ -350,42 +361,34 @@ useEffect(() => {
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Historial de cobros de luz" />
  
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>
-           </Box> : null}
 
+
+           </Box> : null}
+           <div className="pickFecha">
+            <div className="flex">
+              <h3>Filtrar: </h3> <br />
+              <DatePicker
+              wrapperClassName="datePicker"
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    dateFormat="MM/yyyy"
+                    showMonthYearPicker
+                  />
+            </div>
+            <br /><br /><br /><br />
+          </div>
 
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
                  data={filteredData}
-                 actions= {[                    
-                
-                  {
-                    icon:()=><Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    // defaultValue={"all"}
-                    style={{width:100}}
-                    value={year}
-                    onChange={(e)=>setYear(e.target.value)}
-                  >
-                     <MenuItem value={""}><em>{fechasss }</em></MenuItem>
-                     {data.map(tipos => (
-                // <option value={tipos.date} key={tipos.id} >{tipos.date}</option>
-                <MenuItem value={tipos.date} key={tipos.date}>{(tipos.date).slice(0,7)}</MenuItem>
-              ))}
-                 
-                  </Select>,
-                  tooltip:"Filter Year",
-                  isFreeAction:true
-                  }
-          
-                ] }
+       
 
                  /></div>
             </div>

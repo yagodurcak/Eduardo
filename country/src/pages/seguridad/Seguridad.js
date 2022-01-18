@@ -346,7 +346,7 @@ function Seguridad() {
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Personal de Seguridad" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>

@@ -585,7 +585,7 @@ const useStyles = makeStyles((theme) => ({
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Usuarios Propietarios" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>

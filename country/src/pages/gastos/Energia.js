@@ -161,7 +161,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 50
       },
           render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
-            return data.light_expenditures[i-1].consume * unitCost
+            return parseFloat(data.light_expenditures[i-1].consume * unitCost).toFixed(2)
             
           }   } 
       },
@@ -481,9 +481,16 @@ useEffect(() => {
           <div className={styles.modal}>
             <h3 className="my-5">Agregar detalles de Consumo y gestión</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert2}  label="Monto total*" type="number" />          
+            <label htmlFor="">Monto total*</label> <br />
+            <input type="number" name="amount" onChange={handleChangeInsert2}  label="Monto total*" type="number" step="any"/>
+            {/* <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert2}  label="Monto total*" type="number" step="0.1"/>           */}
               <br />
-            <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert2} label="Costo Unitario kw*" type="number" />
+              <br />
+              <label htmlFor="">Costo Unitario kw*</label>
+            <input className={styles.inputMaterial} name="consume" onChange={handleChangeInsert2} label="Costo Unitario kw*" type="number" step="any"/>
+            {/* <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert2}  label="Monto total*" type="number" />           */}
+        
+            {/* <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert2} label="Costo Unitario kw*" type="number" /> */}
             <br />
               <br />
               
@@ -510,10 +517,14 @@ useEffect(() => {
             { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" />
+            {/* <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" /> */}
+            <label htmlFor="">Kw consumidos*</label>
+            <br />
+            <br />
+            <input className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" step="any"/>
             <br />
                 
-              <br />
+              
               <br />
             <label htmlFor="" className='mt-5'>Fecha de Consumo*</label>
             <br />
@@ -549,7 +560,7 @@ useEffect(() => {
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Gasto Energía" />
                 <div className="flex justify-center">
             <button className='btn-3' >

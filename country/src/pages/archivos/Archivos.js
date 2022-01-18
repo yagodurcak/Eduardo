@@ -452,7 +452,7 @@ const peticionPost=async()=>{
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Información util" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>

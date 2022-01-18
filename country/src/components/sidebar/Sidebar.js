@@ -4,7 +4,7 @@ import {
     Link,
     NavLink,
 } from "react-router-dom";
-import React , {useState} from 'react';
+import React , {useState, useContext} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -31,6 +31,7 @@ import seguridad from "../../IMG/users/seguridad.svg"
 import tramites from "../../IMG/Tramites 3tramites.svg"
 import users from "../../IMG/Users 2users.svg"
 import visitas from "../../IMG/Visitas 3visitas.svg"
+import { userContext } from "../../context/UserContext";
 
 function Sidebar() {
 
@@ -43,6 +44,8 @@ function Sidebar() {
     const [activeInformacion, setActiveInformacion] = useState(false)
     const [activeGastos, setActiveGastos] = useState(false)
     const [loading, setLoading] = useState(false);
+
+    const {dataUser} = useContext(userContext)
 
     const abrirSubmenuUser = () => {
         setSubMenuUser(!submenuUser)
@@ -84,7 +87,7 @@ function Sidebar() {
                     <hr className="linea" />
                     <div className="logoContainter">
                         <img src={imagen} alt="" className='logo1' />
-                        <h1 className="title2">Admin</h1>
+                        <h1 className="title2">{dataUser.name}</h1>
                     </div>
                 <hr className="linea" />
                 </div>

@@ -309,7 +309,7 @@ useEffect(() => {
 
     return (
         <div>
-            <div className='Container'>
+            <div>
                 <TitlePage titulo="Personal de Servicio" />
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>

@@ -29,11 +29,14 @@ import Topbar from "./components/topbar/Topbar";
 import Tramites from "./pages/tramites/Tramites";
 import Users from "./pages/users/Users"
 import Visita from "./pages/visita/Visita";
-
+import UserProvider from "../src/context/UserContext"
+import TotalCondoProvider from "../src/context/TotalCondContext"
 Modal.setAppElement('#root');
 
 function App() {
   return (
+    <UserProvider>
+      <TotalCondoProvider>
     <Router>
       <Switch>
           <Route exact path="/">
@@ -44,8 +47,7 @@ function App() {
         <Sidebar/>
         <Switch>
         <div  className="topbarContainer" >
-          <Topbar/> 
-     
+          <Topbar/>      
           <Route  path="/Home">
             <Home />
           </Route>
@@ -111,6 +113,8 @@ function App() {
 
       </Switch>
     </Router>
+    </TotalCondoProvider>
+    </UserProvider>
   );
 }
 
