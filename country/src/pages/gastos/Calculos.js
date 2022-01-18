@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
       
       const [data, setdata] = useState([]);
       const [data2, setdata2] = useState([]);
+      const [data3, setdata3] = useState([]);
       const [totalAmount, setTotalAmount] = useState([]);
       const [total, setTotal] = useState(0);
       const [totalArea, setTotalArea] = useState(0);
@@ -122,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 80,
         maxWidth: 80
       },
-            render: data => "10.00"
+             render: data => data3.amount
         }
         ,
         {
@@ -131,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 80,
         maxWidth: 80
       },
-            render: data => parseFloat(((parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2))*total)/100 + 10).toFixed(2)
+            render: data => parseFloat(((parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2))*total)/100 + parseInt(data3.amount) ).toFixed(2)
         }
 
     ]
@@ -236,6 +237,27 @@ const useStyles = makeStyles((theme) => ({
 
 
 }
+
+ let hoy = new Date().toLocaleString().split(',')[0].slice(2, Date().length)
+ console.log(hoy);
+const buscarCobranza = async() => {
+
+
+  const url = `https://back2.tinpad.com.pe/public/api/collection-expense`;
+
+  const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+  }
+
+  const rtdo = await axios.get(url, {headers})
+  const rtdo2 = rtdo.data.data
+
+ 
+  console.log(rtdo2[0]);
+  setdata3(rtdo2[0])    
+
+}
 // }
 // useEffect(() => {
 //     console.log("ahora");
@@ -246,7 +268,7 @@ useEffect(() => {
   buscarCotizacion()
   buscarCotizacion2()
   sumarGastosTotales()
-
+  buscarCobranza()
 }, []);
 
     
@@ -517,7 +539,7 @@ useEffect(() => {
 
     return (
         <div>
-            <div className='Container'>
+            <div >
                 <TitlePage titulo="Calculo Gastos" />
                 <div className="flex justify-between">
                             <button className='btn' >

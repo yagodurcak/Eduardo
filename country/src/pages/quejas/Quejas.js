@@ -64,7 +64,7 @@ const customerTableHead = [
         maxWidth: 50
       },  
       title:"Propietario",
-        field: "propertyId"
+      render: data => data.property.users[0].name
     },
     {
                  cellStyle: {
@@ -336,7 +336,7 @@ function Quejas() {
             <div className="estilosmodalDetails">
                 <h1>Detalle de Queja o Reclamo</h1>
                 <div className='linea'></div>
-                <h3 >Propietario: <span className="mt-5 detailsInfo">{info&&info.propertyId}</span></h3>
+                <h3 >Propietario: <span className="mt-5 detailsInfo">{info.property&&info.property.users[0].name}</span></h3>
                 <h3 >Manzana: <span className="mt-5 detailsInfo">{info.property&&info.property.block}</span></h3>
                 <h3 >Lote: <span className="mt-5 detailsInfo">{info.property&&info.property.lot}</span></h3>
                 <h3 >Doc de Identidad: <span className="mt-5 detailsInfo">{info&&info.subject}</span></h3>

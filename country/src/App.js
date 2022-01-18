@@ -44,7 +44,8 @@ function App() {
         <Sidebar/>
         <Switch>
         <div  className="topbarContainer" >
-          {/* <Topbar/>  */}
+          <Topbar/> 
+     
           <Route  path="/Home">
             <Home />
           </Route>

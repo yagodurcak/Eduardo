@@ -18,7 +18,7 @@ const Table2 = props => {
 
             
             actions={props.actions}
-            style={{ width: "70vw", maxWith: "70vw"}}
+            style={{ width: "100%", maxWith: "100%"}}
             
             // parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
             // parentChildData={(row, rows) =>

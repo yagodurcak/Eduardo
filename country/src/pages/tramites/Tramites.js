@@ -48,7 +48,7 @@ const customerTableHead = [
         minWidth: 80,
         maxWidth: 80
       },
-        render: data => data.proyect.projectTypeId
+        render: data => data.proyect.project_type.name
     },
     {
         title:"Proyecto",
@@ -350,7 +350,7 @@ function Tramites() {
                 <h3 >Documentos Adjuntos:</h3>
                 <div className='mt-5 flex justify-start items-center'>
                 <i className="material-icons">attach_file</i>
-                <h4 ><span className="detailsInfo">{info&&info.attached}</span></h4>
+                <h4 ><span className="detailsInfo">{info.attachments&&info.attachments[0].path}</span></h4>
                 </div>
 
                 <button className='btn btn-2 mt-10' onClick={()=>seleccionarUser2() }>Responder</button>

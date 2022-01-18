@@ -11,6 +11,7 @@ import {
     NavLink,
 } from "react-router-dom";
 import React,{useEffect, useState}  from 'react';
+import {Checkbox, MenuItem, Select} from '@material-ui/core'
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -60,6 +61,11 @@ const customerTableHead = [
     field: "invoiceNumber"
 },
 {
+    title:"Fecha",
+    field: "date",
+    render: data => (data.date).split(" ")[0].split("-").reverse().join("-").slice(3, 10)
+},
+{
     title:"Monto",
     field: "amount"
 },
@@ -84,6 +90,13 @@ function GastosComunes() {
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
     const [selectedFilesPost, setSelectedFilesPost] = useState();
+    const [year,setYear]=useState('all')
+    const [filteredData,setFilteredData]=useState(data)
+
+    useEffect(()=>{
+      setFilteredData(year===''?data:data.filter(dt=>dt.date===year))
+      console.log(year);
+        },[year])
     
     const [info, setInfo] = useState({
 
@@ -202,7 +215,7 @@ sumarGastosTotales()
             f.append("concept", info.concept)
             f.append("invoiceNumber", info.invoiceNumber)
             f.append("amount", parseInt(info.amount) )
-            f.append("transactionCost",parseInt(info.transactionCost) )
+            f.append("transactionCost","1" )
        
        
       
@@ -336,7 +349,7 @@ sumarGastosTotales()
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
           <div className={styles.modal}>
-            <h3 className="my-5">Agregar Nuevo Usuario</h3>
+            <h3 className="my-5">Agregar Nuevo Gasto</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             <TextField className={styles.inputMaterial} name="concept" onChange={handleChangeInsert} label="Concepto*"  />
             <br />
@@ -344,7 +357,7 @@ sumarGastosTotales()
               <br />
               <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert}  label="Monto" />
             <br />
-              <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  label="Costo de Transacción*" />
+              {/* <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  label="Costo de Transacción*" /> */}
               <br />
             <br />
               <label htmlFor="" className='mt-5'>Fecha de publicación</label>
@@ -397,7 +410,7 @@ sumarGastosTotales()
               <br />
               <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert}  value= {info&&info.amount} label="Monto" />
             <br />
-              <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  value= {info&&info.transactionCost} label="Costo de Transacción*" />
+              {/* <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  value= {info&&info.transactionCost} label="Costo de Transacción*" /> */}
               <br />
             
               <label htmlFor="" className='mt-5'>Fecha de publicación</label>
@@ -429,9 +442,11 @@ sumarGastosTotales()
         </div>
       )
 
+      let fechasss= new Date().getFullYear();
+
     return (
       <div>
-        <div className='Container'>
+        <div >
           <TitlePage titulo="Gastos Comunes" />
           <div className="flex justify-center">
             <button className='btn-3' >
@@ -488,7 +503,7 @@ sumarGastosTotales()
           <div className="mt-10"><Table2
             title=""
             columns={customerTableHead}
-            data={data}
+            data={filteredData}
             actions={[
 
               {
@@ -501,6 +516,25 @@ sumarGastosTotales()
                 tooltip: "Eliminar",
                 // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
                 onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
+              },
+              {
+                icon:()=><Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                // defaultValue={"all"}
+                style={{width:100}}
+                value={year}
+                onChange={(e)=>setYear(e.target.value)}
+              >
+                 <MenuItem value={""}><em>{fechasss }</em></MenuItem>
+                 {data.map(tipos => (
+            // <option value={tipos.date} key={tipos.id} >{tipos.date}</option>
+            <MenuItem value={tipos.date} key={tipos.date}>{(tipos.date).slice(0,7)}</MenuItem>
+          ))}
+             
+              </Select>,
+              tooltip:"Filter Year",
+              isFreeAction:true
               }
 
             ]}
