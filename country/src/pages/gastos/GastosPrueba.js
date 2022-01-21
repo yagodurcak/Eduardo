@@ -4,8 +4,10 @@
 // falta loi de mail en editar
 
 import "../users/Users.css"
+import "react-datepicker/dist/react-datepicker.css";
 
 import {Button, Modal, TextField} from '@material-ui/core';
+import {Checkbox, MenuItem, Select} from '@material-ui/core'
 import {
     Link,
     NavLink,
@@ -14,6 +16,7 @@ import React,{useContext, useEffect, useState}  from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import DatePicker from "react-datepicker";
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -22,6 +25,7 @@ import TitlePage from '../../components/pageComponents/TitlePage';
 import { TotalCondoContext } from "../../context/TotalCondContext";
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import moment from "moment";
 
 // import { Switch } from 'antd';
 
@@ -46,104 +50,62 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-  
-  
-  
-  function Calculos() {
-      
-      
-      const [data, setdata] = useState([]);
-      const [data2, setdata2] = useState([]);
-      const [data3, setdata3] = useState([]);
-      const [totalAmount, setTotalAmount] = useState([]);
-      const [total, setTotal] = useState(0);
-      const [totalArea, setTotalArea] = useState(0);
-      const [showModalInsertar, setShowModalInsertar] = useState(false);
-      const [showModalEditar, setShowModalEditar] = useState(false);
-      const [showModalEliminar, setShowModalEliminar] = useState(false);
-      const [error, setError] = useState(false)
-      const [loading, setLoading] = useState(false);
-      const [selectedImage, setSelectedImage] = useState();
-      const [selectedFilesPost, setSelectedFilesPost] = useState();
+const customerTableHead = [
+
+// {
+//     title:"Item",
+//     field: "id"
+// },
+{
+    title:"Concepto",
+    field: "concept"
+},
+{
+    title:"N° de Factura",
+    field: "invoiceNumber"
+},
+{
+    title:"Fecha",
+    field: "date",
+    render: data => (data.date).split(" ")[0].split("-").reverse().join("-").slice(3, 10)
+},
+{
+    title:"Monto",
+    field: "amount"
+},
+{
+    title:"Archivo",
+    field: "document"
+}
+]
 
 
-      const { totalCondo } = useContext(TotalCondoContext);
+
+function GastosPrueba() {
 
 
-      const customerTableHead = [
-        
-        {
-            title:"Propietario",
-                cellStyle: {
-        minWidth: 150,
-        maxWidth: 150
-      },
-            render: data => data.user.name  + " " +  data.user.lastName    , 
-        },
+    const [data, setdata] = useState([]);
+    const [totalAmount, setTotalAmount] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [showModalInsertar, setShowModalInsertar] = useState(false);
+    const [showModalEditar, setShowModalEditar] = useState(false);
+    const [showModalEliminar, setShowModalEliminar] = useState(false);
+    const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState();
+    const [selectedFilesPost, setSelectedFilesPost] = useState();
+    const [year,setYear]=useState('all')
+    const [filteredData,setFilteredData]=useState([])
+    const [startDate, setStartDate] = useState(new Date());
 
-        {
-            title:"Mz.",
-                cellStyle: {
-        minWidth: 80,
-        maxWidth: 80
-      },
-            render: data => data.property.block   
-        },
-        {
-            title:"Lte.",
-                cellStyle: {
-        minWidth: 80,
-        maxWidth: 80
-      },
-            render: data => data.property.lot  
-        },
-        {
-            title:"Área(m2)",
-                cellStyle: {
-        minWidth: 80,
-        maxWidth: 80
-      },
-            render: data =>parseInt(data.property.area)  
-        },
-        {
-            title:"Pariticipacion (%)",
-                cellStyle: {
-        minWidth: 80,
-        maxWidth: 80
-      },
-            render: data => parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2)
-        },
-        {
-            title:"Subtotal(S/)",
-                cellStyle: {
-        minWidth: 100,
-        maxWidth: 100
-      },
-            render: data => parseFloat((((data.property.area/ totalArea  ) * 100)*totalCondo)/100).toFixed(2)
-        }
-        ,
-        {
-            title:"Cobranza(S/)",
-                cellStyle: {
-        minWidth: 80,
-        maxWidth: 80
-      },
-             render: data => data3.amount
-        }
-        ,
-        {
-            title:"Total",
-                cellStyle: {
-        minWidth: 80,
-        maxWidth: 80
-      },
-            render: data => parseFloat(((parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2))*total)/100 + parseInt(data3.amount) ).toFixed(2)
-        }
 
-    ]
-      const [info, setInfo] = useState({
-          
-          amount: "",
+    const { setTotalCondo } = useContext(TotalCondoContext);
+
+    
+    
+    const [info, setInfo] = useState({
+
+        amount: "",
        
         concept: "",
        
@@ -157,14 +119,29 @@ const useStyles = makeStyles((theme) => ({
 
     })
 
-
-
+    // let suma = 0
+    // const sumarGastosTotales = () => {
+    //     // console.log("calculando total");
 
    
+    //    console.log("gastos totales");
+        
+    //         for (let i = 0; i < filteredData.length; i++) {
+    
+    //             suma = suma + parseFloat(filteredData[i].amount) 
+                
+    //             // console.log(suma);
+    //            }
+    //           //  console.log(suma);
+    //            setTotal(suma)
+    //            setTotalCondo(suma)
+
+    // }
+
 
     const{document, amount,  date, invoiceNumber, propertyId, transactionCost, concept } = info;
   
-    const baseUrl="https://back2.tinpad.com.pe/public/api/property-user";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/condominium-expense";
     const handleChangeInsert = (e) => {
       setInfo({
         ...info,
@@ -174,108 +151,71 @@ const useStyles = makeStyles((theme) => ({
     }
     
         
-    const sumarGastosTotales = () => {
-        let suma = 0
-        for (let i = 0; i < data2.length; i++) {
-             suma = suma + parseFloat(data2[i].amount) 
-             
-            }
-            console.log(suma);
-            setTotal(suma)
-    }
-    const sumarAreaTotales = () => {
-        let area = 0
-        for (let i = 0; i < data.length; i++) {
-             area = area + parseFloat(data[i].property.area) 
-             
-            }
-            console.log(area);
-            setTotalArea(area)
-    }
-    
-    useEffect(() => {
-        console.log("ahora");
-        sumarGastosTotales()
-      }, [data2.length >= 1]);
-    useEffect(() => {
-        console.log("ahora2");
-        sumarAreaTotales()
-      }, [data.length >= 1]);
+
+    // }
 
     const buscarCotizacion = async() => {
-
+     
       setLoading(true)
       setTimeout(() => {
         setLoading(false)
       }, 2000);
-            
-      const url = `https://back2.tinpad.com.pe/public/api/property-user`;
-
+  
+      const url = `https://back2.tinpad.com.pe/public/api/condominium-expense`;
+  
       const headers = {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
       }
-
+  
       const rtdo = await axios.get(url, {headers})
       
-      console.log(rtdo.data.data);
-      setdata(rtdo.data.data)
-    
+     
+        
+        setdata(rtdo.data.data)
       
-
-  }
-  const buscarCotizacion2 = async() => {
-
-
-
-    const url = `https://back2.tinpad.com.pe/public/api/condominium-expense`;
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      console.log(rtdo.data.data);
+      
+      
+      
     }
 
-    const rtdo = await axios.get(url, {headers})
-    
-    console.log(rtdo.data.data);
-    setdata2(rtdo.data.data)
 
-
-}
-
- let hoy = new Date().toLocaleString().split(',')[0].slice(2, Date().length)
- console.log(hoy);
-const buscarCobranza = async() => {
-
-
-  const url = `https://back2.tinpad.com.pe/public/api/collection-expense`;
-
-  const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-  }
-
-  const rtdo = await axios.get(url, {headers})
-  const rtdo2 = rtdo.data.data
-
- 
-  console.log(rtdo2[0]);
-  setdata3(rtdo2[0])    
-
-}
-// }
-// useEffect(() => {
-//     console.log("ahora");
-//     sumarAreaTotales()
-//   }, [data.length >= 1]);
-  
 useEffect(() => {
+
+  
   buscarCotizacion()
-  buscarCotizacion2()
-  sumarGastosTotales()
-  buscarCobranza()
+
+
+
 }, []);
 
+
+// const fechaActual = new Date
+// const fechaActual1 = moment(fechaActual).format("YYYY-MM")
+// const fechaActual2 = moment(fechaActual).format("YYYY-MM-DD")
+
+// useEffect(() => {
+//   setFilteredData(data.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
+//   console.log(fechaActual1);
+// }, [data])
+
+// useEffect(() => {
+//   // console.log("ahora");
+//   sumarGastosTotales()
+// }, [filteredData]);
+
+// useEffect(() => {
+ 
+//   console.log("date");
+//    setYear(moment(startDate).format("YYYY-MM"))
+//   }, [startDate])
+
+//   useEffect(()=>{
+//     setFilteredData(data.filter(dt=>dt.date.slice(0, 7) === year))
+//     console.log(year);
+//     suma = 0
+//       },[year])
     
 
     const seleccionarUser=(user, caso)=>{
@@ -304,20 +244,13 @@ useEffect(() => {
       
       
             f.append("propertyId", 1)
-            f.append("date", info.date)
+            // f.append("date", fechaActual2)
             f.append("concept", info.concept)
             f.append("invoiceNumber", info.invoiceNumber)
             f.append("amount", parseInt(info.amount) )
-            f.append("transactionCost",parseInt(info.transactionCost) )
+            f.append("transactionCost","1" )
        
-            
-            
-            
-            
-      
-      
-      
-          // console.log(f);
+       
       
           const headers = {
             'Content-type': 'multipart/form-data',
@@ -325,7 +258,7 @@ useEffect(() => {
       
         }
       
-          const url1= "https://back2.tinpad.com.pe/public/api/property-user"
+          const url1= "https://back2.tinpad.com.pe/public/api/condominium-expense"
             await axios.post(url1, f, {headers})
             .then(response=>{
               // setdata(data.concat(response.data));
@@ -381,16 +314,16 @@ useEffect(() => {
         }
       
 
-        const removeSelectedImage = () => {
-            setSelectedImage();
-        };
-        const imageChange = (e) => {
-            if (e.target.files && e.target.files.length > 0) {
-              setSelectedImage(e.target.files[0]);
-              console.log(e.target.files[0]);
-              setSelectedFilesPost(e.target.files[0])
-            }
-        };
+        // const removeSelectedImage = () => {
+        //     setSelectedImage();
+        // };
+        // const imageChange = (e) => {
+        //     if (e.target.files && e.target.files.length > 0) {
+        //       setSelectedImage(e.target.files[0]);
+        //       console.log(e.target.files[0]);
+        //       setSelectedFilesPost(e.target.files[0])
+        //     }
+        // };
 
     const onSubmitInsertar = (e) => {
 
@@ -449,7 +382,7 @@ useEffect(() => {
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
           <div className={styles.modal}>
-            <h3 className="my-5">Agregar Nuevo Usuario</h3>
+            <h3 className="my-5">Agregar Nuevo Gasto</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             <TextField className={styles.inputMaterial} name="concept" onChange={handleChangeInsert} label="Concepto*"  />
             <br />
@@ -457,13 +390,12 @@ useEffect(() => {
               <br />
               <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert}  label="Monto" />
             <br />
-              <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  label="Costo de Transacción*" />
-              <br />
-            <br />
-              <label htmlFor="" className='mt-5'>Fecha de publicación</label>
+              {/* <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  label="Costo de Transacción*" /> */}
+    
+              {/* <label htmlFor="" className='mt-5'>Fecha de publicación</label> */}
          
             
-            <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
+            {/* <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  /> */}
 
             <br />
             {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
@@ -471,7 +403,7 @@ useEffect(() => {
 
             <div className='mt-5'>
                 {/* <label>Choose File to Upload: </label> */}
-                <input type="file"  onChange={imageChange} id="file" name='file'/>
+                {/* <input type="file"  onChange={imageChange} id="file" name='file'/> */}
             <div className="label-holder">
           <label htmlFor="file" className="label">
             <i className="material-icons">attach_file</i>
@@ -483,9 +415,9 @@ useEffect(() => {
             {selectedImage && (
           <div className='eliminarImg'>
       <h4 ><span className="detailsInfo">{info&&info.attached}</span></h4>
-            <button onClick={removeSelectedImage} style={styles.delete}>
-              Eliminar
-            </button>
+            {/* <button onClick={removeSelectedImage} style={styles.delete}> */}
+              {/* Eliminar
+            </button> */}
           </div>
         )}
             <br /><br />
@@ -510,7 +442,7 @@ useEffect(() => {
               <br />
               <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert}  value= {info&&info.amount} label="Monto" />
             <br />
-              <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  value= {info&&info.transactionCost} label="Costo de Transacción*" />
+              {/* <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  value= {info&&info.transactionCost} label="Costo de Transacción*" /> */}
               <br />
             
               <label htmlFor="" className='mt-5'>Fecha de publicación</label>
@@ -524,7 +456,7 @@ useEffect(() => {
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Editar</Button>
-              <Button onClick= {()=>sumarGastosTotales()}> Cancelar</Button>
+              <Button onClick= {()=>abrirCerrarModalEditar()}> Cancelar</Button>
             </div>
           </div>
         </form>
@@ -542,45 +474,92 @@ useEffect(() => {
         </div>
       )
 
+
+
     return (
-        <div>
-            <div >
-                <TitlePage titulo="Calculo Gastos" />
-                {/* <div className="flex justify-between">
-                            <button className='btn' >
-                                <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
-                                        <NavLink className="logoContainter1" exact to="/GastosComunes" activeClassName="linkactivo">
-                                            <h1 className="title1">Gastos Comunes</h1>
-                                        </NavLink>
-                                </Link>
-                            </button>
-               
-                        </div> */}
-                { loading ?  <Box sx={{ position: 'absolute' , left: 600, top:500, zIndex:100}}>
-           
-           <CircularProgress color="success" size={80}/>
-           </Box> : null}
-           <button className='btn' >
+      <div>
+        <div >
+          <TitlePage titulo="Gastos Comunes" />
+{/* 
+          <div className="flex justify-center">
+            <button className='btn-3' >
               <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
                 <NavLink className="logoContainter1" exact to="/GastosComunes" activeClassName="linkactivo">
-                  {/* <img src={tramites} alt="" className='logo1' /> */}
-                  <h1 className="title1">Volver</h1>
-                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                  <h1 className="title1">Condominio</h1>
+
                 </NavLink>
               </Link>
             </button>
+            <button className='btn-3' >
+              <Link to="/Energia" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/Energia" activeClassName="linkactivo">
+                  <h1 className="title1">Energia</h1>
+                </NavLink>
+              </Link>
+            </button>
+            <button className='btn-3' >
+              <Link to="/Prueba" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/Prueba" activeClassName="linkactivo">
+                  <h1 className="title1">Agua</h1>
+                </NavLink>
+              </Link>
+            </button>
+      
+          </div> */}
 
-                <div className="mt-5 text-gray-400 flex justify-end">
-                    <h2>Subtotal de gastos: $ {totalCondo}</h2>
-                </div>
-                 <div className="mt-10"><Table2 
-                 title="" 
-                 columns={customerTableHead} 
-                 data={data}
-                
+          {loading ? <Box sx={{ position: 'absolute', left: 500, top: 500, zIndex: 100 }}>
 
-                 /></div>
-            </div>
+            <CircularProgress color="success" size={80} />
+          </Box> : null}
+          <div className="flex justify-between mt-16">
+ 
+
+ <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
+   Agregar gasto
+ </button>
+<div className="pickFecha">
+ <div className="flex">
+   <h3>Filtrar: </h3> <br />
+   {/* <DatePicker
+   wrapperClassName="datePicker"
+         selected={startDate}
+         onChange={(date) => setStartDate(date)}
+         dateFormat="MM/yyyy"
+         showMonthYearPicker
+       /> */}
+ </div>
+</div>
+
+{/* <div className="text-gray-400">
+ <h2>Total de gastos: $ {total}</h2>
+ 
+</div> */}
+</div>
+   
+          <div className="mt-10"><Table2
+            title=""
+            columns={customerTableHead}
+            data={data}
+            actions={[
+
+              {
+                icon: () => <i class="material-icons edit">edit</i>,
+                tooltip: "Editar",
+                onClick: (event, rowData) => seleccionarUser(rowData, "Editar")
+              },
+              {
+                icon: () => <i class="material-icons delete">highlight_off</i>,
+                tooltip: "Eliminar",
+                // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
+                onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
+              }
+
+
+            ]}
+
+          /></div>
+
+        </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}
             functionShow= {abrirCerrarModalInsertar}
@@ -611,4 +590,4 @@ useEffect(() => {
     )
 }
 
-export default Calculos
+export default GastosPrueba

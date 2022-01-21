@@ -8,12 +8,15 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import {Button, Modal, TextField} from '@material-ui/core';
 import {Checkbox, MenuItem, Select} from '@material-ui/core'
+import {
+  Link,
+  NavLink,
+} from "react-router-dom";
 import React,{useEffect, useState}  from 'react';
-import moment from "moment";
-import DatePicker from "react-datepicker";
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import DatePicker from "react-datepicker";
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -21,6 +24,7 @@ import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import moment from "moment";
 
 // import { Switch } from 'antd';
 
@@ -59,7 +63,7 @@ function Historial() {
   const [dates, setDates] = useState([]);
   const [filter, setFilter]=useState(true)
   const [year,setYear]=useState('all')
-  const [filteredData,setFilteredData]=useState(data)
+  const [filteredData,setFilteredData]=useState([])
   const [startDate, setStartDate] = useState(new Date());
     const [info, setInfo] = useState({
 
@@ -70,15 +74,21 @@ function Historial() {
       phone:""
     })
     useEffect(() => {
- 
-      console.log(moment(startDate).format("YYYY-MM-DD").slice(0, 7));
-      setYear(moment(startDate).format("YYYY-MM-DD"))
-     }, [startDate])
-    useEffect(()=>{
-      setFilteredData(year==='all' ? data : data.filter(dt=>dt.date===year))
-      console.log(year);
-   
-        },[year])
+      setFilteredData(data.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
+      console.log(fechaActual1);
+    }, [data])
+
+useEffect(() => {
+
+console.log("date");
+ setYear(moment(startDate).format("YYYY-MM"))
+}, [startDate])
+
+useEffect(()=>{
+  setFilteredData(data.filter(dt=>dt.date.slice(0, 7) === year))
+  console.log(year);
+
+    },[year])
 
  
 
@@ -201,6 +211,9 @@ useEffect(() => {
       
         }
 
+        const fechaActual = new Date
+        const fechaActual1 = moment(fechaActual).format("YYYY-MM")
+        const fechaActual2 = moment(fechaActual).format("YYYY-MM-DD")
 
         const peticionDelete=async()=>{
           const headers = {
@@ -363,6 +376,19 @@ useEffect(() => {
         <div>
             <div>
                 <TitlePage titulo="Historial de cobros de luz" />
+                <div className="flex justify-end">
+            <button className='btn' >
+              <Link to="/HistorialAgua" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/HistorialAgua" activeClassName="linkactivo">
+                  {/* <img src={tramites} alt="" className='logo1' /> */}
+                  <h1 className="title1">Historial Agua</h1>
+                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                </NavLink>
+              </Link>
+            </button>
+           
+      
+          </div>
  
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
@@ -370,7 +396,7 @@ useEffect(() => {
 
 
            </Box> : null}
-           <div className="pickFecha">
+           <div className="pickFecha mt-16">
             <div className="flex">
               <h3>Filtrar: </h3> <br />
               <DatePicker

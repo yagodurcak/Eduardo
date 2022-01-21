@@ -4,7 +4,7 @@ import {
     Link,
     NavLink,
 } from "react-router-dom";
-import React , {useState, useContext} from 'react';
+import React , {useContext, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -29,9 +29,9 @@ import right from "../../IMG/sidebar/chevron_right_black_24dp.svg"
 import rosca from "../../IMG/sidebar/rosca.svg"
 import seguridad from "../../IMG/users/seguridad.svg"
 import tramites from "../../IMG/Tramites 3tramites.svg"
+import { userContext } from "../../context/UserContext";
 import users from "../../IMG/Users 2users.svg"
 import visitas from "../../IMG/Visitas 3visitas.svg"
-import { userContext } from "../../context/UserContext";
 
 function Sidebar() {
 
@@ -315,7 +315,7 @@ function Sidebar() {
                                 <li className='submenu'>
                                 <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/GastosComunes">
                                 <i class="material-icons">receipt_long</i>
-                                        <h1 className="title1">Registrar Gastos</h1>
+                                        <h1 className="title1">Registrar</h1>
                 
                                     </NavLink>
                                 </li>
@@ -348,6 +348,12 @@ function Sidebar() {
                                 {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                             </NavLink>
                         </li>
+                        {/* <li className='listahover'>
+                        <NavLink className="logoContainter1" exact to="/GastosPrueba" activeClassName="linkactivo">
+                                <img src={calendario} alt="" className='logo1' />
+                                <h1 className="title1">Prueba gastos</h1>
+                            </NavLink>
+                        </li> */}
                     </ul>
                 </div>
             </div>

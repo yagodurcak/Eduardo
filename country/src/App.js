@@ -2,21 +2,23 @@ import "./App.css"
 
 import {
   Route,
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch
 } from "react-router-dom";
 
 import Archivos from "./pages/archivos/Archivos";
 import Calculos from "./pages/gastos/Calculos";
-import Invitados from "./pages/invitados/Invitados";
 import Calendar from "./pages/calendar/Calendar";
 import Configuracion from "./pages/gastos/Configuracion";
 import DetalleTramite from "./pages/tramites/DetalleTramite";
 import Energia from "./pages/gastos/Energia";
 import Espacio from "./pages/espacio/Espacio";
 import GastosComunes from "./pages/gastos/GastosComunes";
+import GastosPrueba from "./pages/gastos/GastosPrueba";
 import Historial from "./pages/gastos/Historial";
+import HistorialAgua from "./pages/gastos/HistorialAgua";
 import Home from "./pages/home/Home";
+import Invitados from "./pages/invitados/Invitados";
 import Login from "./components/Login"
 import Modal from 'react-modal';
 import Noticias from "./pages/noticias/noticias";
@@ -27,11 +29,12 @@ import Seguridad from "./pages/seguridad/Seguridad";
 import Sidebar from "./components/sidebar/Sidebar";
 import Telefonos from "./pages/telefonos/Telefonos";
 import Topbar from "./components/topbar/Topbar";
+import TotalCondoProvider from "../src/context/TotalCondContext"
 import Tramites from "./pages/tramites/Tramites";
+import UserProvider from "../src/context/UserContext"
 import Users from "./pages/users/Users"
 import Visita from "./pages/visita/Visita";
-import UserProvider from "../src/context/UserContext"
-import TotalCondoProvider from "../src/context/TotalCondContext"
+
 Modal.setAppElement('#root');
 
 function App() {
@@ -110,6 +113,12 @@ function App() {
           <Route path="/Invitados">
           <Invitados/>
           </Route>
+          <Route path="/HistorialAgua">
+          <HistorialAgua/>
+          </Route>
+          {/* <Route path="/GastosPrueba">
+          <GastosPrueba/>
+          </Route> */}
           </div>
         </Switch>
   

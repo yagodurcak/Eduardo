@@ -598,10 +598,15 @@ useEffect(() => {
             </button>
       
           </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between mt-16">
   
-                                            <button className="btn"  onClick={()=>abrirCerrarModalInsertar()}>
-                            Agregar gasto
+                                            <button className="btn" >
+                            Descargar Plantilla
+                                                </button>
+                                            <button className="btn" 
+                                            //  onClick={()=>abrirCerrarModalInsertar()}
+                                             >
+                            Importar PLantilla
                                                 </button>
                                                 <div>
                                                 <div className="flex justify-end mt-1 text-gray-400">
@@ -646,7 +651,7 @@ useEffect(() => {
 
    
 
-                 <div className="mt-10"><Table2 
+                 {/* <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
                  data={data}
@@ -661,7 +666,7 @@ useEffect(() => {
           
                 ] }
 
-                 /></div>
+                 /></div> */}
             </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}

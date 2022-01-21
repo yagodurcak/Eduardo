@@ -14,6 +14,7 @@ import React,{useEffect, useState}  from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Day } from "@material-ui/pickers";
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -55,7 +56,8 @@ const useStyles = makeStyles((theme) => ({
     const [data, setdata] = useState([]);
     const [data2, setdata2] = useState([]);
     const [data3, setdata3] = useState([]);
-
+    const [data4, setdata4] = useState([]);
+const [base, setBase] = useState(0);
     const [fecha, setFecha] = useState("");
     const [totalAmount, setTotalAmount] = useState("");
     const [unitCost, setunitCost] = useState("");
@@ -101,10 +103,11 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 50
       },
             field: 'name',
-            render: data => {for (let i = 0; i < data.users.length; i++) {
-              return data.users[i].name + " " + data.users[i].lastName
+            // render: data => {for (let i = 0; i < data.users.length; i++) {
+            //   return data.users[i].name + " " + data.users[i].lastName
               
-            }   }},
+            // }   }
+          },
 
         // {
         //     title:"Doc de Identidad",
@@ -138,32 +141,39 @@ const useStyles = makeStyles((theme) => ({
       },
             field: 'date',
        
-            render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
-              return (data.light_expenditures[i-1].date).split(" ")[0].split("-").reverse().join("-").slice(3, 10)  
-              
-            }   } 
+            render: data => fecha  
         },
         {
             title:"Consumo (KW)",
                             cellStyle: {
         minWidth: 50,
         maxWidth: 50
+
+       
       },
-            render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
-              return parseInt(data.light_expenditures[i-1].consume) 
-              
-            }   } 
-        }
+      // render: data => {for (let i = 0; i <data.light_expenditures.length; i++) {
+
+      //   if (data.light_expenditures[i].date === (data2[data2.length - 1].date)) {
+      //     setBase(data.light_expenditures[i].consume)
+      //     return parseInt(data.light_expenditures[i].consume) 
+      //   } 
+
+        
+      // }   } 
+
+        
+      
+    
+    }
         ,  {
           title:"SubTotal",
                           cellStyle: {
         minWidth: 50,
         maxWidth: 50
       },
-          render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
-            return parseFloat(data.light_expenditures[i-1].consume * unitCost).toFixed(2)
+          render: data => parseFloat(base * unitCost).toFixed(2)
             
-          }   } 
+          
       },
         {
             title:"Cobranza(S/)",
@@ -178,10 +188,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 50,
         maxWidth: 50
       },
-            render: data => {for (let i = data.light_expenditures.length; i = data.light_expenditures.length; i++) {
-              return parseInt(data.light_expenditures[i-1].consume * unitCost)  + parseInt(data3.amount) 
-              
-            }   } 
+      render: data => parseFloat(base * unitCost + parseFloat(data3.amount) ).toFixed(2)
         }
     ]
 
@@ -209,7 +216,8 @@ const useStyles = makeStyles((theme) => ({
     }
 
     const{consume, amount,  date } = info2;
-    
+
+   
         
     const buscarCotizacion = async() => {
 
@@ -231,6 +239,29 @@ const useStyles = makeStyles((theme) => ({
       
       console.log(rtdo3);
       setdata(rtdo3)    
+    
+
+  }
+    const buscarFecha = async() => {
+
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000);
+
+      const url = `https://back2.tinpad.com.pe/public/api/light-expenditure`;
+
+      const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      }
+
+      const rtdo = await axios.get(url, {headers})
+      const rtdo2 = rtdo.data.data
+    //  const rtdo3=  rtdo2.map(obj=> ({ ...obj, consume: 0, transactionCost: 0 }))
+      
+      console.log(rtdo2);
+      setdata4(rtdo2)    
     
 
   }
@@ -301,7 +332,8 @@ useEffect(() => {
    buscarCotizacion()
    buscarTotalLight()
    buscarCobranza()
-
+   buscarFecha()
+ 
 }, []);
 
     
@@ -327,6 +359,7 @@ useEffect(() => {
           }).catch(error=>{
             console.log(error);
           })
+          buscarTotalLight()
           buscarCotizacion()
         }
 
@@ -348,12 +381,14 @@ useEffect(() => {
       
       
             f.append("propertyId", info.id)
-            f.append("date", info.date)
+            f.append("date", (data2[data2.length - 1].date))
             f.append("consume", info.consume)
             f.append("unitCost", unitCost)
             f.append("transactionCost", data3.amount )
             f.append("unit","kw" )
        
+
+
        
       
           const headers = {
@@ -448,6 +483,9 @@ useEffect(() => {
             buscarTotalLight()
             SaveData()
         }
+        setTimeout(() => {
+          SaveData()
+        }, 2000);
         
     }
     const onSubmitEditar = (e) => {
@@ -530,7 +568,7 @@ useEffect(() => {
             <br />
             <br />
             
-              <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
+              {/* <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  /> */}
 
             <br />
             <br />
@@ -592,10 +630,14 @@ useEffect(() => {
             </button>
       
           </div>
-                <div className="flex justify-between">
-  
-                                            <button className="btn"  onClick={()=>abrirCerrarModalInsertar()}>
-                            Agregar gasto
+                <div className="flex justify-between mt-16">
+                <button className="btn" >
+                            Descargar Plantilla
+                                                </button>
+                                            <button className="btn" 
+                                            //  onClick={()=>abrirCerrarModalInsertar()}
+                                             >
+                            Importar PLantilla
                                                 </button>
                                                 <div>
                                                 <div className="flex justify-end mt-1 text-gray-400">
@@ -639,7 +681,7 @@ useEffect(() => {
                
 
    
-
+{/* 
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
@@ -655,7 +697,7 @@ useEffect(() => {
           
                 ] }
 
-                 /></div>
+                 /></div> */}
             </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}

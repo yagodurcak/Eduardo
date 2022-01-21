@@ -5,26 +5,27 @@
 
 import "../users/Users.css"
 import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
+
 import {Button, Modal, TextField} from '@material-ui/core';
+import {Checkbox, MenuItem, Select} from '@material-ui/core'
 import {
     Link,
     NavLink,
 } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import React,{useEffect, useState, useContext}  from 'react';
-import {Checkbox, MenuItem, Select} from '@material-ui/core'
+import React,{useContext, useEffect, useState}  from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import DatePicker from "react-datepicker";
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
+import { TotalCondoContext } from "../../context/TotalCondContext";
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
-import { TotalCondoContext } from "../../context/TotalCondContext";
+import moment from "moment";
 
 // import { Switch } from 'antd';
 
@@ -94,23 +95,13 @@ function GastosComunes() {
     const [selectedImage, setSelectedImage] = useState();
     const [selectedFilesPost, setSelectedFilesPost] = useState();
     const [year,setYear]=useState('all')
-    const [filteredData,setFilteredData]=useState('all')
+    const [filteredData,setFilteredData]=useState([])
     const [startDate, setStartDate] = useState(new Date());
 
 
     const { totalCondo, setTotalCondo } = useContext(TotalCondoContext);
 
-    useEffect(() => {
- 
-     console.log(moment(startDate).format("YYYY-MM-DD").slice(0, 7));
-     setYear(moment(startDate).format("YYYY-MM-DD"))
-    }, [startDate])
-
-    useEffect(()=>{
-      setFilteredData(year==='all' ? data : data.filter(dt=>dt.date===year))
-      console.log(year);
-      suma = 0
-        },[year])
+    
     
     const [info, setInfo] = useState({
 
@@ -130,9 +121,10 @@ function GastosComunes() {
 
     let suma = 0
     const sumarGastosTotales = () => {
-        console.log("calculando total");
+        // console.log("calculando total");
+
    
-       console.log(data);
+       console.log("gastos totales");
         
             for (let i = 0; i < filteredData.length; i++) {
     
@@ -146,15 +138,6 @@ function GastosComunes() {
 
     }
 
-    useEffect(() => {
-      console.log("ahora");
-      sumarGastosTotales()
-    }, [filteredData]);
-
-
-
-
-   
 
     const{document, amount,  date, invoiceNumber, propertyId, transactionCost, concept } = info;
   
@@ -168,44 +151,101 @@ function GastosComunes() {
     }
     
         
-    const buscarCotizacion = async() => {
 
+    // }
+
+    const buscarCotizacion1 = async() => {
+     
       setLoading(true)
       setTimeout(() => {
         setLoading(false)
       }, 2000);
-
+  
       const url = `https://back2.tinpad.com.pe/public/api/condominium-expense`;
-
+  
       const headers = {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
       }
-
+  
       const rtdo = await axios.get(url, {headers})
       
-      console.log(rtdo.data.data);
-      setdata(rtdo.data.data)
      
+        
+        setdata(rtdo.data.data)
+      
+      console.log(rtdo.data.data);
+      
+      
+      
+    }
 
+
+useEffect(() => {
+
+  let mounted = true;
+
+
+  const buscarCotizacion = async() => {
+     
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000);
+
+    const url = `https://back2.tinpad.com.pe/public/api/condominium-expense`;
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    }
+
+    const rtdo = await axios.get(url, {headers})
+    
+    if (mounted) {
+      
+      setdata(rtdo.data.data)
+    }
+    console.log(rtdo.data.data);
+    
+    
+    
   }
-// }
+  buscarCotizacion()
 
-useEffect(() => {
-  setFilteredData(data)
-}, [data])
-
-
-useEffect(() => {
-   buscarCotizacion()
-  
-sumarGastosTotales()
+  return ()=>{
+    mounted= false
+  }
 
 
-  
-  console.log(data);
 }, []);
 
+
+const fechaActual = new Date
+const fechaActual1 = moment(fechaActual).format("YYYY-MM")
+const fechaActual2 = moment(fechaActual).format("YYYY-MM-DD")
+
+useEffect(() => {
+  setFilteredData(data.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
+  console.log(fechaActual1);
+}, [data])
+
+useEffect(() => {
+  // console.log("ahora");
+  sumarGastosTotales()
+}, [filteredData]);
+
+useEffect(() => {
+ 
+  console.log("date");
+   setYear(moment(startDate).format("YYYY-MM"))
+  }, [startDate])
+
+  useEffect(()=>{
+    setFilteredData(data.filter(dt=>dt.date.slice(0, 7) === year))
+    console.log(year);
+    suma = 0
+      },[year])
     
 
     const seleccionarUser=(user, caso)=>{
@@ -234,7 +274,7 @@ sumarGastosTotales()
       
       
             f.append("propertyId", 1)
-            f.append("date", info.date)
+            f.append("date", fechaActual2)
             f.append("concept", info.concept)
             f.append("invoiceNumber", info.invoiceNumber)
             f.append("amount", parseInt(info.amount) )
@@ -263,7 +303,7 @@ sumarGastosTotales()
             })
       
         // console.log(filesImg);
-          buscarCotizacion()
+          buscarCotizacion1()
         }
       
 
@@ -281,7 +321,7 @@ sumarGastosTotales()
         }).catch(error=>{ 
             console.log(error);
         })
-        buscarCotizacion()
+        buscarCotizacion1()
         abrirCerrarModalEliminar();
         }
 
@@ -300,7 +340,7 @@ sumarGastosTotales()
           }).catch(error=>{
             console.log(error);
           })
-         buscarCotizacion()
+         buscarCotizacion1()
         }
       
 
@@ -381,12 +421,11 @@ sumarGastosTotales()
               <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert}  label="Monto" />
             <br />
               {/* <TextField className={styles.inputMaterial} name="transactionCost" onChange={handleChangeInsert}  label="Costo de Transacción*" /> */}
-              <br />
-            <br />
-              <label htmlFor="" className='mt-5'>Fecha de publicación</label>
+    
+              {/* <label htmlFor="" className='mt-5'>Fecha de publicación</label> */}
          
             
-            <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
+            {/* <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  /> */}
 
             <br />
             {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
@@ -447,7 +486,7 @@ sumarGastosTotales()
             <br /><br />
             <div align="right">
               <Button color="primary" type="submit" >Editar</Button>
-              <Button onClick= {console.log(data)}> Cancelar</Button>
+              <Button onClick= {()=>abrirCerrarModalEditar()}> Cancelar</Button>
             </div>
           </div>
         </form>
@@ -502,44 +541,35 @@ sumarGastosTotales()
             </button>
       
           </div>
-          <div className="flex justify-between mt-5">
-            <button className='btn btn-2' >
-              <Link to="/Calculos" style={{ textDecoration: 'none' }}>
-                <NavLink className="logoContainter1" exact to="/Calculos" activeClassName="linkactivo">
-                  {/* <img src={tramites} alt="" className='logo1' /> */}
-                  <h1 className="title1">Calculos</h1>
-                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
-                </NavLink>
-              </Link>
-            </button>
 
-            <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
-              Agregar gasto
-            </button>
-          </div>
           {loading ? <Box sx={{ position: 'absolute', left: 500, top: 500, zIndex: 100 }}>
 
             <CircularProgress color="success" size={80} />
           </Box> : null}
-         
-          <div className="pickFecha">
-            <div className="flex">
-              <h3>Filtrar: </h3> <br />
-              <DatePicker
-              wrapperClassName="datePicker"
-                    selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    dateFormat="MM/yyyy"
-                    showMonthYearPicker
-                  />
-            </div>
-          </div>
-        
+          <div className="flex justify-between mt-16">
+ 
 
-          <div className="flex justify-end mt-5 text-gray-400">
-            <h2>Total de gastos: $ {total}</h2>
-            
-          </div>
+ <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
+   Agregar gasto
+ </button>
+<div className="pickFecha">
+ <div className="flex">
+   <h3>Filtrar: </h3> <br />
+   <DatePicker
+   wrapperClassName="datePicker"
+         selected={startDate}
+         onChange={(date) => setStartDate(date)}
+         dateFormat="MM/yyyy"
+         showMonthYearPicker
+       />
+ </div>
+</div>
+
+<div className="text-gray-400">
+ <h2>Total de gastos: $ {total}</h2>
+ 
+</div>
+</div>
    
           <div className="mt-10"><Table2
             title=""
@@ -558,31 +588,23 @@ sumarGastosTotales()
                 // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
                 onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
               }
-              // {
-              //   icon:()=><Select
-              //   labelId="demo-simple-select-label"
-              //   id="demo-simple-select"
-              //   // defaultValue={"all"}
-              //   style={{width:100}}
-              //   value={year}
-              //   onChange={(e)=>setYear(e.target.value)}
-              // >
-            
-              //    {data.map(tipos => (
-              //      // <option value={tipos.date} key={tipos.id} >{tipos.date}</option>
-              //      <MenuItem value={tipos.date} key={tipos.date}>{(tipos.date).slice(0,7)}</MenuItem>
-              //      ))}
-              //      <MenuItem value={'all'}><em>Todos</em></MenuItem>
-             
-              // </Select>,
-              // tooltip:"Filter Year",
-              // isFreeAction:true
-              // }
-              
+
 
             ]}
 
           /></div>
+                    <div className="flex justify-end mt-5">
+            <button className='btn btn-2' >
+              <Link to="/Calculos" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/Calculos" activeClassName="linkactivo">
+                  {/* <img src={tramites} alt="" className='logo1' /> */}
+                  <h1 className="title1">Registrar</h1>
+                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                </NavLink>
+              </Link>
+            </button>
+
+          </div>
         </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}

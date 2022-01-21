@@ -4,12 +4,19 @@
 // falta loi de mail en editar
 
 import "../users/Users.css"
+import "react-datepicker/dist/react-datepicker.css";
 
 import {Button, Modal, TextField} from '@material-ui/core';
+import {Checkbox, MenuItem, Select} from '@material-ui/core'
+import {
+  Link,
+  NavLink,
+} from "react-router-dom";
 import React,{useEffect, useState}  from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import DatePicker from "react-datepicker";
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -17,6 +24,7 @@ import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import moment from "moment";
 
 // import { Switch } from 'antd';
 
@@ -41,60 +49,86 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-const customerTableHead = [
-
-{
-    title:"Nombre",
-    field: "name"
-},
-{
-    title:"Apellido",
-    field: "lastName"
-},
-{
-    title:"Documento",
-    field: "document"
-}
-,
-{
-    title:"Patente",
-    field: "licensePlate"
-}
-,
-{
-    title:"Propietario",
-    render: data => data.property.users[0].name  + " " +  data.property.users[0].lastName
-},
-
-
-]
 
 
 
-function Invitados() {
 
-    const [data, setdata] = useState([]);
-    const [showModalInsertar, setShowModalInsertar] = useState(false);
-    const [showModalEditar, setShowModalEditar] = useState(false);
-    const [showModalEliminar, setShowModalEliminar] = useState(false);
-    const [error, setError] = useState(false)
-    const [loading, setLoading] = useState(false);
-    
+function HistorialAgua() {
+  const [data, setdata] = useState([]);
+  const [showModalInsertar, setShowModalInsertar] = useState(false);
+  const [showModalEditar, setShowModalEditar] = useState(false);
+  const [showModalEliminar, setShowModalEliminar] = useState(false);
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [dates, setDates] = useState([]);
+  const [filter, setFilter]=useState(true)
+  const [year,setYear]=useState('all')
+  const [filteredData,setFilteredData]=useState([])
+  const [startDate, setStartDate] = useState(new Date());
     const [info, setInfo] = useState({
 
       name: "",
       lastName: "",
       document:"",
-      licensePlate:"",
-      quantity: "10"
-      
+      email:"",
+      phone:""
     })
 
+    useEffect(() => {
+        setFilteredData(data.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
+        console.log(fechaActual1);
+      }, [data])
+
+useEffect(() => {
+ 
+  console.log("date");
+   setYear(moment(startDate).format("YYYY-MM"))
+  }, [startDate])
+
+  useEffect(()=>{
+    setFilteredData(data.filter(dt=>dt.date.slice(0, 7) === year))
+    console.log(year);
+
+      },[year])
+
+ 
+
+    const customerTableHead = [
+
+      {
+          title:"Propietario",
+          
+          render: data => data.property.users[0].name +  " " + data.property.users[0].lastName },
+          
+      
+      {
+          title:"Fecha",
+          // field: "date",
+          render: data => (data.date).slice(0,7)
+      },
+      
+      {
+          title:"Consumo kw",
+          field: "consume"
+      },
+      {
+          title:"Costo por kw",
+          field: "unitCost"
+      },
+      {
+          title:"Cobranza",
+          field: "transactionCost"
+      },
+      {
+          title:"Total",
+          render: data => parseInt(data.consume)  * parseInt(data.unitCost) + parseInt(data.transactionCost) 
+      }
+      ]
    
 
-    const{document, lastName,  name, licensePlate } = info;
+    const{document, lastName,  name, email, phone } = info;
   
-    const baseUrl="https://back2.tinpad.com.pe/public/api/guest";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/water-expenditure";
     const handleChangeInsert = (e) => {
       setInfo({
         ...info,
@@ -111,7 +145,7 @@ function Invitados() {
         setLoading(false)
       }, 2000);
         
-      const url = `https://back2.tinpad.com.pe/public/api/guest`;
+      const url = `https://back2.tinpad.com.pe/public/api/water-expenditure`;
 
       const headers = {
           'Content-Type': 'application/json',
@@ -123,8 +157,26 @@ function Invitados() {
 
       console.log(rtdo.data.data);
       setdata(rtdo.data.data)
+      
 
   }
+
+  const fechaActual = new Date
+const fechaActual1 = moment(fechaActual).format("YYYY-MM")
+const fechaActual2 = moment(fechaActual).format("YYYY-MM-DD")
+  let fechas = []
+
+  useEffect(() => {
+    for (let i = 0; i < data.length; i++) {
+      console.log(data[i].date);      
+      fechas = [...fechas, data[i].date]
+      // setDates([...dates, data[i].date])
+    }
+    setDates(fechas)
+   console.log(fechas);
+  }, [data])
+
+  // console.log(dates);
 // }
 useEffect(() => {
  
@@ -152,7 +204,7 @@ useEffect(() => {
           'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
     
       }
-          await axios.post("https://back2.tinpad.com.pe/public/api/guest", info, {headers})
+          await axios.post("https://back2.tinpad.com.pe/public/api/water-expenditure", info, {headers})
           .then(response=>{
             // setdata(data.concat(response.data));
             abrirCerrarModalInsertar();
@@ -188,7 +240,7 @@ useEffect(() => {
             'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
       
         }
-          await axios.put("https://back2.tinpad.com.pe/public/api/guest"+"/"+info.id,  info , {headers: headers})
+          await axios.put("https://back2.tinpad.com.pe/public/api/water-expenditure"+"/"+info.id,  info , {headers: headers})
           .then(response=>{
 
             abrirCerrarModalEditar();
@@ -206,7 +258,7 @@ useEffect(() => {
 
         e.preventDefault();
 
-        if (document.trim() === "" || lastName.trim() === "" ||name.trim() === "") {
+        if (document.trim() === "" || lastName.trim() === "" ||name.trim() === "" ||email.trim() === ""||phone.trim() === "") {
         
          setError(true);
          return
@@ -215,11 +267,12 @@ useEffect(() => {
 
             peticionPost()
             setInfo({
-   
+              id: "",
               name: "",
               lastName: "",
               document:"",
-              licensePlate:"",
+              email: "",
+
         
             });
 
@@ -258,7 +311,7 @@ useEffect(() => {
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
           <div className={styles.modal}>
-            <h3 className="my-5">Agregar Nueva Visita</h3>
+            <h3 className="my-5">Agregar Nuevo Usuario</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             <TextField className={styles.inputMaterial} name="name" onChange={handleChangeInsert} label="Nombres*"  />
             <br />
@@ -266,8 +319,8 @@ useEffect(() => {
               <br />
               <TextField className={styles.inputMaterial} name="document" onChange={handleChangeInsert}  label="Doc. de Identidad*" />
             <br />
-              <TextField className={styles.inputMaterial} name="licensePlate" onChange={handleChangeInsert}  label="Patente*" />
-              {/* <TextField className={styles.inputMaterial} name="phone" onChange={handleChangeInsert}  label="Telefono*" /> */}
+              <TextField className={styles.inputMaterial} name="email" onChange={handleChangeInsert}  label="Email*" />
+              <TextField className={styles.inputMaterial} name="phone" onChange={handleChangeInsert}  label="Telefono*" />
             <br />
             {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
             {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
@@ -294,7 +347,7 @@ useEffect(() => {
               <br />
               <TextField className={styles.inputMaterial} name="document" onChange={handleChangeInsert} value= {info&&info.document} label="Doc. de Identidad" />
             <br />
-              <TextField className={styles.inputMaterial} name="licensePlate" onChange={handleChangeInsert} value= {info&&info.licensePlate} label="Patente" />
+              <TextField className={styles.inputMaterial} name="email" onChange={handleChangeInsert} value= {info&&info.email} label="Doc. de Identidad" />
             <br />
      
             <br /><br />
@@ -318,41 +371,56 @@ useEffect(() => {
         </div>
       )
 
+
+      let fechasss= new Date().getFullYear();
+
     return (
         <div>
             <div>
-                <TitlePage titulo="Invitados" />
-                <div className="flex justify-end ">
-                    <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
-                        Agregar
-                    </button>
-                   
-                </div>
+                <TitlePage titulo="Historial de cobros de agua" />
+              
+          
+            <div className="flex justify-end">
+            <button className='btn' >
+              <Link to="/Historial" style={{ textDecoration: 'none' }}>
+                <NavLink className="logoContainter1" exact to="/Historial" activeClassName="linkactivo">
+                  {/* <img src={tramites} alt="" className='logo1' /> */}
+                  <h1 className="title1">Historial Luz</h1>
+                  {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                </NavLink>
+              </Link>
+            </button>
+           
+      
+          </div>
+     
+
+ 
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>
-           </Box> : null}
 
+
+           </Box> : null}
+           <div className="pickFecha mt-16">
+            <div className="flex">
+              <h3>Filtrar: </h3> <br />
+              <DatePicker
+              wrapperClassName="datePicker"
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    dateFormat="MM/yyyy"
+                    showMonthYearPicker
+                  />
+            </div>
+            <br /><br /><br /><br />
+          </div>
 
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
-                 actions= {[                    
-                
-                            {
-                        icon:() => <i class="material-icons edit">edit</i>,
-                        tooltip:"Editar",
-                        onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
-                    },
-                    {
-                        icon:() => <i class="material-icons delete">highlight_off</i>,
-                        tooltip:"Eliminar",
-                        // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
-                        onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
-                    }
-          
-                ] }
+                 data={filteredData}
+       
 
                  /></div>
             </div>
@@ -386,4 +454,4 @@ useEffect(() => {
     )
 }
 
-export default Invitados
+export default HistorialAgua
