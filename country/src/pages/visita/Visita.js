@@ -7,7 +7,7 @@ import {
   MuiPickersUtilsProvider,
   TimePicker,
 } from '@material-ui/pickers';
-import React,{useEffect, useState}  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -21,6 +21,7 @@ import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import { userContext } from '../../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -95,7 +96,7 @@ function Visita() {
     const [ visitTypes, setVisitTypes] = useState([])
     const [loading, setLoading] = useState(false);
 
-    
+    const { dataUser, setdataUser } = useContext(userContext);
     const [info, setInfo] = useState({
       typeVisitId: "",
       description: "",
@@ -199,7 +200,7 @@ function Visita() {
  
           console.log(rtdo.data.data);
           setdata(rtdo.data.data)
-  
+          setdataUser(JSON.parse(localStorage.getItem('user')))
       }
     // }
     useEffect(() => {

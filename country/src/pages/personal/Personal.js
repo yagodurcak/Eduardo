@@ -6,7 +6,7 @@
 import "../users/Users.css"
 
 import {Button, Modal, TextField} from '@material-ui/core';
-import React,{useEffect, useState}  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -17,6 +17,20 @@ import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import { userContext } from '../../context/UserContext';
+
+// import React,{useEffect, useState}  from 'react';
+
+
+
+
+
+
+
+
+
+
+
 
 // import { Switch } from 'antd';
 
@@ -68,6 +82,8 @@ function Personal() {
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false);
+
+    const { dataUser, setdataUser } = useContext(userContext);
     
     const [info, setInfo] = useState({
 
@@ -110,10 +126,12 @@ function Personal() {
       const rtdo = await axios.get(url, {headers})
 
       console.log(rtdo.data.data[0]);
+      console.log(localStorage.getItem('user'));
+      setdataUser(JSON.parse(localStorage.getItem('user')))
       setdata(rtdo.data.data)
-
-  }
-// }
+      
+    }
+    // }
 useEffect(() => {
  
 

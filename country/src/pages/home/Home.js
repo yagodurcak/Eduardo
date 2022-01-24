@@ -1,6 +1,6 @@
 import './Home.css'
 
-import React, {useEffect, useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 
 import Featured from '../../components/featuredInfo/Featured'
 import Table from "../../components/table/Table"
@@ -9,6 +9,7 @@ import axios from 'axios';
 import { userContext } from '../../context/UserContext';
 
 function Home() {
+    // const { dataUser, setdataUser } = useContext(userContext);
 
     const { dataUser } = useContext(userContext);
 

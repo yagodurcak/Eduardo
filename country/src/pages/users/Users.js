@@ -1,7 +1,7 @@
 import './Users.css'
 
 import {Button, Modal, TextField} from '@material-ui/core';
-import React,{useEffect, useState}  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -13,6 +13,7 @@ import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import { userContext } from '../../context/UserContext';
 
 // import { Switch } from 'antd';
 
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     
     const [data, setdata] = useState([]);
   
-    const [dataUser, setdataUser] = useState([])
+    // const [dataUser, setdataUser] = useState([])
     
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
    const [postSuccess2, setpostSuccess2] = useState(false)
    const [loading, setLoading] = useState(false);
    
-  
+   const { dataUser, setdataUser } = useContext(userContext);
    const nuevoArray = () => {
      
    }
@@ -206,6 +207,7 @@ const useStyles = makeStyles((theme) => ({
             setdata(rtdo.data.data)
             // console.log(rtdo.data.data);
         }
+        setdataUser(JSON.parse(localStorage.getItem('user')))
     
         buscarProperty()       
     

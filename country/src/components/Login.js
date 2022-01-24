@@ -1,14 +1,12 @@
 import "./Login.css"
 
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import imagen from "../IMG/Groupicono.svg"
 import styled from '@emotion/styled';
 import { userContext } from '../context/UserContext';
-
-
 
 const Icono = styled.img`
     height: 200px;
@@ -138,4 +136,5 @@ function Login() {
 }
 
 export default Login
+
     

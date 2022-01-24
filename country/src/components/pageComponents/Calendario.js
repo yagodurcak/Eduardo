@@ -2,7 +2,7 @@ import '../../pages/users/Users.css'
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react';
 
 import AgregarEvento from './AgregarEvento'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
@@ -12,6 +12,7 @@ import esLocale from '@fullcalendar/core/locales/es';
 import listPlugin from '@fullcalendar/list'; //For List View
 import moment from "moment"
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { userContext } from '../../context/UserContext';
 
 // import "@fullcalendar/core/main.css";
 
@@ -36,7 +37,7 @@ function Calendario() {
     const [modalOpen, setModalOpen] = useState(false)
     const [events, setEvents] = useState([]);
     const calendarRef = useRef(null)
-
+    const { dataUser, setdataUser } = useContext(userContext);
 
     const onEventAdded = event => {
         let calendarApi = calendarRef.current.getApi()
@@ -71,7 +72,7 @@ function Calendario() {
         }
   
         const rtdo = await axios.get(url, {headers})
-        
+        setdataUser(JSON.parse(localStorage.getItem('user')))
         console.log(rtdo.data.data);
         setdata(rtdo.data.data)
     }

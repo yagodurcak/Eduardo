@@ -10,7 +10,7 @@ import {
     Link,
     NavLink,
 } from "react-router-dom";
-import React,{useContext, useEffect, useState}  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -22,6 +22,7 @@ import TitlePage from '../../components/pageComponents/TitlePage';
 import { TotalCondoContext } from "../../context/TotalCondContext";
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import { userContext } from '../../context/UserContext';
 
 // import { Switch } from 'antd';
 
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
       const [selectedImage, setSelectedImage] = useState();
       const [selectedFilesPost, setSelectedFilesPost] = useState();
 
-
+      const { dataUser, setdataUser } = useContext(userContext);
       const { totalCondo } = useContext(TotalCondoContext);
 
 
@@ -236,7 +237,7 @@ const useStyles = makeStyles((theme) => ({
     }
 
     const rtdo = await axios.get(url, {headers})
-    
+    setdataUser(JSON.parse(localStorage.getItem('user')))
     console.log(rtdo.data.data);
     setdata2(rtdo.data.data)
 

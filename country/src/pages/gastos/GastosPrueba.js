@@ -26,8 +26,9 @@ import { TotalCondoContext } from "../../context/TotalCondContext";
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
 import moment from "moment";
+import { userContext } from '../../context/UserContext';
 
-// import { Switch } from 'antd';
+// import { Switch } from 'antd';import { userContext } from '../../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -97,7 +98,7 @@ function GastosPrueba() {
     const [year,setYear]=useState('all')
     const [filteredData,setFilteredData]=useState([])
     const [startDate, setStartDate] = useState(new Date());
-
+    const { dataUser, setdataUser } = useContext(userContext);
 
     const { setTotalCondo } = useContext(TotalCondoContext);
 
@@ -176,7 +177,7 @@ function GastosPrueba() {
       
       console.log(rtdo.data.data);
       
-      
+      setdataUser(JSON.parse(localStorage.getItem('user')))
       
     }
 

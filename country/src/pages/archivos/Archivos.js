@@ -1,7 +1,7 @@
 import '../users/Users.css'
 
 import {Button, Modal, TextField} from '@material-ui/core';
-import React,{useEffect, useState}  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -13,6 +13,7 @@ import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import down from "../../IMG/down.svg"
 import {makeStyles} from '@material-ui/core/styles';
+import { userContext } from '../../context/UserContext';
 
 // import { Switch } from 'antd';
 
@@ -72,7 +73,7 @@ function Archivos() {
     const [selectedFilesPost, setSelectedFilesPost] = useState();
     const [loading, setLoading] = useState(false);
     const [pathImg, setPathImg] = useState()
-
+    const { dataUser, setdataUser } = useContext(userContext);
 
 
     
@@ -131,7 +132,7 @@ function Archivos() {
           // console.log(rtdo.data.data[0]);
         
           setdata((rtdo.data.data).filter(artista=> (artista.phone === null || artista.phone === "1")));
-
+          setdataUser(JSON.parse(localStorage.getItem('user')))
   
       }
       useEffect(() => {

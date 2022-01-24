@@ -5,7 +5,7 @@
 import '../users/Users.css'
 
 import {Button, Modal, TextField} from '@material-ui/core';
-import React,{Component, useEffect, useState}  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -21,6 +21,7 @@ import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
 import mas from "../../IMG/space/mas.svg"
+import { userContext } from '../../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -70,7 +71,7 @@ function Espacio() {
     const [infoImg, setInfoImg] = useState()
     const [loading, setLoading] = useState(false);
 
-
+    const { dataUser, setdataUser } = useContext(userContext);
     // console.log(data);
     const customerTableHead = [
   
@@ -232,7 +233,7 @@ function Espacio() {
       const rtdo = await axios.get(url, {headers})
 
       // console.log(rtdo.data.data[0]);
-    
+      setdataUser(JSON.parse(localStorage.getItem('user')))
       setdata(rtdo.data.data)
 
 

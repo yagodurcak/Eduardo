@@ -26,6 +26,7 @@ import { TotalCondoContext } from "../../context/TotalCondContext";
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
 import moment from "moment";
+import { userContext } from '../../context/UserContext';
 
 // import { Switch } from 'antd';
 
@@ -101,7 +102,7 @@ function GastosComunes() {
 
     const { totalCondo, setTotalCondo } = useContext(TotalCondoContext);
 
-    
+    const { dataUser, setdataUser } = useContext(userContext);
     
     const [info, setInfo] = useState({
 
@@ -176,7 +177,7 @@ function GastosComunes() {
       
       console.log(rtdo.data.data);
       
-      
+      setdataUser(JSON.parse(localStorage.getItem('user')))
       
     }
 

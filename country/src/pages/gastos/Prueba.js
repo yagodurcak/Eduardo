@@ -10,7 +10,7 @@ import {
     Link,
     NavLink,
 } from "react-router-dom";
-import React,{useEffect, useState}  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -22,6 +22,7 @@ import { TableCell } from '@mui/material';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
+import { userContext } from '../../context/UserContext';
 
 // import { Switch } from 'antd';
 
@@ -68,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     const [selectedImage, setSelectedImage] = useState();
     const [selectedFilesPost, setSelectedFilesPost] = useState();
 
-   
+    const { dataUser, setdataUser } = useContext(userContext);
     
     const [info, setInfo] = useState({
         
@@ -237,7 +238,7 @@ const useStyles = makeStyles((theme) => ({
       console.log(rtdo3);
       setdata(rtdo3)    
     
-
+      setdataUser(JSON.parse(localStorage.getItem('user')))
   }
   // let fecha = "";
   let monto = "";

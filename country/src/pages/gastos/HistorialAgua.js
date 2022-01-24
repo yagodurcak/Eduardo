@@ -12,7 +12,7 @@ import {
   Link,
   NavLink,
 } from "react-router-dom";
-import React,{useEffect, useState}  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -25,6 +25,7 @@ import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
 import moment from "moment";
+import { userContext } from '../../context/UserContext';
 
 // import { Switch } from 'antd';
 
@@ -65,6 +66,7 @@ function HistorialAgua() {
   const [year,setYear]=useState('all')
   const [filteredData,setFilteredData]=useState([])
   const [startDate, setStartDate] = useState(new Date());
+  const { dataUser, setdataUser } = useContext(userContext);
     const [info, setInfo] = useState({
 
       name: "",
@@ -157,7 +159,7 @@ useEffect(() => {
 
       console.log(rtdo.data.data);
       setdata(rtdo.data.data)
-      
+      setdataUser(JSON.parse(localStorage.getItem('user')))
 
   }
 

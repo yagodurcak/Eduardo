@@ -1,7 +1,7 @@
 import '../users/Users.css'
 
 import {Button, Modal, TextField} from '@material-ui/core';
-import React,{useEffect, useState}  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -13,6 +13,7 @@ import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import down from "../../IMG/down.svg"
 import {makeStyles} from '@material-ui/core/styles';
+import { userContext } from '../../context/UserContext';
 
 // import { Switch } from 'antd';
 
@@ -67,7 +68,7 @@ function Telefonos() {
     const [loading, setLoading] = useState(false);
 
 
-
+    const { dataUser, setdataUser } = useContext(userContext);
 
 
 
@@ -121,7 +122,7 @@ function Telefonos() {
         
           setdata((rtdo.data.data).filter(artista=>( artista.phone !== "1" && artista.phone !== null)));
 
-  
+          setdataUser(JSON.parse(localStorage.getItem('user')))
       }
       useEffect(() => {
       

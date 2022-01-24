@@ -12,7 +12,7 @@ import {
   Link,
   NavLink,
 } from "react-router-dom";
-import React,{useEffect, useState}  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -25,6 +25,7 @@ import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
 import moment from "moment";
+import { userContext } from '../../context/UserContext';
 
 // import { Switch } from 'antd';
 
@@ -65,6 +66,7 @@ function Historial() {
   const [year,setYear]=useState('all')
   const [filteredData,setFilteredData]=useState([])
   const [startDate, setStartDate] = useState(new Date());
+  const { dataUser, setdataUser } = useContext(userContext);
     const [info, setInfo] = useState({
 
       name: "",
@@ -91,6 +93,7 @@ useEffect(()=>{
     },[year])
 
  
+
 
     const customerTableHead = [
 
@@ -157,7 +160,7 @@ useEffect(()=>{
       console.log(rtdo.data.data);
       setdata(rtdo.data.data)
       
-
+      setdataUser(JSON.parse(localStorage.getItem('user')))
   }
   let fechas = []
 
@@ -376,7 +379,9 @@ useEffect(() => {
         <div>
             <div>
                 <TitlePage titulo="Historial de cobros de luz" />
-                <div className="flex justify-end">
+                {/* { dataUser.id === 92 ?       */}
+                {/* ( */}
+                  <div className="flex justify-end">
             <button className='btn' >
               <Link to="/HistorialAgua" style={{ textDecoration: 'none' }}>
                 <NavLink className="logoContainter1" exact to="/HistorialAgua" activeClassName="linkactivo">
@@ -385,10 +390,14 @@ useEffect(() => {
                   {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                 </NavLink>
               </Link>
-            </button>
+            </button> 
+             </div>
+             {/* )  */}
+            {/* //  : null} */}
+           
            
       
-          </div>
+         
  
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
