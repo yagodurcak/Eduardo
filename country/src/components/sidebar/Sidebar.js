@@ -349,7 +349,7 @@ function Sidebar() {
                                     </NavLink>
                                 </li>
                             </Link>
-                            <Link to="/Historial" style={{ textDecoration: 'none' }}>
+                            {/* <Link to="/Historial" style={{ textDecoration: 'none' }}>
                                 <li className='submenu'>
                                 <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Historial">
                                 <i class="material-icons">fact_check</i>
@@ -357,7 +357,7 @@ function Sidebar() {
                 
                                     </NavLink>
                                 </li>
-                            </Link>
+                            </Link> */}
                             <Link to="/Configuracion" style={{ textDecoration: 'none' }}>
                                 <li className='submenu'>
                                 <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Configuracion">

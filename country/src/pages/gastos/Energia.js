@@ -3,7 +3,7 @@
 
 // falta loi de mail en editar
 
-import "../users/Users.css"
+import "../users/Users.css";
 
 import {Button, Modal, TextField} from '@material-ui/core';
 import {
@@ -14,6 +14,7 @@ import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import DatePicker from "react-datepicker";
 import { Day } from "@material-ui/pickers";
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
@@ -22,7 +23,9 @@ import Table2 from '../../components/Table2';
 import { TableCell } from '@mui/material';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
+import { format } from 'date-fns'
 import {makeStyles} from '@material-ui/core/styles';
+import moment from "moment";
 import { userContext } from '../../context/UserContext';
 
 // import { Switch } from 'antd';
@@ -70,9 +73,11 @@ const [base, setBase] = useState(0);
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
     const [selectedFilesPost, setSelectedFilesPost] = useState();
-
-   
+    const [startDate, setStartDate] = useState(new Date());
+    const [year,setYear]=useState('all')
     const { dataUser, setdataUser } = useContext(userContext);
+    const [filteredData,setFilteredData]=useState([])
+    const [filteredData2,setFilteredData2]=useState([])
     const [info, setInfo] = useState({
         
         // propertyId: "",
@@ -88,7 +93,7 @@ const [base, setBase] = useState(0);
         // propertyId: "",
         
         consume: "",
-        date:"",
+        date:format(new Date(), "yyyy/MM/dd"),
         amount:""
         
       
@@ -104,10 +109,10 @@ const [base, setBase] = useState(0);
         maxWidth: 50
       },
             field: 'name',
-            // render: data => {for (let i = 0; i < data.users.length; i++) {
-            //   return data.users[i].name + " " + data.users[i].lastName
+            render: data => {for (let i = 0; i < data.property.users.length; i++) {
+              return data.property.users[i].name + " " + data.property.users[i].lastName
               
-            // }   }
+            }   }
           },
 
         // {
@@ -125,14 +130,14 @@ const [base, setBase] = useState(0);
         minWidth: 10,
         maxWidth: 10
       },
-            render: data => data.block     },
+            render: data => data.property.block     },
         {
             title:"Lte.",
                             cellStyle: {
         minWidth: 10,
         maxWidth: 10
       },
-            render: data => data.lot  
+      render: data => data.property.lot    
         },
         {
             title:"Fecha",
@@ -152,6 +157,7 @@ const [base, setBase] = useState(0);
 
        
       },
+      render: data => data.consume
       // render: data => {for (let i = 0; i <data.light_expenditures.length; i++) {
 
       //   if (data.light_expenditures[i].date === (data2[data2.length - 1].date)) {
@@ -164,15 +170,16 @@ const [base, setBase] = useState(0);
 
         
       
-    
-    }
+      
+      }
         ,  {
           title:"SubTotal",
                           cellStyle: {
         minWidth: 50,
         maxWidth: 50
       },
-          render: data => parseFloat(base * unitCost).toFixed(2)
+      render: data => parseFloat(data.consume* unitCost).toFixed(2)
+       
             
           
       },
@@ -189,7 +196,7 @@ const [base, setBase] = useState(0);
         minWidth: 50,
         maxWidth: 50
       },
-      render: data => parseFloat(base * unitCost + parseFloat(data3.amount) ).toFixed(2)
+      render: data => parseFloat(data.consume* unitCost + parseFloat(data3.amount) ).toFixed(2)
         }
     ]
 
@@ -225,7 +232,7 @@ const [base, setBase] = useState(0);
       setLoading(true)
       setTimeout(() => {
         setLoading(false)
-      }, 2000);
+      }, 4000);
 
       const url = `https://back2.tinpad.com.pe/public/api/property`;
 
@@ -289,8 +296,9 @@ const [base, setBase] = useState(0);
       const rtdo2 = rtdo.data.data
   
      
-      console.log(fecha);
+      console.log(rtdo2);
       setdata2(rtdo2)    
+
 
   }
 
@@ -313,12 +321,43 @@ const [base, setBase] = useState(0);
 
   }
 
+
+  
+const fechaActual = new Date
+const fechaActual1 = moment(fechaActual).format("YYYY-MM")
+const fechaActual2 = moment(fechaActual).format("YYYY-MM-DD")
+
+useEffect(() => {
+  setFilteredData(data4.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
+  console.log(fechaActual1);
+}, [data4])
+
+useEffect(() => {
+  setFilteredData2(data2.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
+  // console.log(fechaActual1);
+}, [data2])
+
+
+console.log(filteredData);
+useEffect(() => {
+ 
+  console.log("date");
+   setYear(moment(startDate).format("YYYY-MM"))
+  }, [startDate])
+
+  useEffect(()=>{
+    setFilteredData(data4.filter(dt=>dt.date.slice(0, 7) === year))
+    setFilteredData2(data2.filter(dt=>dt.date.slice(0, 7) === year))
+    console.log(year);
+   
+      },[year])
+      
   const SaveData = () => {
-    if (data2.length > 0) {
+    if (filteredData2.length > 0) {
     
-      setFecha((data2[data2.length - 1].date).split(" ")[0].split("-").reverse().join("-"))
-      setTotalAmount(data2[data2.length - 1].amount)
-      setunitCost(data2[data2.length - 1].consume)
+      setFecha((filteredData2[filteredData2.length - 1].date).split(" ")[0].split("-").reverse().join("-"))
+      setTotalAmount(filteredData2[filteredData2.length - 1].amount)
+      setunitCost(filteredData2[filteredData2.length - 1].consume)
     }
   }
 
@@ -382,7 +421,7 @@ useEffect(() => {
       
       
             f.append("propertyId", info.id)
-            f.append("date", (data2[data2.length - 1].date))
+            f.append("date", (fechaActual2))
             f.append("consume", info.consume)
             f.append("unitCost", unitCost)
             f.append("transactionCost", data3.amount )
@@ -461,7 +500,7 @@ useEffect(() => {
 
         e.preventDefault();
 
-        if (consume.trim() === ""|| date.trim() === ""||amount.trim() === "" ) {
+        if (consume.trim() === ""||amount.trim() === "" ) {
         
          setError(true);
          return
@@ -471,7 +510,7 @@ useEffect(() => {
             peticionPost2()
             setInfo2({
               consume: "",
-              date:"",
+              date:fechaActual2,
               amount:""        
             });
 
@@ -533,10 +572,10 @@ useEffect(() => {
             <br />
               <br />
               
-              <label htmlFor="">Fecha de factura*</label>
-              <br />
-              <br />
-              <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert2} label="Fecha de factura*"  />
+              {/* <label htmlFor="">Fecha de factura*</label>
+              <br /> */}
+              {/* <br />
+              <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert2} label="Fecha de factura*"  /> */}
 
               
             <br /><br />
@@ -631,6 +670,18 @@ useEffect(() => {
             </button>
       
           </div>
+          <div className="pickFecha mt-10 ">
+ <div className="flex">
+   <h3>Filtrar: </h3> <br />
+   <DatePicker
+   wrapperClassName="datePicker"
+         selected={startDate}
+         onChange={(date) => setStartDate(date)}
+         dateFormat="MM/yyyy"
+         showMonthYearPicker
+       />
+ </div>
+</div>
                 <div className="flex justify-between mt-16">
                 <button className="btn" >
                             Descargar Plantilla
@@ -641,9 +692,16 @@ useEffect(() => {
                             Importar PLantilla
                                                 </button>
                                                 <div>
+
+                                                <div className="flex justify-end mt-1 text-gray-400">
+        
+                                                <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
+   Agregar gasto
+ </button>
+                 </div>
                                                 <div className="flex justify-end mt-1 text-gray-400">
                 {/* render: data => (data.publicationDate).split(" ")[0].split("-").reverse().join("-") */}
-                {data2.length > 0 ?  <h3>Fecha: {fecha} </h3> 
+                {filteredData2.length > 0 ?  <h3>Fecha: {fecha} </h3> 
                 :
                  null
                  }
@@ -651,7 +709,7 @@ useEffect(() => {
                
 
                  <div className="flex justify-end mt-1 text-gray-400">
-                {data2.length > 0 ?    <div className="flex justify-end mt-1 text-gray-400">
+                {filteredData2.length > 0 ?    <div className="flex justify-end mt-1 text-gray-400">
 
 <h3>Total de gastos: $ {totalAmount}</h3>
 
@@ -662,7 +720,7 @@ useEffect(() => {
                  </div> 
 
 <div className="flex justify-end mt-1 text-gray-400">
-                {data2.length > 0 ?    <div className="flex justify-end mt-1 text-gray-400">
+                {filteredData2.length > 0 ?    <div className="flex justify-end mt-1 text-gray-400">
 
 <h3>Costo unitario (kw): {unitCost}</h3>
 
@@ -679,26 +737,26 @@ useEffect(() => {
            <CircularProgress color="success" size={80}/>
            </Box> : null}
 
-               
+
 
    
-{/* 
+
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={filteredData}
                  
-                 actions= {[                    
+                //  actions= {[                    
                 
-                            {
-                        icon:() => <i class="material-icons edit">add</i>,
-                        tooltip:"Agregar",
-                        onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
-                    }
+                //             {
+                //         icon:() => <i class="material-icons edit">add</i>,
+                //         tooltip:"Agregar",
+                //         onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
+                //     }
           
-                ] }
+                // ] }
 
-                 /></div> */}
+                 /></div>
             </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}

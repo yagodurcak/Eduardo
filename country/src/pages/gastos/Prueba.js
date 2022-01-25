@@ -609,6 +609,9 @@ useEffect(() => {
                                              >
                             Importar PLantilla
                                                 </button>
+                                                <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
+   Agregar gasto
+ </button>
                                                 <div>
                                                 <div className="flex justify-end mt-1 text-gray-400">
                 {/* render: data => (data.publicationDate).split(" ")[0].split("-").reverse().join("-") */}
@@ -652,7 +655,7 @@ useEffect(() => {
 
    
 
-                 {/* <div className="mt-10"><Table2 
+                 <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
                  data={data}
@@ -667,7 +670,7 @@ useEffect(() => {
           
                 ] }
 
-                 /></div> */}
+                 /></div>
             </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}
