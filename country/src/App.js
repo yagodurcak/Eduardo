@@ -116,9 +116,9 @@ function App() {
           <Route path="/HistorialAgua">
           <HistorialAgua/>
           </Route>
-          {/* <Route path="/GastosPrueba">
+          <Route path="/GastosPrueba">
           <GastosPrueba/>
-          </Route> */}
+          </Route>
           </div>
         </Switch>
   

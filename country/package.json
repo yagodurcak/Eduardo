@@ -18,6 +18,7 @@
     "@mui/icons-material": "^5.2.0",
     "@mui/material": "^5.2.1",
     "@mui/x-data-grid": "^5.0.1",
+    "@mui/x-data-grid-generator": "^5.3.0",
     "@syncfusion/ej2-react-calendars": "^19.4.38",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^11.2.7",
@@ -25,10 +26,12 @@
     "axios": "^0.24.0",
     "chartjs-adapter-date-fns": "^2.0.0",
     "firebase": "^9.6.0",
+    "jquery": "^3.2.1",
     "material-icons": "^1.10.3",
     "material-table": "^1.69.3",
     "moment": "^2.29.1",
     "react": "^17.0.2",
+    "react-data-grid": "^7.0.0-beta.7",
     "react-datepicker": "^4.6.0",
     "react-datetime": "^3.1.1",
     "react-dom": "^17.0.2",
@@ -38,7 +41,8 @@
     "react-select": "^5.2.1",
     "recharts": "^2.1.6",
     "usedebug": "^1.0.0",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "xlsx": "^0.17.5"
   },
   "homepage": "https://condodesk.tinpad.com.pe",
   "scripts": {

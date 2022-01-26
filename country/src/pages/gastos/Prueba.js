@@ -3,7 +3,7 @@
 
 // falta loi de mail en editar
 
-import "../users/Users.css"
+import "../users/Users.css";
 
 import {Button, Modal, TextField} from '@material-ui/core';
 import {
@@ -14,6 +14,8 @@ import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import DatePicker from "react-datepicker";
+import { Day } from "@material-ui/pickers";
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -21,7 +23,9 @@ import Table2 from '../../components/Table2';
 import { TableCell } from '@mui/material';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
+import { format } from 'date-fns'
 import {makeStyles} from '@material-ui/core/styles';
+import moment from "moment";
 import { userContext } from '../../context/UserContext';
 
 // import { Switch } from 'antd';
@@ -56,7 +60,8 @@ const useStyles = makeStyles((theme) => ({
     const [data, setdata] = useState([]);
     const [data2, setdata2] = useState([]);
     const [data3, setdata3] = useState([]);
-
+    const [data4, setdata4] = useState([]);
+const [base, setBase] = useState(0);
     const [fecha, setFecha] = useState("");
     const [totalAmount, setTotalAmount] = useState("");
     const [unitCost, setunitCost] = useState("");
@@ -68,9 +73,11 @@ const useStyles = makeStyles((theme) => ({
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
     const [selectedFilesPost, setSelectedFilesPost] = useState();
-
+    const [startDate, setStartDate] = useState(new Date());
+    const [year,setYear]=useState('all')
     const { dataUser, setdataUser } = useContext(userContext);
-    
+    const [filteredData,setFilteredData]=useState([])
+    const [filteredData2,setFilteredData2]=useState([])
     const [info, setInfo] = useState({
         
         // propertyId: "",
@@ -86,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
         // propertyId: "",
         
         consume: "",
-        date:"",
+        date:format(new Date(), "yyyy/MM/dd"),
         amount:""
         
       
@@ -102,10 +109,11 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 50
       },
             field: 'name',
-            render: data => {for (let i = 0; i < data.users.length; i++) {
-              return data.users[i].name + " " + data.users[i].lastName
+            render: data => {for (let i = 0; i < data.property.users.length; i++) {
+              return data.property.users[i].name + " " + data.property.users[i].lastName
               
-            }   }},
+            }   }
+          },
 
         // {
         //     title:"Doc de Identidad",
@@ -122,14 +130,14 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 10,
         maxWidth: 10
       },
-            render: data => data.block     },
+            render: data => data.property.block     },
         {
             title:"Lte.",
                             cellStyle: {
         minWidth: 10,
         maxWidth: 10
       },
-            render: data => data.lot  
+      render: data => data.property.lot    
         },
         {
             title:"Fecha",
@@ -139,37 +147,41 @@ const useStyles = makeStyles((theme) => ({
       },
             field: 'date',
        
-            render: data => {for (let i = data.water_expenditures.length; i = data.water_expenditures.length; i++) {
-              if ((data.water_expenditures).length > 0 ) {
-                
-                return (data.water_expenditures[i-1].date).split(" ")[0].split("-").reverse().join("-").slice(3, 10)  
-              } else {
-                return " "
-              }
-              
-            }   } 
+            render: data => fecha  
         },
         {
-            title:"Consumo (lts)",
+            title:"Consumo (Lts)",
                             cellStyle: {
         minWidth: 50,
         maxWidth: 50
+
+       
       },
-            render: data => {for (let i = data.water_expenditures.length; i = data.water_expenditures.length; i++) {
-              return parseInt(data.water_expenditures[i-1].consume) 
-              
-            }   } 
-        }
+      render: data => data.consume
+      // render: data => {for (let i = 0; i <data.light_expenditures.length; i++) {
+
+      //   if (data.light_expenditures[i].date === (data2[data2.length - 1].date)) {
+      //     setBase(data.light_expenditures[i].consume)
+      //     return parseInt(data.light_expenditures[i].consume) 
+      //   } 
+
+        
+      // }   } 
+
+        
+      
+      
+      }
         ,  {
           title:"SubTotal",
                           cellStyle: {
         minWidth: 50,
         maxWidth: 50
       },
-          render: data => {for (let i = data.water_expenditures.length; i = data.water_expenditures.length; i++) {
-            return data.water_expenditures[i-1].consume * unitCost
+      render: data => parseFloat(data.consume* unitCost).toFixed(2)
+       
             
-          }   } 
+          
       },
         {
             title:"Cobranza(S/)",
@@ -184,10 +196,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 50,
         maxWidth: 50
       },
-            render: data => {for (let i = data.water_expenditures.length; i = data.water_expenditures.length; i++) {
-              return parseInt(data.water_expenditures[i-1].consume * unitCost)  + parseInt(data3.amount) 
-              
-            }   } 
+      render: data => parseFloat(data.consume* unitCost + parseFloat(data3.amount) ).toFixed(2)
         }
     ]
 
@@ -215,14 +224,15 @@ const useStyles = makeStyles((theme) => ({
     }
 
     const{consume, amount,  date } = info2;
-    
+
+   
         
     const buscarCotizacion = async() => {
 
       setLoading(true)
       setTimeout(() => {
         setLoading(false)
-      }, 2000);
+      }, 4000);
 
       const url = `https://back2.tinpad.com.pe/public/api/property`;
 
@@ -237,8 +247,31 @@ const useStyles = makeStyles((theme) => ({
       
       console.log(rtdo3);
       setdata(rtdo3)    
-    
       setdataUser(JSON.parse(localStorage.getItem('user')))
+
+  }
+    const buscarFecha = async() => {
+
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000);
+
+      const url = `https://back2.tinpad.com.pe/public/api/water-expenditure`;
+
+      const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      }
+
+      const rtdo = await axios.get(url, {headers})
+      const rtdo2 = rtdo.data.data
+    //  const rtdo3=  rtdo2.map(obj=> ({ ...obj, consume: 0, transactionCost: 0 }))
+      
+      console.log(rtdo2);
+      setdata4(rtdo2)    
+    
+
   }
   // let fecha = "";
   let monto = "";
@@ -263,8 +296,9 @@ const useStyles = makeStyles((theme) => ({
       const rtdo2 = rtdo.data.data
   
      
-      console.log(fecha);
+      console.log(rtdo2);
       setdata2(rtdo2)    
+
 
   }
 
@@ -287,12 +321,43 @@ const useStyles = makeStyles((theme) => ({
 
   }
 
+
+  
+const fechaActual = new Date
+const fechaActual1 = moment(fechaActual).format("YYYY-MM")
+const fechaActual2 = moment(fechaActual).format("YYYY-MM-DD")
+
+useEffect(() => {
+  setFilteredData(data4.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
+  console.log(fechaActual1);
+}, [data4])
+
+useEffect(() => {
+  setFilteredData2(data2.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
+  // console.log(fechaActual1);
+}, [data2])
+
+
+console.log(filteredData);
+useEffect(() => {
+ 
+  console.log("date");
+   setYear(moment(startDate).format("YYYY-MM"))
+  }, [startDate])
+
+  useEffect(()=>{
+    setFilteredData(data4.filter(dt=>dt.date.slice(0, 7) === year))
+    setFilteredData2(data2.filter(dt=>dt.date.slice(0, 7) === year))
+    console.log(year);
+   
+      },[year])
+      
   const SaveData = () => {
-    if (data2.length > 0) {
+    if (filteredData2.length > 0) {
     
-      setFecha((data2[data2.length - 1].date).split(" ")[0].split("-").reverse().join("-"))
-      setTotalAmount(data2[data2.length - 1].amount)
-      setunitCost(data2[data2.length - 1].consume)
+      setFecha((filteredData2[filteredData2.length - 1].date).split(" ")[0].split("-").reverse().join("-"))
+      setTotalAmount(filteredData2[filteredData2.length - 1].amount)
+      setunitCost(filteredData2[filteredData2.length - 1].consume)
     }
   }
 
@@ -307,7 +372,8 @@ useEffect(() => {
    buscarCotizacion()
    buscarTotalLight()
    buscarCobranza()
-
+   buscarFecha()
+ 
 }, []);
 
     
@@ -333,6 +399,7 @@ useEffect(() => {
           }).catch(error=>{
             console.log(error);
           })
+          buscarTotalLight()
           buscarCotizacion()
         }
 
@@ -354,12 +421,14 @@ useEffect(() => {
       
       
             f.append("propertyId", info.id)
-            f.append("date", info.date)
+            f.append("date", (fechaActual2))
             f.append("consume", info.consume)
             f.append("unitCost", unitCost)
             f.append("transactionCost", data3.amount )
-            f.append("unit","kw" )
+            f.append("unit","lts" )
        
+
+
        
       
           const headers = {
@@ -431,7 +500,7 @@ useEffect(() => {
 
         e.preventDefault();
 
-        if (consume.trim() === ""|| date.trim() === ""||amount.trim() === "" ) {
+        if (consume.trim() === ""||amount.trim() === "" ) {
         
          setError(true);
          return
@@ -441,7 +510,7 @@ useEffect(() => {
             peticionPost2()
             setInfo2({
               consume: "",
-              date:"",
+              date:fechaActual2,
               amount:""        
             });
 
@@ -454,6 +523,9 @@ useEffect(() => {
             buscarTotalLight()
             SaveData()
         }
+        setTimeout(() => {
+          SaveData()
+        }, 2000);
         
     }
     const onSubmitEditar = (e) => {
@@ -482,7 +554,6 @@ useEffect(() => {
       }
       const styles= useStyles();
 
-
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
           <div className={styles.modal}>
@@ -493,18 +564,18 @@ useEffect(() => {
             {/* <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert2}  label="Monto total*" type="number" step="0.1"/>           */}
               <br />
               <br />
-              <label htmlFor="">Costo Unitario lts*</label>
-            <input className={styles.inputMaterial} name="consume" onChange={handleChangeInsert2} label="Costo Unitario kw*" type="number" step="any"/>
+              <label htmlFor="">Costo Unitario Lts*</label>
+            <input className={styles.inputMaterial} name="consume" onChange={handleChangeInsert2} label="Costo Unitario lts*" type="number" step="any"/>
             {/* <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert2}  label="Monto total*" type="number" />           */}
         
             {/* <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert2} label="Costo Unitario kw*" type="number" /> */}
             <br />
               <br />
               
-              <label htmlFor="">Fecha de factura*</label>
-              <br />
-              <br />
-              <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert2} label="Fecha de factura*"  />
+              {/* <label htmlFor="">Fecha de factura*</label>
+              <br /> */}
+              {/* <br />
+              <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert2} label="Fecha de factura*"  /> */}
 
               
             <br /><br />
@@ -524,20 +595,20 @@ useEffect(() => {
             { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            {/* <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Litros consumidos*" type="number" /> */}
-            <label htmlFor="">Litros consumidos*</label> 
+            {/* <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" /> */}
+            <label htmlFor="">Lts consumidos*</label>
             <br />
             <br />
-            <input className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} type="number" step="any"/>
-            
+            <input className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Lts consumidos*" type="number" step="any"/>
+            <br />
                 
-              <br />
+              
               <br />
             <label htmlFor="" className='mt-5'>Fecha de Consumo*</label>
             <br />
             <br />
             
-              <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  />
+              {/* <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  /> */}
 
             <br />
             <br />
@@ -567,7 +638,7 @@ useEffect(() => {
 
     return (
         <div>
-            <div >
+            <div>
                 <TitlePage titulo="Gasto Energía" />
                 <div className="flex justify-center">
             <button className='btn-3' >
@@ -599,9 +670,20 @@ useEffect(() => {
             </button>
       
           </div>
+          <div className="pickFecha mt-10 ">
+ <div className="flex">
+   <h3>Filtrar: </h3> <br />
+   <DatePicker
+   wrapperClassName="datePicker"
+         selected={startDate}
+         onChange={(date) => setStartDate(date)}
+         dateFormat="MM/yyyy"
+         showMonthYearPicker
+       />
+ </div>
+</div>
                 <div className="flex justify-between mt-16">
-  
-                                            <button className="btn" >
+                <button className="btn" >
                             Descargar Plantilla
                                                 </button>
                                             <button className="btn" 
@@ -609,13 +691,17 @@ useEffect(() => {
                                              >
                             Importar PLantilla
                                                 </button>
+                                                <div>
+
+                                                <div className="flex justify-end mt-1 text-gray-400">
+        
                                                 <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
    Agregar gasto
  </button>
-                                                <div>
+                 </div>
                                                 <div className="flex justify-end mt-1 text-gray-400">
                 {/* render: data => (data.publicationDate).split(" ")[0].split("-").reverse().join("-") */}
-                {data2.length > 0 ?  <h3>Fecha: {fecha} </h3> 
+                {filteredData2.length > 0 ?  <h3>Fecha: {fecha} </h3> 
                 :
                  null
                  }
@@ -623,7 +709,7 @@ useEffect(() => {
                
 
                  <div className="flex justify-end mt-1 text-gray-400">
-                {data2.length > 0 ?    <div className="flex justify-end mt-1 text-gray-400">
+                {filteredData2.length > 0 ?    <div className="flex justify-end mt-1 text-gray-400">
 
 <h3>Total de gastos: $ {totalAmount}</h3>
 
@@ -634,9 +720,9 @@ useEffect(() => {
                  </div> 
 
 <div className="flex justify-end mt-1 text-gray-400">
-                {data2.length > 0 ?    <div className="flex justify-end mt-1 text-gray-400">
+                {filteredData2.length > 0 ?    <div className="flex justify-end mt-1 text-gray-400">
 
-<h3>Costo unitario (lts): {unitCost}</h3>
+<h3>Costo unitario (Lts): {unitCost}</h3>
 
 </div> 
                 :
@@ -651,24 +737,24 @@ useEffect(() => {
            <CircularProgress color="success" size={80}/>
            </Box> : null}
 
-               
+
 
    
 
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={filteredData}
                  
-                 actions= {[                    
+                //  actions= {[                    
                 
-                            {
-                        icon:() => <i class="material-icons edit">add</i>,
-                        tooltip:"Agregar",
-                        onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
-                    }
+                //             {
+                //         icon:() => <i class="material-icons edit">add</i>,
+                //         tooltip:"Agregar",
+                //         onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
+                //     }
           
-                ] }
+                // ] }
 
                  /></div>
             </div>

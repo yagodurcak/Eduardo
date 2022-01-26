@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import React, {useContext, useEffect, useState} from 'react';
 
+import $ from "jquery";
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import DatePicker from "react-datepicker";
@@ -78,6 +79,8 @@ const [base, setBase] = useState(0);
     const { dataUser, setdataUser } = useContext(userContext);
     const [filteredData,setFilteredData]=useState([])
     const [filteredData2,setFilteredData2]=useState([])
+    const [linkEncode, setlinkEncode] = useState("");
+    
     const [info, setInfo] = useState({
         
         // propertyId: "",
@@ -552,6 +555,34 @@ useEffect(() => {
       const abrirCerrarModalEliminar=()=>{
         setShowModalEliminar(!showModalEliminar);
       }
+
+      function fnExcelReport()
+			{
+
+        setlinkEncode(encodeURIComponent(tab_text))
+				var todayDate = new Date().toISOString().slice(0, 10);
+
+				var utf = "<meta http-equiv='content-type' content='application/vnd.ms-excel; charset=UTF-8' > ";
+				var name_file = "<head><meta name='content-disposition' content='inline; filename=filename.xls'><head>";
+			    var tab_text=name_file+ utf+ "<table border='2px'><tr bgcolor='#87AFC6'>";
+			    var textRange; var j=0;	
+
+
+			    var link = document.getElementById('link');
+		        
+		     var tab_text=  "<table border='2px'>"+
+         "<tr>"+
+             "<th rowspan='2'>id</th>"+
+             "<th rowspan='2'>nombre</th>"+
+             "<th rowspan='2'>documento</th>"+
+             "<th rowspan='2'>consumo</th>"+
+         "</tr><table/>"; 
+			    // link.href='data:application/vnd.ms-excel,' + encodeURIComponent(tab_text);
+			    // link.download='Reporte_Detallado_De_Documentos_Por_Vencer '+todayDate+'.xls';
+			    // link.click();
+          console.log(encodeURIComponent(tab_text));
+			 
+			}
       const styles= useStyles();
 
       const bodyInsertar=(
@@ -634,13 +665,14 @@ useEffect(() => {
         </div>
       )
 
+     
    
 
     return (
         <div>
-            <div>
-                <TitlePage titulo="Gasto Energía" />
-                <div className="flex justify-center">
+        <div>
+          <TitlePage titulo="Gasto Energía" />
+          <div className="flex justify-center">
             <button className='btn-3' >
               <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
                 <NavLink className="logoContainter1" exact to="/GastosComunes" activeClassName="linkactivo">
@@ -668,44 +700,45 @@ useEffect(() => {
                 </NavLink>
               </Link>
             </button>
-      
+
           </div>
           <div className="pickFecha mt-10 ">
- <div className="flex">
-   <h3>Filtrar: </h3> <br />
-   <DatePicker
-   wrapperClassName="datePicker"
-         selected={startDate}
-         onChange={(date) => setStartDate(date)}
-         dateFormat="MM/yyyy"
-         showMonthYearPicker
-       />
- </div>
-</div>
-                <div className="flex justify-between mt-16">
-                <button className="btn" >
-                            Descargar Plantilla
-                                                </button>
-                                            <button className="btn" 
-                                            //  onClick={()=>abrirCerrarModalInsertar()}
-                                             >
-                            Importar PLantilla
-                                                </button>
-                                                <div>
+            <div className="flex">
+              <h3>Filtrar: </h3> <br />
+              <DatePicker
+                wrapperClassName="datePicker"
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                dateFormat="MM/yyyy"
+                showMonthYearPicker
+              />
+            </div>
+          </div>
+          <div className="flex justify-between mt-16">
+            <button className="btn">
+              Descargar Plantilla
+            </button>
+          
+     
 
-                                                <div className="flex justify-end mt-1 text-gray-400">
-        
-                                                <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
-   Agregar gasto
- </button>
-                 </div>
-                                                <div className="flex justify-end mt-1 text-gray-400">
+            <button className="btn">
+              Importar PLantilla
+            </button>
+            <div>
+
+              <div className="flex justify-end mt-1 text-gray-400">
+
+                <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
+                  Agregar gasto
+                </button>
+              </div>
+              <div className="flex justify-end mt-1 text-gray-400">
                 {/* render: data => (data.publicationDate).split(" ")[0].split("-").reverse().join("-") */}
-                {filteredData2.length > 0 ?  <h3>Fecha: {fecha} </h3> 
-                :
-                 null
-                 }
-                 </div>
+                {filteredData2.length > 0 ? <h3>Fecha: {fecha} </h3>
+                  :
+                  null
+                }
+              </div>
                
 
                  <div className="flex justify-end mt-1 text-gray-400">
@@ -784,6 +817,7 @@ useEffect(() => {
             peticionDelete={peticionDelete}
             bodyEliminar={bodyEliminar}
             />
+          
         </div>
     )
 }

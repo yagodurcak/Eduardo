@@ -377,12 +377,12 @@ function Sidebar() {
                                 {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                             </NavLink>
                         </li>
-                        {/* <li className='listahover'>
+                        <li className='listahover'>
                         <NavLink className="logoContainter1" exact to="/GastosPrueba" activeClassName="linkactivo">
                                 <img src={calendario} alt="" className='logo1' />
                                 <h1 className="title1">Prueba gastos</h1>
                             </NavLink>
-                        </li> */}
+                        </li>
                     </ul>
                 </div>
             </div>

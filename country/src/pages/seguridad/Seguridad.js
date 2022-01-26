@@ -55,6 +55,12 @@ const customerTableHead = [
 {
     title:"Doc. de Identidad",
     field: "document"
+},
+{
+    title:"Role",
+
+    render: data => data.role.name
+
 }
 ]
 
@@ -125,7 +131,7 @@ function Seguridad() {
             // console.log(rtdo.data.data[0]);
 
             setdataUser(JSON.parse(localStorage.getItem('user')))
-            setdata((rtdo.data.data).filter(artista=> artista.roleId === "2"));
+            setdata((rtdo.data.data).filter(artista=> artista.roleId !== "3"));
       
             
             console.log(rtdo.data.data);
