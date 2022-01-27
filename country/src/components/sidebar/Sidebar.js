@@ -121,9 +121,10 @@ function Sidebar() {
                 <hr className="linea" />
                 </div>
                 {/* <div className="linea"></div> */}
+
                 <div className='lista'>
                     <ul className='lista1'>
-                        <Link to="/Home" style={{ textDecoration: 'none' }}>
+                        {dataUser.roleId === "1"  ?            <Link to="/Home" style={{ textDecoration: 'none' }}>
                             <li className='listahover'>
                                 <NavLink className="logoContainter1" exact to="/Home" activeClassName="linkactivo">
                                     <img src={dashnoard} alt="" className='logo1' />
@@ -133,7 +134,8 @@ function Sidebar() {
                                     {/* <h1 className="title1">Dashboards</h1> */}
                                 </NavLink>
                             </li>
-                        </Link>
+                        </Link> : null}
+            
                         <Link style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuUser()}>
                             <li className='listahover'>
                             <div className="dropdown" >
@@ -377,12 +379,12 @@ function Sidebar() {
                                 {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                             </NavLink>
                         </li>
-                        <li className='listahover'>
+                        {/* <li className='listahover'>
                         <NavLink className="logoContainter1" exact to="/GastosPrueba" activeClassName="linkactivo">
                                 <img src={calendario} alt="" className='logo1' />
                                 <h1 className="title1">Prueba gastos</h1>
                             </NavLink>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </div>

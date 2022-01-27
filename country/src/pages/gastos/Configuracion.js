@@ -275,7 +275,7 @@ function Configuracion() {
             { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
             <TextField className={styles.inputMaterial} name="amount" onChange={handleChangeInsert} value= {info&&info.amount} label="Monto" />
             <br />
-            <TextField className={styles.inputMaterial} name="concept" onChange={handleChangeInsert} value= {info&&info.concept} label="Concepto" />          
+            {/* <TextField className={styles.inputMaterial} name="concept" onChange={handleChangeInsert} value= {info&&info.concept} label="Concepto" />           */}
     
      
             <br /><br />
@@ -303,12 +303,12 @@ function Configuracion() {
         <div>
             <div>
                 <TitlePage titulo="Personal de Configuracion" />
-                {/* <div className="flex justify-end ">
+                <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar
                     </button>
                    
-                </div> */}
+                </div>
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>

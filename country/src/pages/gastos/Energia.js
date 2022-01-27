@@ -23,6 +23,7 @@ import ModalInsertar from "../../components/pageComponents/ModalInsertar"
 import Table2 from '../../components/Table2';
 import { TableCell } from '@mui/material';
 import TitlePage from '../../components/pageComponents/TitlePage';
+import XLSX from 'xlsx'
 import axios from "axios"
 import { format } from 'date-fns'
 import {makeStyles} from '@material-ui/core/styles';
@@ -81,6 +82,7 @@ const [base, setBase] = useState(0);
     const [filteredData2,setFilteredData2]=useState([])
     const [linkEncode, setlinkEncode] = useState("");
     
+const [exito, setExito] = useState(false);
     const [info, setInfo] = useState({
         
         // propertyId: "",
@@ -102,6 +104,40 @@ const [base, setBase] = useState(0);
       
         
     })
+    const customerTableHead2 = [
+
+
+      {
+          title:"Id de Propiedad",
+          field: "id"
+      },
+      {
+          title:"Nombre",
+          field: "nombre"
+      },
+      {
+          title:"Apellido",
+          field: "apellido"
+      },
+      {
+          title:"DNI",
+          field: "documento"
+      },
+      {
+          title:"Consumo kw",
+          field: "consume"
+      },
+        {
+            title:"Fecha",
+                            cellStyle: {
+        minWidth: 50,
+        maxWidth: 50
+      },
+            field: 'date',
+       
+            render: data => fecha  
+        }
+      ]
     
     const customerTableHead = [
     
@@ -192,7 +228,8 @@ const [base, setBase] = useState(0);
         minWidth: 50,
         maxWidth: 50
       },
-            render: data => data3.amount},
+      render: data => parseInt(data3.amount) 
+          },
         {
             title:"Total",
                             cellStyle: {
@@ -237,7 +274,7 @@ const [base, setBase] = useState(0);
         setLoading(false)
       }, 4000);
 
-      const url = `https://back2.tinpad.com.pe/public/api/property`;
+      const url = `https://back2.tinpad.com.pe/public/api/property-user`;
 
       const headers = {
           'Content-Type': 'application/json',
@@ -246,7 +283,7 @@ const [base, setBase] = useState(0);
 
       const rtdo = await axios.get(url, {headers})
       const rtdo2 = rtdo.data.data
-     const rtdo3=  rtdo2.map(obj=> ({ ...obj, consume: 0, transactionCost: 0 }))
+     const rtdo3=  rtdo2.map(obj=> ({ id:obj.propertyId, nombre: obj.user.name, apellido: obj.user.lastName, documento: obj.user.document , consumo: 0}))
       
       console.log(rtdo3);
       setdata(rtdo3)    
@@ -316,11 +353,11 @@ const [base, setBase] = useState(0);
       }
 
       const rtdo = await axios.get(url, {headers})
-      const rtdo2 = rtdo.data.data
+      const rtdo2 = (rtdo.data.data).filter(artista=> artista.id === 4)
   
      
       console.log(rtdo2[0]);
-      setdata3(rtdo2[0])    
+      setdata3(rtdo2[0]);  
 
   }
 
@@ -341,7 +378,6 @@ useEffect(() => {
 }, [data2])
 
 
-console.log(filteredData);
 useEffect(() => {
  
   console.log("date");
@@ -406,58 +442,64 @@ useEffect(() => {
           buscarCotizacion()
         }
 
-
-      const peticionPost=async()=>{
-        console.log("post2");
-      
-        const f = new FormData()   
-      
-      
+        const peticionPost=async(e)=>{
+          console.log("post2");
+     
+          const f = new FormData()   
         
-        console.log(info);
-        // console.log(selectedFilesPost.length > 0);
+        
           
-                // if (selectedFilesPost) {
-                  
-                //   f.append("file", selectedFilesPost)
-                // }
-      
-      
-            f.append("propertyId", info.id)
-            f.append("date", (fechaActual2))
-            f.append("consume", info.consume)
-            f.append("unitCost", unitCost)
-            f.append("transactionCost", data3.amount )
-            f.append("unit","kw" )
+          console.log(info);
+          // console.log(selectedFilesPost.length > 0);
+            
+                  // if (selectedFilesPost) {
+                    
+          f.append("file", selectedImage)
+                  // }
+        
+        
+              // f.append("propertyId", info.id)
+              // f.append("date", (fechaActual2))
+              // f.append("consume", info.consume)
+              // f.append("unitCost", unitCost)
+              // f.append("transactionCost", data3.amount )
+              // f.append("unit","kw" )
+         
+  
+  
+         
+        
+            const headers = {
+              'Content-type': 'multipart/form-data',
+              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+        
+          }
+        
+            const url1= "https://back2.tinpad.com.pe/public/api/import-light-expenditures"
+              await axios.post(url1, f, {headers})
+              .then(response=>{
+                // setdata(data.concat(response.data));
+                // abrirCerrarModalInsertar();
+        
+                
+                console.log("exito -1");
+                setExito(!exito)
+              }).catch(error=>{
+                console.log(error);
+                setSelectedImage()
+              })
+        
+          // console.log(filesImg);
+     
+          }
+          useEffect(() => {
+            setTimeout(() => {
+              console.log("fecha");
+              buscarFecha()
+            }, 3000);
+             }, [exito]);
        
-
-
        
-      
-          const headers = {
-            'Content-type': 'multipart/form-data',
-            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-      
-        }
-      
-          const url1= "https://back2.tinpad.com.pe/public/api/light-expenditure"
-            await axios.post(url1, f, {headers})
-            .then(response=>{
-              // setdata(data.concat(response.data));
-              // abrirCerrarModalInsertar();
-      
-              setSelectedFilesPost([])
-              console.log("exito -1");
-            }).catch(error=>{
-              console.log(error);
-      
-              setSelectedFilesPost([])
-            })
-      
-        // console.log(filesImg);
-          buscarCotizacion()
-        }
-      
 
 
         const peticionDelete=async()=>{
@@ -541,6 +583,7 @@ useEffect(() => {
             //   window.location.reload();
             // }, 2000);
             abrirCerrarModalEditar()
+            setSelectedImage()
         }
 
     
@@ -551,6 +594,7 @@ useEffect(() => {
 
       const abrirCerrarModalEditar=()=>{
         setShowModalEditar(!showModalEditar);
+        setSelectedImage()
       }
       const abrirCerrarModalEliminar=()=>{
         setShowModalEliminar(!showModalEliminar);
@@ -618,35 +662,46 @@ useEffect(() => {
         </form>
       )
 
+      const imageChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          setSelectedImage(e.target.files[0]);
+          console.log(e.target.files[0]);
+          // setSelectedFilesPost(e.target.files[0])
+        }
+    };
 
       const bodyEditar=(
         <form action="" onSubmit={onSubmitEditar}>
           <div className={styles.modal}>
-            <h3 className="my-5">Registrar consumo y gestión</h3>
+            <h3 className="my-5">Adjuntar Excel para su importación</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
             {/* <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" /> */}
-            <label htmlFor="">Kw consumidos*</label>
-            <br />
-            <br />
-            <input className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" step="any"/>
-            <br />
-                
-              
-              <br />
-            <label htmlFor="" className='mt-5'>Fecha de Consumo*</label>
-            <br />
-            <br />
-            
-              {/* <input type="date" className={styles.inputMaterial} name="date" onChange={handleChangeInsert} label="Fecha de Publicación*"  /> */}
-
-            <br />
-            <br />
+     
+            <div className='mt-5'>
+              {/* <label>Choose File to Upload: </label> */}
+              <input type="file" onChange={imageChange} id="file" />
+              <div className="label-holder">
+                <label htmlFor="file" className="label">
+                  <i className="material-icons">note_add</i>
+                </label>
+              </div>
+            </div> <br />
+            {selectedImage && (
+              <div className='eliminarImg'>
+                <h4>{selectedImage.name}</h4>
+  
+                {/* <button onClick={removeSelectedImage} style={styles.delete}>
+                  Eliminar
+                </button> */}
+              </div>
+            )}
+  
      
             <br /><br />
             <div align="right">
-              <Button color="primary" type="submit" >Insertar</Button>
+              <Button color="primary" type="submit" >Importar</Button>
               <Button onClick= {abrirCerrarModalEditar}> Cancelar</Button>
             </div>
           </div>
@@ -666,7 +721,23 @@ useEffect(() => {
       )
 
      
-   
+      const downloadExcel=()=>{
+        const newData=data.map(row=>{
+          delete row.tableData
+          return row
+        })
+        const workSheet=XLSX.utils.json_to_sheet(newData)
+        const workBook=XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(workBook,workSheet,"students")
+        //Buffer
+        let buf=XLSX.write(workBook,{bookType:"xlsx",type:"buffer"})
+        //Binary string
+        XLSX.write(workBook,{bookType:"xlsx",type:"binary"})
+        //Download
+        XLSX.writeFile(workBook,"StudentsData.xlsx")
+  
+  
+      }
 
     return (
         <div>
@@ -715,13 +786,13 @@ useEffect(() => {
             </div>
           </div>
           <div className="flex justify-between mt-16">
-            <button className="btn">
+          <button className="btn" onClick={()=>downloadExcel()}>
               Descargar Plantilla
             </button>
           
      
 
-            <button className="btn">
+            <button className="btn" onClick={()=>abrirCerrarModalEditar()}>
               Importar PLantilla
             </button>
             <div>
@@ -772,22 +843,17 @@ useEffect(() => {
 
 
 
-   
+           <div className="mt-10 datagrid"><Table2 
+                 title="" 
+                 columns={customerTableHead2} 
+                 data={data}
+              
+                 /></div>
 
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
                  data={filteredData}
-                 
-                //  actions= {[                    
-                
-                //             {
-                //         icon:() => <i class="material-icons edit">add</i>,
-                //         tooltip:"Agregar",
-                //         onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
-                //     }
-          
-                // ] }
 
                  /></div>
             </div>

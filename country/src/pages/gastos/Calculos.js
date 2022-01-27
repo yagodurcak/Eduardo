@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
       
       const [data, setdata] = useState([]);
       const [data2, setdata2] = useState([]);
-      const [data3, setdata3] = useState([]);
+      const [data3, setdata3] = useState({});
       const [totalAmount, setTotalAmount] = useState([]);
       const [total, setTotal] = useState(0);
       const [totalArea, setTotalArea] = useState(0);
@@ -129,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 80,
         maxWidth: 80
       },
-             render: data => data3.amount
+             render: data => parseInt(data3.amount) 
         }
         ,
         {
@@ -138,7 +138,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 80,
         maxWidth: 80
       },
-            render: data => parseFloat(((parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2))*total)/100 + parseInt(data3.amount) ).toFixed(2)
+            render: data => parseFloat((((data.property.area/ totalArea  ) * 100)*totalCondo)/100 + parseInt(data3.amount) ).toFixed(2) 
         }
 
     ]
@@ -257,13 +257,16 @@ const buscarCobranza = async() => {
   }
 
   const rtdo = await axios.get(url, {headers})
-  const rtdo2 = rtdo.data.data
+  const rtdo2 = (rtdo.data.data).filter(artista=> artista.id === 5)
 
- 
-  console.log(rtdo2[0]);
-  setdata3(rtdo2[0])    
+  setdata3(rtdo2[0]);
+
+  console.log(rtdo2);
+  // setdata3(rtdo2[)    
 
 }
+
+console.log(data3);
 // }
 // useEffect(() => {
 //     console.log("ahora");
