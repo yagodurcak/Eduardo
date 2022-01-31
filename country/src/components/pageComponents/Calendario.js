@@ -44,7 +44,8 @@ function Calendario() {
         calendarApi.addEvent({
             start: moment(event.start).toDate(),
             end: moment(event.end).toDate(),
-            title: event.title}
+            title: event.title
+        }
         )
     }
 

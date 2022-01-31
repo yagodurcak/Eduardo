@@ -64,10 +64,16 @@ function Login() {
                  if(response.data.token) {
                      localStorage.setItem('Authorization', response.data.token)
 										 localStorage.setItem('user', JSON.stringify(response.data.user)) 
-                                         setRedirect(true)
+                                         
                  }
-                 console.log(response.data.user);
-                 setdataUser(response.data.user)
+                 if (response.data.user.roleId !== "3") {
+                     
+                     setRedirect(true)
+                     console.log(response.data.user);
+                     wrongPassword(response.data.user)
+                 } else{
+                    setnotExist(true)
+                 }
                  
              })
              .catch(err => {

@@ -11,11 +11,13 @@ import React, {useContext, useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
+import ModalEditar2 from '../../components/pageComponents/ModalEditar2';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
+import excel from "../../IMG/template_user_condominio.xlsx";
 import {makeStyles} from '@material-ui/core/styles';
 import { userContext } from '../../context/UserContext';
 
@@ -71,10 +73,12 @@ function Seguridad() {
     const [data, setdata] = useState([]);
     const [showModalInsertar, setShowModalInsertar] = useState(false);
     const [showModalEditar, setShowModalEditar] = useState(false);
+    const [showModalEditar2, setShowModalEditar2] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false);
- 
+    const [selectedImage, setSelectedImage] = useState();
+
     const { dataUser, setdataUser } = useContext(userContext);
     const [info, setInfo] = useState({
       id: "",
@@ -103,7 +107,38 @@ function Seguridad() {
     }
 
 
+    const peticionPost2=async(e)=>{
+
+      console.log("post2");
+ 
+      const f = new FormData()   
+
+                
+      f.append("file", selectedImage)
+
+        const headers = {
+          'Content-type': 'multipart/form-data',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
     
+      }
+    
+        const url1= "https://back2.tinpad.com.pe/public/api/import-user"
+          await axios.post(url1, f, {headers})
+          .then(response=>{
+            // setdata(data.concat(response.data));
+            // abrirCerrarModalInsertar();
+    
+            
+            console.log("exito -1");
+   
+          }).catch(error=>{
+            console.log(error);
+            setSelectedImage()
+          })
+    
+      // console.log(filesImg);
+ 
+      }
 
     const seleccionarUser=(user, caso)=>{
         setInfo(user);
@@ -156,7 +191,7 @@ function Seguridad() {
         // console.log(rtdo.data.data[0]);
 
 
-        setdata((rtdo.data.data).filter(artista=> artista.roleId === "2"));
+        setdata((rtdo.data.data).filter(artista=> artista.roleId !== "3"));
   
         
         console.log("buscar property");
@@ -273,6 +308,22 @@ function Seguridad() {
             setTimeout(() => {
               setLoading(false)
             }, 2000);
+          
+        }
+    const onSubmitEditar2 = (e) => {
+
+      e.preventDefault();
+            peticionPost2()
+            // window.location.reload();
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 2000);
+            setLoading(true)
+            setTimeout(() => {
+              setLoading(false)
+            }, 2000);
+            console.log("listo");
+            abrirCerrarModalEditar2()
         }
 
     
@@ -283,6 +334,9 @@ function Seguridad() {
 
       const abrirCerrarModalEditar=()=>{
         setShowModalEditar(!showModalEditar);
+      }
+      const abrirCerrarModalEditar2=()=>{
+        setShowModalEditar2(!showModalEditar2);
       }
       const abrirCerrarModalEliminar=()=>{
         setShowModalEliminar(!showModalEliminar);
@@ -351,13 +405,67 @@ function Seguridad() {
         </div>
       )
 
+      const imageChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          setSelectedImage(e.target.files[0]);
+          console.log(e.target.files[0]);
+          // setSelectedFilesPost(e.target.files[0])
+        }
+    };
+
+      const bodyEditar2=(
+        <form action="" onSubmit={onSubmitEditar2}>
+          <div className={styles.modal}>
+            <h3 className="my-5">Adjuntar Excel para su importación</h3>
+            { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
+            { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
+            { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
+            {/* <TextField className={styles.inputMaterial} name="consume" onChange={handleChangeInsert} label="Kw consumidos*" type="number" /> */}
+     
+            <div className='mt-5'>
+              {/* <label>Choose File to Upload: </label> */}
+              <input type="file" onChange={imageChange} id="file" />
+              <div className="label-holder">
+                <label htmlFor="file" className="label">
+                  <i className="material-icons">note_add</i>
+                </label>
+              </div>
+            </div> <br />
+            {selectedImage && (
+              <div className='eliminarImg'>
+                <h4>{selectedImage.name}</h4>
+  
+                {/* <button onClick={removeSelectedImage} style={styles.delete}>
+                  Eliminar
+                </button> */}
+              </div>
+            )}
+  
+     
+            <br /><br />
+            <div align="right">
+              <Button color="primary" type="submit" >Importar</Button>
+              <Button onClick= {abrirCerrarModalEditar2}> Cancelar</Button>
+            </div>
+          </div>
+        </form>
+      )
+
     return (
         <div>
             <div>
-                <TitlePage titulo="Personal de Seguridad" />
-                <div className="flex justify-end ">
+                <TitlePage titulo="Usuarios Autorizados" />
+                <div className="flex justify-between ">
+                    <button className="btn" >
+                    {/* <Link to="../../IMG/Pagos 1gastos.svg" target="_blank" download>Descagar Plantilla</Link> */}
+                    <a className="enlace" href= {excel} download>Descagar Plantilla</a>
+                        
+                    </button>
+                    <button className="btn" onClick={()=>abrirCerrarModalEditar2()}>
+                        Importar Plantilla
+                    </button>
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
-                        Agregar
+                        Agregar Manualmente
                     </button>
                    
                 </div>
@@ -405,6 +513,14 @@ function Seguridad() {
             onSubmitEditar={onSubmitEditar}
             info={info}
             bodyEditar={bodyEditar}
+            />
+            <ModalEditar2
+            showModalEditar2={showModalEditar2}
+            functionShow= {abrirCerrarModalEditar2}
+            handleChangeInsert={handleChangeInsert}
+            onSubmitEditar={onSubmitEditar}
+            info={info}
+            bodyEditar2={bodyEditar2}
             />
             <ModalEliminar
             showModalEliminar={showModalEliminar}

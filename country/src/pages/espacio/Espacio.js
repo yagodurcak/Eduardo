@@ -772,7 +772,7 @@ console.log("eliminjar todos 2");
 
             </select>
 
-            <button className='mt-5' onClick={() => abrirCerrarModalAdd()}>Crear nuevo tipo de espacio</button>
+            {/* <button className='mt-5' onClick={() => abrirCerrarModalAdd()}>Crear nuevo tipo de espacio</button> */}
             {/* <TextField className={styles.inputMaterial} name="type" onChange={handleChangeInsert} label="Tipo*"  />  */}
             <br />
             <TextField className={styles.inputMaterial} name="description" onChange={handleChangeInsert} label="Descripción*" multiline rows={3} />

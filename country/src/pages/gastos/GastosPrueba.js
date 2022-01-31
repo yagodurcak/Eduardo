@@ -588,6 +588,9 @@ useEffect(() => {
       }, [exito]);
 
 
+
+      
+
         const peticionDelete=async()=>{
           const headers = {
             'Content-Type': 'application/json',

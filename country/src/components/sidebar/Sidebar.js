@@ -124,7 +124,7 @@ function Sidebar() {
 
                 <div className='lista'>
                     <ul className='lista1'>
-                        {dataUser.roleId === "1"  ?            <Link to="/Home" style={{ textDecoration: 'none' }}>
+                        {dataUser.roleId !== "2"  ?            <Link to="/Home" style={{ textDecoration: 'none' }}>
                             <li className='listahover'>
                                 <NavLink className="logoContainter1" exact to="/Home" activeClassName="linkactivo">
                                     <img src={dashnoard} alt="" className='logo1' />
@@ -135,6 +135,8 @@ function Sidebar() {
                                 </NavLink>
                             </li>
                         </Link> : null}
+
+                        {dataUser.roleId !== "2"  ? 
             
                         <Link style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuUser()}>
                             <li className='listahover'>
@@ -149,6 +151,7 @@ function Sidebar() {
                                 </div>
                             </li>
                         </Link>
+                        : null}
                         {submenuUser
                 
                         ? (
@@ -167,7 +170,7 @@ function Sidebar() {
                                 <li className='submenu'>
                                 <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Seguridad">
                                         <img src={seguridad} alt="" className='logo3' />
-                                        <h1 className="title1">Seguridad</h1>
+                                        <h1 className="title1">Usuarios</h1>
                                         {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                                     </NavLink>
                                 </li>
@@ -176,6 +179,7 @@ function Sidebar() {
                 
                         )
                         : null}
+                            
                         <Link to="/Personal" style={{ textDecoration: 'none' }}>
                             <li className='listahover'>
                             <NavLink className="logoContainter1" exact to="/Personal" activeClassName="linkactivo">
@@ -185,6 +189,7 @@ function Sidebar() {
                                 </NavLink>
                             </li>
                         </Link>
+                        {dataUser.roleId === "1"  ? 
                         <Link to="/Espacio" style={{ textDecoration: 'none' }}>
                             <li className='listahover'>
                             <NavLink className="logoContainter1" exact to="/Espacio" activeClassName="linkactivo">
@@ -194,6 +199,9 @@ function Sidebar() {
                                 </NavLink>
                             </li>
                         </Link>
+                        : null}
+
+                        {dataUser.roleId !== "4"  ? 
                         <Link to="/Visita" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuVisitas()}>
                             <li className='listahover'>
                 
@@ -207,6 +215,7 @@ function Sidebar() {
                 
                             </li>
                         </Link>
+                          : null}
                         {submenuVisitas
                 
                         ? (
@@ -235,6 +244,7 @@ function Sidebar() {
                 
                         )
                         : null}
+                        {dataUser.roleId === "1"  ? 
                         <Link to="/Noticias" style={{ textDecoration: 'none' }}>
                             <li className='listahover'>
                             <NavLink className="logoContainter1" exact to="/Noticias" activeClassName="linkactivo">
@@ -244,6 +254,8 @@ function Sidebar() {
                                 </NavLink>
                             </li>
                         </Link>
+                           : null}
+                            {dataUser.roleId === "1"  ? 
                         <Link to="/Archivos" style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuVInformacion()}>
                         <li className='listahover'>
                         <div className="dropdown">
@@ -255,6 +267,7 @@ function Sidebar() {
                                 </div>
                         </li>
                             </Link>
+                                    : null}
                             {submenuInformacion
                 
                         ? (
@@ -283,6 +296,8 @@ function Sidebar() {
                 
                         )
                         : null}
+
+{dataUser.roleId === "1"  ? 
                         <Link to="/Tramites" style={{ textDecoration: 'none' }}>
                             <li className='listahover'>
                             <NavLink className="logoContainter1" exact to="/Tramites" activeClassName="linkactivo">
@@ -292,6 +307,8 @@ function Sidebar() {
                                 </NavLink>
                             </li>
                         </Link>
+                          : null}
+                          {dataUser.roleId === "1"  ? 
                         <Link to="/Quejas" style={{ textDecoration: 'none' }}>
                             <li className='listahover'>
                             <NavLink className="logoContainter1" exact to="/Quejas" activeClassName="linkactivo">
@@ -301,6 +318,8 @@ function Sidebar() {
                                 </NavLink>
                             </li>
                         </Link>
+                              : null}
+                                      {dataUser.roleId !== "2"  ? 
                         <Link style={{ textDecoration: 'none' }} onClick={() => abrirSubmenuGastos()}>
                         <li className='listahover'>
                                 <div className="dropdown">
@@ -312,6 +331,7 @@ function Sidebar() {
                                 </div>
                         </li>
                             </Link>
+                                 : null}
                             {submenuGastos
                 
                         ? (
@@ -342,6 +362,7 @@ function Sidebar() {
                                     </NavLink>
                                 </li>
                             </Link> */}
+
                             <Link to="/GastosComunes" style={{ textDecoration: 'none' }}>
                                 <li className='submenu'>
                                 <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/GastosComunes">
@@ -360,6 +381,7 @@ function Sidebar() {
                                     </NavLink>
                                 </li>
                             </Link> */}
+
                             <Link to="/Configuracion" style={{ textDecoration: 'none' }}>
                                 <li className='submenu'>
                                 <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Configuracion">
@@ -372,6 +394,7 @@ function Sidebar() {
                         </div>
                         )
                         : null}
+                               {dataUser.roleId === "1"  ? 
                         <li className='listahover'>
                         <NavLink className="logoContainter1" exact to="/Calendario" activeClassName="linkactivo">
                                 <img src={calendario} alt="" className='logo1' />
@@ -379,6 +402,7 @@ function Sidebar() {
                                 {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                             </NavLink>
                         </li>
+                              : null}
                         {/* <li className='listahover'>
                         <NavLink className="logoContainter1" exact to="/GastosPrueba" activeClassName="linkactivo">
                                 <img src={calendario} alt="" className='logo1' />

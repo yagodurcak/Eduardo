@@ -276,3 +276,7 @@ color: aliceblue;
  .datagrid{
      display: none
  }
+ .enlace{
+     text-decoration: none;
+     color: white;
+ }
