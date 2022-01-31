@@ -293,7 +293,12 @@ function Visita() {
       }
 
       const handleChangeSwitch = () => {
+      
+          
           setSwitchOn(!switchOn)
+     
+     
+          
         
       }
 
@@ -529,12 +534,14 @@ function Visita() {
         <div>
             <div>
                 <TitlePage titulo="Reglas para visitas y proveedoress" />
+                { dataUser.roleId === "1" ?
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar
                     </button>
                    
                 </div>
+                :null}
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>
@@ -579,6 +586,7 @@ function Visita() {
            
             
             />
+                      { dataUser.roleId === "1" ?
             <ModalEditar
             showModalEditar={showModalEditar}
             functionShow= {abrirCerrarModalEditar}
@@ -587,6 +595,8 @@ function Visita() {
             info={info}
             bodyEditar={bodyEditar}
             />
+                :null}
+            { dataUser.roleId === "1" ?
             <ModalEliminar
             showModalEliminar={showModalEliminar}
             abrirCerrarModalEliminar= {abrirCerrarModalEliminar}
@@ -595,6 +605,7 @@ function Visita() {
             peticionDelete={peticionDelete}
             bodyEliminar={bodyEliminar}
             />
+            :null}
         </div>
     )
 }

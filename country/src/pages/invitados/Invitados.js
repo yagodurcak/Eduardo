@@ -323,12 +323,14 @@ useEffect(() => {
         <div>
             <div>
                 <TitlePage titulo="Invitados" />
+                { dataUser.roleId === "1" ?
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar
                     </button>
                    
                 </div>
+                :null}
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>
@@ -367,6 +369,7 @@ useEffect(() => {
            
             
             />
+              { dataUser.roleId === "1" ?
             <ModalEditar
             showModalEditar={showModalEditar}
             functionShow= {abrirCerrarModalEditar}
@@ -375,6 +378,8 @@ useEffect(() => {
             info={info}
             bodyEditar={bodyEditar}
             />
+            :null}
+            { dataUser.roleId === "1" ?
             <ModalEliminar
             showModalEliminar={showModalEliminar}
             abrirCerrarModalEliminar= {abrirCerrarModalEliminar}
@@ -383,6 +388,7 @@ useEffect(() => {
             peticionDelete={peticionDelete}
             bodyEliminar={bodyEliminar}
             />
+            :null}
         </div>
     )
 }

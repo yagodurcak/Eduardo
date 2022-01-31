@@ -182,10 +182,15 @@ const useStyles = makeStyles((theme) => ({
         abrirCerrarModalEliminar() 
       }
     const seleccionarVisibility=(user, caso)=>{
-        setInfo(user);
-        console.log(user);        
-        // console.log(user.user);
-        peticionPutVisibility(user)
+     if (dataUser.roleId === "1") {
+       
+       setInfo(user);
+       console.log(user);        
+       // console.log(user.user);
+       peticionPutVisibility(user)
+     } else {
+       return null
+     }    
    
       }
       
@@ -695,6 +700,8 @@ const useStyles = makeStyles((theme) => ({
         <div>
             <div>
                 <TitlePage titulo="Usuarios Propietarios" />
+                
+                {dataUser.roleId === "1"  ? 
                 <div className="flex justify-between">
                 <button className="btn" >
                     {/* <Link to="../../IMG/Pagos 1gastos.svg" target="_blank" download>Descagar Plantilla</Link> */}
@@ -709,6 +716,7 @@ const useStyles = makeStyles((theme) => ({
                     </button>
                    
                 </div>
+                :null}
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>
@@ -718,27 +726,34 @@ const useStyles = makeStyles((theme) => ({
                  title="" 
                  columns={customerTableHead} 
                  data={data}
-                 actions= {[
+             
+                 actions= 
+                 {
+                   [
                      
                      {
-                 icon:() =>  <Switch {...label} defaultChecked onChange={handleChangeSwitch} className="toggle-button"/>,
+                       icon:() =>                        
+                 <Switch {...label} defaultChecked onChange={handleChangeSwitch} className="toggle-button"/>,
                  tooltip:"add",
                  onClick: (event, rowData) => seleccionarVisibility(rowData, "Visibility") 
                  
-             },
-                            {
-                        icon:() => <i class="material-icons edit">edit</i>,
-                        tooltip:"Editar",
-                        onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
-                    },
-                    {
-                        icon:() => <i class="material-icons delete">highlight_off</i>,
-                        tooltip:"Eliminar",
-                        // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
-                        onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
-                    }
-          
-                ] }
+                 
+                },
+                {
+                  icon:() => <i class="material-icons edit">edit</i>,
+                  tooltip:"Editar",
+                  onClick: (event, rowData) => seleccionarUser(rowData, "Editar") 
+                },
+                {
+                  icon:() => <i class="material-icons delete">highlight_off</i>,
+                  tooltip:"Eliminar",
+                  // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
+                  onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
+                }
+                
+              ] 
+            } 
+ 
 
                  /></div>
             </div>
@@ -752,6 +767,7 @@ const useStyles = makeStyles((theme) => ({
            
             
             />
+             {dataUser.roleId === "1"  ? 
             <ModalEditar
             showModalEditar={showModalEditar}
             functionShow= {abrirCerrarModalEditar}
@@ -760,6 +776,7 @@ const useStyles = makeStyles((theme) => ({
             info={info}
             bodyEditar={bodyEditar}
             />
+            :null}
 
 <ModalEditar2
             showModalEditar2={showModalEditar2}
@@ -769,6 +786,7 @@ const useStyles = makeStyles((theme) => ({
             info={info}
             bodyEditar2={bodyEditar2}
             />
+               {dataUser.roleId === "1"  ? 
             <ModalEliminar
             showModalEliminar={showModalEliminar}
             abrirCerrarModalEliminar= {abrirCerrarModalEliminar}
@@ -777,6 +795,7 @@ const useStyles = makeStyles((theme) => ({
             peticionDelete={peticionDelete}
             bodyEliminar={bodyEliminar}
             />
+            :null}
         </div>
     )
 }

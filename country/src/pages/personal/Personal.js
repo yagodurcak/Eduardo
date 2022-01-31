@@ -431,6 +431,7 @@ useEffect(() => {
         <div>
             <div>
                 <TitlePage titulo="Personal de Servicio" />
+               { dataUser.roleId === "1" ?
                 <div className="flex justify-between ">
                 <button className="btn" >
                     {/* <Link to="../../IMG/Pagos 1gastos.svg" target="_blank" download>Descagar Plantilla</Link> */}
@@ -445,6 +446,7 @@ useEffect(() => {
                     </button>
                    
                 </div>
+                : null}
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>
@@ -483,6 +485,7 @@ useEffect(() => {
            
             
             />
+                  { dataUser.roleId === "1" ?
             <ModalEditar
             showModalEditar={showModalEditar}
             functionShow= {abrirCerrarModalEditar}
@@ -491,6 +494,7 @@ useEffect(() => {
             info={info}
             bodyEditar={bodyEditar}
             />
+            :null}
                         <ModalEditar2
             showModalEditar2={showModalEditar2}
             functionShow= {abrirCerrarModalEditar2}
@@ -499,6 +503,7 @@ useEffect(() => {
             info={info}
             bodyEditar2={bodyEditar2}
             />
+                    { dataUser.roleId === "1" ?
             <ModalEliminar
             showModalEliminar={showModalEliminar}
             abrirCerrarModalEliminar= {abrirCerrarModalEliminar}
@@ -507,6 +512,7 @@ useEffect(() => {
             peticionDelete={peticionDelete}
             bodyEliminar={bodyEliminar}
             />
+            :null}
         </div>
     )
 }
