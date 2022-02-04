@@ -47,13 +47,14 @@ const useStyles = makeStyles((theme) => ({
  
 
 
+
   const customerTableHead = [
 
-    {
-        title:"Tipo de visita",
-        render: data => data.type_visit.name        
+    // {
+    //     title:"Tipo de visita",
+    //     render: data => data.type_visit.name        
        
-    },
+    // },
     {
         title:"Descripción",
         field: "description"

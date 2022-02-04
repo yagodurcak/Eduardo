@@ -14,22 +14,6 @@ import moment from "moment"
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { userContext } from '../../context/UserContext';
 
-// import "@fullcalendar/core/main.css";
-
-
-
-
-
-
-
-
-
-
-
-
-// import timeGridPlugin from "@fullcalendar/timegrid";
-
-
 function Calendario() {
 
     const [data, setdata] = useState([]);

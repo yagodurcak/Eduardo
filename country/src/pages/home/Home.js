@@ -9,9 +9,26 @@ import axios from 'axios';
 import { userContext } from '../../context/UserContext';
 
 function Home() {
-    // const { dataUser, setdataUser } = useContext(userContext);
+    const { dataUser, setdataUser } = useContext(userContext);
 
-    const { dataUser } = useContext(userContext);
+    // const { dataUser } = useContext(userContext);
+
+         
+    const buscarCotizacion = async() => {
+
+     
+        setdataUser(JSON.parse(localStorage.getItem('user')))
+             
+      }
+      // }
+  useEffect(() => {
+
+  
+    buscarCotizacion()
+    
+
+  }, []);
+  
 
     console.log(dataUser);
     return (    

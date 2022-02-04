@@ -58,7 +58,7 @@ const customerTableHead = [
 }
 ,
 {
-    title:"Patente",
+    title:"Placa",
     field: "licensePlate"
 }
 ,

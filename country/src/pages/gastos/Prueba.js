@@ -186,7 +186,7 @@ const [exito, setExito] = useState(false);
       },
             field: 'date',
        
-            render: data => fecha  
+            render: data => fecha.slice(3,10)   
         },
         {
             title:"Consumo (Lts)",
@@ -775,7 +775,7 @@ useEffect(() => {
           </div>
           <div className="pickFecha mt-10 ">
             <div className="flex">
-              <h3>Filtrar: </h3> <br />
+              <h3>Periodo: </h3> <br />
               <DatePicker
                 wrapperClassName="datePicker"
                 selected={startDate}
@@ -805,7 +805,7 @@ useEffect(() => {
               </div>
               <div className="flex justify-end mt-1 text-gray-400">
                 {/* render: data => (data.publicationDate).split(" ")[0].split("-").reverse().join("-") */}
-                {filteredData2.length > 0 ? <h3>Fecha: {fecha} </h3>
+                {filteredData2.length > 0 ? <h3>Fecha: {fecha.slice(3,10) } </h3>
                   :
                   null
                 }

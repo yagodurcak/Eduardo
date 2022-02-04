@@ -555,7 +555,7 @@ useEffect(() => {
  </button>
 <div className="pickFecha">
  <div className="flex">
-   <h3>Filtrar: </h3> <br />
+   <h3>Periodo: </h3> <br />
    <DatePicker
    wrapperClassName="datePicker"
          selected={startDate}

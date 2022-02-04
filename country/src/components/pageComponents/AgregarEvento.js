@@ -18,6 +18,7 @@ function AgregarEvento({isOpen, onClose, onEventAdded}) {
         onClose()
     }
 
+
     return (
         <Modal isOpen={isOpen} onRequestClose={onClose}>
             <form action="" onSubmit={onSubmit}>
