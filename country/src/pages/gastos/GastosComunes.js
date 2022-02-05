@@ -274,7 +274,7 @@ useEffect(() => {
                 }
       
       
-            f.append("propertyId", 1)
+            f.append("propertyId", 106)
             f.append("date", fechaActual2)
             f.append("concept", info.concept)
             f.append("invoiceNumber", info.invoiceNumber)

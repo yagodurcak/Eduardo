@@ -57,7 +57,7 @@ const customerTableHead = [
         minWidth: 150,
         maxWidth: 150
       },
-        render: data => data.proyect.name
+        // render: data => data.proyect.name
     },
     {
         title:"Propietario",
@@ -65,7 +65,7 @@ const customerTableHead = [
         minWidth: 150,
         maxWidth: 150
       },
-        render: data => data.properties[0].users[0].name + " " + data.properties[0].users[0].lastName
+        // render: data => data.properties[0].users[0].name + " " + data.properties[0].users[0].lastName
     },
     {
         title:"Estado",
@@ -73,7 +73,7 @@ const customerTableHead = [
         minWidth: 80,
         maxWidth: 80
       },
-        render: data => data.state.name
+        // render: data => data.state.name
     },
     {
         title:"Actualiz.",
@@ -81,7 +81,7 @@ const customerTableHead = [
         minWidth: 80,
         maxWidth: 80
       },
-        render: data => ((data.state.updated_at).slice(0,10)).split(" ")[0].split("-").reverse().join("-")
+        // render: data => ((data.state.updated_at).slice(0,10)).split(" ")[0].split("-").reverse().join("-")
         }
     
 ]
