@@ -98,7 +98,7 @@ const [exito, setExito] = useState(false);
         // propertyId: "",
         
         consume: "",
-        date:format(new Date(), "yyyy/MM/dd"),
+      
         amount:""
         
       
@@ -363,9 +363,11 @@ const [exito, setExito] = useState(false);
 
 
   
-const fechaActual = new Date
+const fechaActual = startDate
 const fechaActual1 = moment(fechaActual).format("YYYY-MM")
 const fechaActual2 = moment(fechaActual).format("YYYY-MM-DD")
+
+console.log(fechaActual2);
 
 useEffect(() => {
   setFilteredData(data4.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
@@ -431,7 +433,7 @@ useEffect(() => {
           'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
     
       }
-          await axios.post("https://back2.tinpad.com.pe/public/api/total-light-expenditure", info2, {headers})
+          await axios.post("https://back2.tinpad.com.pe/public/api/total-light-expenditure", {...info2,   date:fechaActual2}, {headers})
           .then(response=>{
             // setdata(data.concat(response.data));
             abrirCerrarModalInsertar();

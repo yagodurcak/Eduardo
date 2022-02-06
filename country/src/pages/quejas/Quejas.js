@@ -104,12 +104,11 @@ function Quejas() {
     const { dataUser, setdataUser } = useContext(userContext);
 
     const [info, setInfo] = useState({
-        subject: "",
-        propertyId: "",
-        stateId:"" ,  
-        subject: "",
-          description:"",
-          file:""      
+      description: "",
+      file: "",
+      publicationDate: "",
+      title: ""
+
   
       })
     const [infoResp, setInfoResp] = useState({
@@ -337,20 +336,7 @@ function Quejas() {
             <div className="estilosmodalDetails">
                 <h1>Detalle de Queja o Reclamo</h1>
                 <div className='linea'></div>
-                <h3 >Propietario: <span className="mt-5 detailsInfo">{info.property&&info.property.users[0].name}</span></h3>
-                <h3 >Manzana: <span className="mt-5 detailsInfo">{info.property&&info.property.block}</span></h3>
-                <h3 >Lote: <span className="mt-5 detailsInfo">{info.property&&info.property.lot}</span></h3>
-                <h3 >Doc de Identidad: <span className="mt-5 detailsInfo">{info&&info.subject}</span></h3>
-                <h3 >Proceso: <span className="mt-5 detailsInfo">{info.state&&info.state.scope}</span></h3>
-                <h3 >Asunto: <span className="mt-5 detailsInfo">{info&&info.subject}</span></h3>
-                <h3 >Descripción: <span className="mt-5 detailsInfo">{info&&info.description}</span></h3>
-                <h3 >Documentos Adjuntos:</h3>
-                <div className='mt-5 flex justify-start items-center'>
-                <i className="material-icons">attach_file</i>
-                <h4 ><span className="detailsInfo">{info&&info.attached}</span></h4>
-                </div>
-
-                <button className='btn btn-2 mt-10' onClick={()=>seleccionarUser2() }>Responder</button>
+                <h3 >Propietario: <span className="mt-5 detailsInfo">{info&&info.title}</span></h3>
 
 
             </div>
