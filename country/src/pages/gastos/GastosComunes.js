@@ -274,7 +274,7 @@ useEffect(() => {
                 }
       
       
-            f.append("propertyId", 106)
+            // f.append("propertyId", null)
             f.append("date", fechaActual2)
             f.append("concept", info.concept)
             f.append("invoiceNumber", info.invoiceNumber)
@@ -295,12 +295,12 @@ useEffect(() => {
               // setdata(data.concat(response.data));
               // abrirCerrarModalInsertar();
       
-              setSelectedFilesPost([])
+              setSelectedFilesPost()
               console.log("exito -1");
             }).catch(error=>{
               console.log(error);
       
-              setSelectedFilesPost([])
+              setSelectedFilesPost()
             })
       
         // console.log(filesImg);
