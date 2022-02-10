@@ -1,7 +1,7 @@
 .sidebarContainer{
     height: 100%;
         flex: 1;
-    background-color: #317143;
+    background-color: #f9b500;
     color: white;
     padding: 0.3125rem 1.25rem;
     display: grid;
@@ -19,7 +19,7 @@
     color: white;
     /* padding: 0.625rem 1.875rem; */
     /* flex: 1; */
-    background-color: #317143;
+    background-color: #f9b500;
 
     display: grid;
     /* align-items: center; */
@@ -30,7 +30,7 @@
 .logoContainter{
     /* background-color: aqua; */
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     margin: 0.9375rem 0rem;
     
@@ -47,7 +47,7 @@
 }
 .logo{
     height: 4.375rem;
-    width: 5rem;
+    width: 10rem;
     /* margin-right: 0.3125rem; */
 }
 
@@ -143,7 +143,7 @@
 
 .listahover.active,
 .listahover:hover{
-    background-color: #F88703;
+    background-color: #10282b;
 
     cursor: pointer;
     padding: 0.625rem 0rem;
@@ -157,19 +157,19 @@
 
 
 .submenu:hover{
-    background-color: #F88703;
+    background-color: #10282b;
     /* padding: 0.625rem 0.625rem; */
     cursor: pointer;
     
 }
 
 .linkactivo{
-    background-color: #F88703;
+    background-color: #10282b;
     padding: 0.625rem 0rem;
  
 }
 .linkactivo1{
-    background-color: #F88703;
+    background-color: #10282b;
 
     cursor: pointer;
     padding: 0.9375rem 0rem 0.9375rem 0rem;

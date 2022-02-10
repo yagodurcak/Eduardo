@@ -34,7 +34,7 @@ color: white;
 font-size: 1.375rem;
 line-height: 1.875rem;
 
-background: #317143;
+background: #10282b;
 box-shadow: 0rem 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
 border-radius: 1.25rem;
  cursor: pointer;
@@ -66,13 +66,13 @@ border-radius: 1.25rem;
  }
 .label-input:hover {
   
-    color: #317143;
+    color: #f9b500;
     /* background-color: yellow; */
     /* Style as you please, it will become the visible UI component. */
  }
  
 .find{
-    color: #317143;
+    color: #f9b500;
 }
 
 .btn-medium{
@@ -84,7 +84,7 @@ color: white;
 font-size: 0.9375rem;
 line-height: 1.875rem;
 
-background: #317143;
+background: #10282b;
 box-shadow: 0rem 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
 border-radius: 9.375rem;
 border: none;
@@ -101,7 +101,7 @@ color: white;
 font-size: 0.9375rem;
 line-height: 1.875rem;
 
-background: #F88703;
+background: #10282b;
 box-shadow: 0rem 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
 border-radius: 9.375rem;
 border: none;
@@ -111,7 +111,7 @@ border: none;
 
 .btn-gastos{
     width: fit-content  ;
-    background-color: #317143;
+    background-color: #10282b;
 }
 
 .enlaceDownload{
@@ -127,9 +127,9 @@ border: none;
     /* color: white; */
     font-size: 1.375rem;
     line-height: 1.875rem;
-    padding: 0.1875rem;
+    padding: 3px 10px ;
     
-    background: #F88703;
+    background: #10282b;
     box-shadow: 0rem 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
     border-radius: 9.375rem;
      cursor: pointer;
@@ -224,12 +224,16 @@ color: aliceblue;
 }
 
 .estilosmodalDetails{
-    color: #317143;
+    color: #10282b;
     padding: 0.625rem;
     text-align: center;
 }
+.estilosmodalDetails h1{
+    color: #10282b;
+   
+}
 .estilosmodalDetails h3{
-    color: #317143;
+    color: #f9b500  ;
     margin: 0.625rem;
     text-align: justify;
 
@@ -247,7 +251,7 @@ color: aliceblue;
 
 .calendario{
     height: 50vh;
-    background-color: #317143;
+    background-color: #f9b500;
 }
 
 .FullCalendar{
@@ -258,7 +262,7 @@ color: aliceblue;
 
 .btn-3{
     background-color: gray;
-    color:#317143;
+    color:#10282b;
     border-radius: 0.3125rem;
     padding: 0.0625rem 0.1875rem
 }
@@ -267,7 +271,7 @@ color: aliceblue;
     width: 100%;
   }
  .pickFecha{
-     /* background-color: #317143; */
+     /* background-color: #f9b500; */
      display: grid;
      justify-content: center;
      z-index: 110100;
@@ -280,3 +284,18 @@ color: aliceblue;
      text-decoration: none;
      color: white;
  }
+
+ .linkdownload{
+    text-decoration: none;
+    color: #f9b500;
+ 
+}
+
+.linkdownload i{
+    color: #f9b500;
+    font-size: 35px;
+}
+.separaBoton{
+    display: flex;
+    justify-content: space-between;
+}

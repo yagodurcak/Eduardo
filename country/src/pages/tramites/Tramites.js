@@ -41,55 +41,53 @@ const customerTableHead = [
         minWidth: 80,
         maxWidth: 80
       },
-        render: data => ((data.proyectDate).slice(0,10)).split(" ")[0].split("-").reverse().join("-")
-    },
+      field: "fecha"
+    }
+    ,
     {
         title:"Tipo",
                        cellStyle: {
         minWidth: 80,
         maxWidth: 80
       },
-        render: data => data.proyect.project_type.name
-    },
+      field: "tipo"
+    }
+    ,
     {
         title:"Proyecto",
                        cellStyle: {
-        minWidth: 150,
-        maxWidth: 150
+        minWidth: 80,
+        maxWidth: 80
       },
-        // render: data => data.proyect.name
-    },
+      field: "Proyecto"
+    }
+    ,
     {
         title:"Propietario",
                        cellStyle: {
-        minWidth: 150,
-        maxWidth: 150
+        minWidth: 80,
+        maxWidth: 80
       },
-        // render: data => data.properties[0].users[0].name + " " + data.properties[0].users[0].lastName
-    },
+      field: "Propietario"
+    }
+    ,
     {
         title:"Estado",
                        cellStyle: {
         minWidth: 80,
         maxWidth: 80
       },
-        // render: data => data.state.name
-    },
-    {
-        title:"Actualiz.",
-                       cellStyle: {
-        minWidth: 80,
-        maxWidth: 80
-      },
-        // render: data => ((data.state.updated_at).slice(0,10)).split(" ")[0].split("-").reverse().join("-")
-        }
+      field: "Estado"
+    }
+   
     
 ]
 
 
 function Tramites() {
 
-    const [data, setdata] = useState([]);
+  const [data, setdata] = useState([]);
+  const [cleanData, setCleanData] = useState([]);
     const [showModalAdd, setShowModalAdd] = useState(false);
     const [showModalDetails, setShowModalDetails] = useState(false);
     const [showModalRespuestaQueja, setShowModalRespuestaQueja] = useState(false);
@@ -149,6 +147,14 @@ function Tramites() {
         abrirCerrarModalRespuestaQueja()
     
       }
+      const seleccionarUser3=()=>{
+
+    
+        // console.log(info.property.block);
+        abrirCerrarModalDetails()
+      
+    
+      }
 
    
       
@@ -181,22 +187,54 @@ function Tramites() {
 
         const rtdo = await axios.get(url, {headers})
 
-        console.log(rtdo.data.data[0]);
+        console.log(rtdo.data.data);
       
+        // setdata(rtdo.data.data)
         setdata(rtdo.data.data)
-
-        setdata(rtdo.data.data)
-        setdataUser(JSON.parse(localStorage.getItem('user')))
+        // setdata([rtdo.data.data])
+        // setdataUser(JSON.parse(localStorage.getItem('user')))
     }
-    useEffect(() => {
-     
-    
+
+    useEffect(() => {   
     
         buscarCotizacion()
         
-        console.log(data);
+  
       }, []);
 
+
+      
+      const nuevaData = () => {
+        
+        let newData= [];
+
+        for (let i = 0; i < data.length; i++) {
+      
+          newData.push(
+            {
+              fecha: data[i].proyectDate,
+               tipo:  data[i].proyect.project_type.name,
+               Proyecto:  data[i].proyect.name,
+               Descripción:  data[i].proyect.description,
+               Documento: data[i].proyect.property.users[0].document,
+               Propietario: data[i].proyect.property.users[0].name + " "+ data[i].proyect.property.users[0].lastName,
+               file: data[i].attachments[0],
+               Estado:  data[i].state.name,
+               id:  data[i].id,
+               Propiedad:  data[i].proyect.property
+
+              
+              })
+          
+        }
+   
+         
+        setCleanData(newData)
+          console.log(newData);
+      }
+      useEffect(() => {
+        nuevaData()
+      }, [data]);
       const styles= useStyles();
       const removeSelectedImage = () => {
         setSelectedImage();
@@ -294,15 +332,13 @@ function Tramites() {
         console.log(info);
         // console.log(selectedFilesPost.length > 0);
           
-                if (selectedFilesPost) {
+            
                   
                     
-                  f.append("attached", selectedFilesPost)
-                  f.append("subject", infoResp.subject)
-                }else{
-                 
-                   f.append("subject", infoResp.subject)
-                }
+                  f.append("file", selectedFilesPost)
+                  f.append("ownerProcessId", info.id)
+                  f.append("description", info.Descripción)
+         
       
       
             
@@ -315,7 +351,7 @@ function Tramites() {
       
         }
       
-          const url1= "https://back2.tinpad.com.pe/public/api/response"
+          const url1= "https://back2.tinpad.com.pe/public/api/process-observation"
             await axios.post(url1, f, {headers})
             .then(response=>{
                 console.log(response);
@@ -335,30 +371,52 @@ function Tramites() {
      
         }
 
+        const peticionPut=async()=>{       
+
+          const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      
+        }
+          await axios.put("https://back2.tinpad.com.pe/public/api/owner-process"+"/"+info.id,  {stateId:"4"} , {headers: headers})
+          .then(response=>{
+
+            console.log("actualizado");
+     
+          }).catch(error=>{
+            console.log(error);
+          })
+         buscarCotizacion()
+         abrirCerrarModalDetails()
+        }
+
       const bodyDetails =(
         <div className={styles.modal}>
             <div className="estilosmodalDetails">
                 <h1>Detalle</h1>
                 <div className='linea'></div>
-                {/* <h3 >Propietario: <span className="mt-5 detailsInfo">{info.properties.users&&info.properties.users.lastName}</span></h3> */}
-                <h3 >Manzana: <span className="mt-5 detailsInfo">{info.properties&&info.properties[0].block}</span></h3>
-                <h3 >Lote: <span className="mt-5 detailsInfo">{info.properties&&info.properties[0].lot}</span></h3>
-                <h3 >Propietario <span className="mt-5 detailsInfo">{info.properties&&info.properties[0].users[0].name} {info.properties&&info.properties[0].users[0].lastName} </span></h3>
-                <h3 >Doc de Identidad: <span className="mt-5 detailsInfo">{info.properties&&info.properties[0].users[0].document}</span></h3>
-                <h3 >Proyecto: <span className="mt-5 detailsInfo">{info.proyect&&info.proyect.name}</span></h3>
-                <h3 >Asunto: <span className="mt-5 detailsInfo">{info.proyect&&info.proyect.description}</span></h3>
-                <h3 >Descripción: <span className="mt-5 detailsInfo">{info&&info.description}</span></h3>
+                <h3 >Propietario: <span className="mt-5 detailsInfo">{info&&info.Propietario}</span></h3>
+                <h3 >Manzana: <span className="mt-5 detailsInfo">{info.Propiedad&&info.Propiedad.block}</span></h3>
+                <h3 >Lote: <span className="mt-5 detailsInfo">{info.Propiedad&&info.Propiedad.lot}</span></h3>
+                <h3 >Doc de Identidad: <span className="mt-5 detailsInfo">{info&&info.Documento}</span></h3>
+                <h3 >Proyecto: <span className="mt-5 detailsInfo">{info.Proyecto&&info.Proyecto}</span></h3>
+                {/* <h3 >Asunto: <span className="mt-5 detailsInfo">{info.proyect&&info.proyect.description}</span></h3> */}
+                <h3 >Descripción: <span className="mt-5 detailsInfo">{info&&info.Descripción}</span></h3>
                 <h3 >Documentos Adjuntos:</h3>
-                <div className='mt-5 flex justify-start items-center'>
-                <i className="material-icons">attach_file</i>
-                <h4 ><span className="detailsInfo">{info.attachments&&info.attachments[0].path}</span></h4>
+                <div className="d-flex justify-content-center mt-5">
+                <a href={"https://back2.tinpad.com.pe/public/" + info.file&&info.file.path} target="_blank"  className="linkdownload" >
+                    <i className="material-icons file_download">file_download</i></a>
+              </div>
+          
+
+                <div className='separaBoton'>
+                  <button className='btn btn-2 mt-10' onClick={()=>peticionPut(info) }>Aprobar</button>
+                  <button className='btn btn-2 mt-10' onClick={()=>seleccionarUser2() }>Observar</button>
                 </div>
 
-                <button className='btn btn-2 mt-10' onClick={()=>seleccionarUser2() }>Responder</button>
 
-
-            </div>
-        </div>
+            </div>       
+          </div>       
         )
       const bodyRespuestaQueja =( 
         <form action="" onSubmit={onSubmitInsertar}>
@@ -369,7 +427,7 @@ function Tramites() {
           { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
 
   
-          <TextField className={styles.inputMaterial} name="subject" onChange={handleChangeInsert2} label="Titulo*"  />
+          <TextField className={styles.inputMaterial} name="subject" onChange={handleChangeInsert2} label="Observación*"  />
           <br />
           <br />
           <br /> 
@@ -386,7 +444,7 @@ function Tramites() {
 
           {selectedImage && (
         <div className='eliminarImg'>
-      <h4 ><span className="detailsInfo">{info&&info.attached}</span></h4>
+      <h4 ><span className="detailsInfo">{info.file&&info.file.name}</span></h4>
           <button onClick={removeSelectedImage} style={styles.delete}>
             Eliminar
           </button>
@@ -415,7 +473,7 @@ function Tramites() {
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={cleanData}
                  actions= {[
                     {
                         icon:() => <span class="material-icons find">

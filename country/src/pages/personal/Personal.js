@@ -67,10 +67,16 @@ const customerTableHead = [
     title:"Apellidos",
     field: "lastName",
     
-},
+}
+,
 {
     title:"Doc. de Identidad",
     field: "document"
+}
+,
+{
+    title:"Teléfono",
+    field: "phone"
 }
 ]
 

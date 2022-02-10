@@ -9,6 +9,7 @@ import {
 import Archivos from "./pages/archivos/Archivos";
 import Calculos from "./pages/gastos/Calculos";
 import Calendar from "./pages/calendar/Calendar";
+import CondoProvider from "../src/context/Condocontext"
 import Configuracion from "./pages/gastos/Configuracion";
 import DetalleTramite from "./pages/tramites/DetalleTramite";
 import Energia from "./pages/gastos/Energia";
@@ -41,6 +42,7 @@ function App() {
   return (
     <UserProvider>
       <TotalCondoProvider>
+      <CondoProvider>
     <Router>
       <Switch>
           <Route exact path="/">
@@ -126,6 +128,7 @@ function App() {
 
       </Switch>
     </Router>
+    </CondoProvider>
     </TotalCondoProvider>
     </UserProvider>
   );

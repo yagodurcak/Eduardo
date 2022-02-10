@@ -20,6 +20,7 @@ import gastos from "../../IMG/Pagos 1gastos.svg"
 import imagen from "../../IMG/Profile 1usericon.svg"
 import informacion from "../../IMG/Información 2info.svg"
 import logo from "../../IMG/logocondominio.svg"
+import logo2 from "../../IMG/fincabonita.jpeg"
 import noticias from "../../IMG/Noticias 2noticias.svg"
 import personal from "../../IMG/personal.svg"
 import phone from "../../IMG/sidebar/phone.svg"
@@ -34,32 +35,6 @@ import users from "../../IMG/Users 2users.svg"
 import visitas from "../../IMG/Visitas 3visitas.svg"
 
 // import { userContext } from '../../context/UserContext';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function Sidebar() {
@@ -108,8 +83,8 @@ function Sidebar() {
         <div className="sidebarContainer">
             <div className="sublogocontainer">
                 <div className="logoContainter">
-                    <img src={logo} alt="" className='logo' />
-                    <h1 className="title">NOMBRE DEL CONDOMINIO</h1>
+                    <img src={logo2} alt="" className='logo' />
+                    {/* <h1 className="title">NOMBRE DEL CONDOMINIO</h1> */}
                 </div>
                 {/* <div className="linea"></div> */}
                 <div className="adminContainer">

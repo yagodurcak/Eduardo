@@ -99,16 +99,18 @@ function Quejas() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false)
     const [responseId, setResponseId] = useState("");
+    const [responseAsco, setResponseAsco] = useState(false);
 
 
     const { dataUser, setdataUser } = useContext(userContext);
 
     const [info, setInfo] = useState({
-      description: "",
-      file: "",
-      publicationDate: "",
-      title: ""
-
+        subject: "",
+        propertyId: "",
+        stateId:"" ,  
+        subject: "",
+          description:"",
+          file:""      
   
       })
     const [infoResp, setInfoResp] = useState({
@@ -147,16 +149,7 @@ function Quejas() {
         setInfoScope(info.state)
       }, [abrirCerrarModalDetails]);
 
-    // const traerFrase = async () => {
-    //     const api = await fetch("http://localhost:3001/Quejas");
-    //     const frase = await api.json()
-    //     console.log(frase[0]);
-    //     setdata(frase)
-    // }
-    
-    // useEffect(() => {
-    //     traerFrase()
-    // }, [])
+
 
     const buscarCotizacion = async() => {
       
@@ -179,19 +172,17 @@ function Quejas() {
         setdata(rtdo.data.data)
       
      
-        setdataUser(JSON.parse(localStorage.getItem('user')))
+     
 
     }
-    useEffect(() => {
-     
-    
-    
-        buscarCotizacion()
 
-   
-        
-        console.log(data);
-      }, []);
+    useEffect(() => {
+      setdataUser(JSON.parse(localStorage.getItem('user')))
+    }, []);
+    useEffect(() => {
+     buscarCotizacion()
+
+      }, [dataUser]);
 
       const styles= useStyles();
       const removeSelectedImage = () => {
@@ -201,6 +192,7 @@ function Quejas() {
     useEffect(() => {
   peticionPost2()
     }, [responseId]);
+
     const peticionPost2=async()=>{
         const headers = {
           'Content-Type': 'application/json',
@@ -216,14 +208,34 @@ function Quejas() {
           .then(response=>{
             // setdata(data.concat(response.data));
             console.log(response.data.data.id);
-     
+            setResponseAsco(true)
             // setSpaceId(response.data.data.id)
           }).catch(error=>{
             console.log(error);
           })
-    
-          buscarCotizacion()
+          peticionPut()
+
         
+        }
+        
+
+        const peticionPut=async()=>{       
+          console.log("actualizando");
+          const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+      
+        }
+          await axios.put("https://back2.tinpad.com.pe/public/api/complaint-claim"+"/"+info.id,  {stateId:"5"} , {headers: headers})
+          .then(response=>{
+
+            console.log("actualizado");
+     
+          }).catch(error=>{
+            console.log(error);
+          })
+
+          buscarCotizacion()
         }
 
     const onSubmitInsertar = (e) => {
@@ -247,7 +259,7 @@ function Quejas() {
      
      abrirCerrarModalRespuestaQueja()
      }
-     buscarCotizacion()
+  
      
      setLoading(true)
      setTimeout(() => {
@@ -326,8 +338,7 @@ function Quejas() {
               setSelectedFilesPost([])
             })
       
-        // console.log(filesImg);
-          buscarCotizacion()
+        
      
         }
 
@@ -336,7 +347,20 @@ function Quejas() {
             <div className="estilosmodalDetails">
                 <h1>Detalle de Queja o Reclamo</h1>
                 <div className='linea'></div>
-                <h3 >Propietario: <span className="mt-5 detailsInfo">{info&&info.title}</span></h3>
+                <h3 >Propietario: <span className="mt-5 detailsInfo">{info.property&&info.property.users[0].name}</span></h3>
+                <h3 >Manzana: <span className="mt-5 detailsInfo">{info.property&&info.property.block}</span></h3>
+                <h3 >Lote: <span className="mt-5 detailsInfo">{info.property&&info.property.lot}</span></h3>
+                <h3 >Doc de Identidad: <span className="mt-5 detailsInfo">{info&&info.subject}</span></h3>
+                <h3 >Proceso: <span className="mt-5 detailsInfo">{info.state&&info.state.scope}</span></h3>
+                <h3 >Asunto: <span className="mt-5 detailsInfo">{info&&info.subject}</span></h3>
+                <h3 >Descripción: <span className="mt-5 detailsInfo">{info&&info.description}</span></h3>
+                <h3 >Documentos Adjuntos:</h3>
+                <div className='mt-5 flex justify-start items-center'>
+                <i className="material-icons">attach_file</i>
+                <h4 ><span className="detailsInfo">{info&&info.attached}</span></h4>
+                </div>
+
+                <button className='btn btn-2 mt-10' onClick={()=>seleccionarUser2() }>Responder</button>
 
 
             </div>

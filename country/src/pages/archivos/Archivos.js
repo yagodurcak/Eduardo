@@ -453,6 +453,7 @@ const peticionPost=async()=>{
 
     return (
         <div>
+          
             <div>
                 <TitlePage titulo="Información util" />
                 <div className="flex justify-end ">

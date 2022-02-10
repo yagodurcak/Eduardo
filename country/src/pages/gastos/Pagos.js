@@ -82,7 +82,7 @@ const customerTableHead = [
 
 
 
-function GastosComunes() {
+function Pagos() {
 
 
     const [data, setdata] = useState([]);
@@ -631,12 +631,12 @@ useEffect(() => {
                 </NavLink>
               </Link>
             </button>
-            { exito ?         null    :
+            { exito ?             
             <button className='btn btn-2' onClick={actualizarState} >
 
                   <h1 className="title1">Aprobar</h1>
            
-            </button>  }
+            </button> : null}
 
           </div>
         </div>
@@ -672,4 +672,4 @@ useEffect(() => {
     )
 }
 
-export default GastosComunes
+export default Pagos
