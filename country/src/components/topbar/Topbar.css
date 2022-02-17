@@ -10,3 +10,14 @@
 .topbar-flex div{
   padding: 0px 10px;
 }
+
+.btn1{
+  /* color:#10282b; */
+
+  background-color: #10282b;
+  /* height: 500px; */
+  color: white;
+  border: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}

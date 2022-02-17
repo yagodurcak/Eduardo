@@ -353,7 +353,7 @@ const [exito, setExito] = useState(false);
       }
 
       const rtdo = await axios.get(url, {headers})
-      const rtdo2 = (rtdo.data.data).filter(artista=> artista.id === 4)
+      const rtdo2 = (rtdo.data.data).filter(artista=> artista.id === 6)
   
      
       console.log(rtdo2[0]);

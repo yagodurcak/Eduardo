@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 80,
         maxWidth: 80
       },
-            render: data => parseFloat((parseInt(data.property.area)/ totalArea  ) * 100).toFixed(2)
+      render: data =>parseInt(data.property.participation)  
         },
         {
             title:"Subtotal(S/)",
@@ -120,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 100,
         maxWidth: 100
       },
-            render: data => parseFloat((((data.property.area/ totalArea  ) * 100)*totalCondo)/100).toFixed(2)
+            render: data => (parseInt(data.property.participation)*totalCondo)/100
         }
         ,
         {
@@ -137,8 +137,8 @@ const useStyles = makeStyles((theme) => ({
                 cellStyle: {
         minWidth: 80,
         maxWidth: 80
-      },
-            render: data => parseFloat((((data.property.area/ totalArea  ) * 100)*totalCondo)/100 + parseInt(data3.amount) ).toFixed(2) 
+      }, 
+            render: data => parseFloat((parseInt(data.property.participation)*totalCondo)/100 + parseInt(data3.amount) ).toFixed(2) 
         }
 
     ]
@@ -174,6 +174,7 @@ const useStyles = makeStyles((theme) => ({
 
     }
     
+    console.log(totalCondo);
         
     const sumarGastosTotales = () => {
         let suma = 0
@@ -257,7 +258,7 @@ const buscarCobranza = async() => {
   }
 
   const rtdo = await axios.get(url, {headers})
-  const rtdo2 = (rtdo.data.data).filter(artista=> artista.id === 5)
+  const rtdo2 = (rtdo.data.data).filter(artista=> artista.id === 8)
 
   setdata3(rtdo2[0]);
 

@@ -358,12 +358,11 @@ const useStyles = makeStyles((theme) => ({
               setLoading(false)
             }, 2000);
             
-            // console.log(infoid, infoPropertyId);
+
+
         }
     
-        // console.log(data);
-    
-        // useEffect(() => {
+      
      
             useEffect(() => {
        

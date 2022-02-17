@@ -45,6 +45,12 @@ const useStyles = makeStyles((theme) => ({
 const customerTableHead = [
 
 {
+    title:"Fecha",
+    // field: "date",
+    render: data => (data.date).split(" ")[0].split("-").reverse().join("-")
+
+},
+{
     title:"Nombre",
     field: "name"
 },
@@ -323,14 +329,14 @@ useEffect(() => {
         <div>
             <div>
                 <TitlePage titulo="Invitados" />
-                { dataUser.roleId === "1" ?
+                {/* { dataUser.roleId === "1" ?
                 <div className="flex justify-end ">
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar
                     </button>
                    
                 </div>
-                :null}
+                :null} */}
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>

@@ -33,6 +33,8 @@ const Table2 = props => {
                 maxBodyHeight: "150vh",
                
                 // maxBodyWidth: "20vw",
+                // pageSize:20,
+                // pageSizeOptions:[10,20,30],
                 actionsColumnIndex : -1,
                 // columnResizable: true,
                 // filtering:true,
