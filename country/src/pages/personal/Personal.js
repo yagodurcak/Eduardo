@@ -459,6 +459,9 @@ useEffect(() => {
            </Box> : null}
 
 
+           {dataUser.roleId === "1" ? 
+
+
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
@@ -480,6 +483,13 @@ useEffect(() => {
                 ] }
 
                  /></div>
+                 :   <div className="mt-10"><Table2 
+                 title="" 
+                 columns={customerTableHead} 
+                 data={data}
+     
+
+                 /></div>}
             </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}

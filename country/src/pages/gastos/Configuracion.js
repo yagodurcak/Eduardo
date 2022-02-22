@@ -304,15 +304,18 @@ function Configuracion() {
             <div>
                 <TitlePage titulo="Personal de Configuracion" />
                 <div className="flex justify-end ">
+                {dataUser.roleId === "1" &&
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar
-                    </button>
+                    </button>}
                    
                 </div>
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>
            </Box> : null}
+
+          {dataUser.roleId === "1" ?
                
                  <div className="mt-10"><Table2 
                  title="" 
@@ -334,7 +337,13 @@ function Configuracion() {
           
                 ] }
 
-                 /></div>
+                 /></div> :  <div className="mt-10"><Table2 
+                 title="" 
+                 columns={customerTableHead} 
+                 data={data}
+                
+
+                 /></div>}
             </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}

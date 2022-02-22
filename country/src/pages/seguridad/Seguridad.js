@@ -176,6 +176,8 @@ function Seguridad() {
         
       }, []);
 
+      
+
       const buscarProperty = async() => {
           
         const url = `https://back2.tinpad.com.pe/public/api/user`;
@@ -451,10 +453,13 @@ function Seguridad() {
         </form>
       )
 
+  
+
     return (
         <div>
             <div>
                 <TitlePage titulo="Usuarios Autorizados" />
+                {dataUser.roleId === "1" &&
                 <div className="flex justify-between ">
                     <button className="btn" >
                     {/* <Link to="../../IMG/Pagos 1gastos.svg" target="_blank" download>Descagar Plantilla</Link> */}
@@ -464,16 +469,19 @@ function Seguridad() {
                     <button className="btn" onClick={()=>abrirCerrarModalEditar2()}>
                         Importar Plantilla
                     </button>
-                    <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
+                    {/* <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar Manualmente
-                    </button>
+                    </button> */}
                    
-                </div>
+                </div> }
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>
            </Box> : null}
-               
+
+           {dataUser.roleId === "1" ?
+           
+        
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
@@ -495,6 +503,13 @@ function Seguridad() {
                 ] }
 
                  /></div>
+                 :  <div className="mt-10"><Table2 
+                 title="" 
+                 columns={customerTableHead} 
+                 data={data}
+                 
+
+                 /></div>}
             </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}

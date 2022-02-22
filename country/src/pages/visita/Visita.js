@@ -548,6 +548,8 @@ function Visita() {
            <CircularProgress color="success" size={80}/>
            </Box> : null}
 
+           {dataUser.roleId === "1" ?
+
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
@@ -575,7 +577,13 @@ function Visita() {
           
                 ] }
 
-                 /></div>
+                 /></div> : <div className="mt-10"><Table2 
+                 title="" 
+                 columns={customerTableHead} 
+                 data={data}
+              
+
+                 /></div>}
             </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}

@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
    const [showModalEditar2, setShowModalEditar2] = useState(false);
    const { dataUser, setdataUser } = useContext(userContext);
    const [selectedImage, setSelectedImage] = useState();
+   const [aprobador, setAprobador] = useState(false);
    const nuevoArray = () => {
      
    }
@@ -224,6 +225,12 @@ const useStyles = makeStyles((theme) => ({
         }, 2000);
     
     }, []);
+
+    useEffect(() => {
+    if (dataUser.roleId === 4) {
+        setAprobador(true)
+    }
+    }, [dataUser]);
 
     
 
@@ -694,7 +701,7 @@ const useStyles = makeStyles((theme) => ({
         
             </div>
           )
-
+console.log(dataUser);
     return (
         <div>
             <div>
@@ -721,6 +728,8 @@ const useStyles = makeStyles((theme) => ({
            <CircularProgress color="success" size={80}/>
            </Box> : null}
 
+           {dataUser.roleId  === "1"  ?
+             
                  <div className="mt-5 "><Table2 
                  title="" 
                  columns={customerTableHead} 
@@ -755,6 +764,18 @@ const useStyles = makeStyles((theme) => ({
  
 
                  /></div>
+           : 
+            <div className="mt-5 "><Table2 
+            title="" 
+            columns={customerTableHead} 
+            data={data}
+        
+
+
+
+            /></div>}
+           
+
             </div>
             <ModalInsertar
             showmodalInsertar={showModalInsertar}

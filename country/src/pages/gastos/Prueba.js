@@ -786,22 +786,26 @@ useEffect(() => {
             </div>
           </div>
           <div className="flex justify-between mt-16">
+            
+          {dataUser.roleId === "1" &&
           <button className="btn" onClick={()=>downloadExcel()}>
               Descargar Plantilla
-            </button>
+            </button>}
           
      
-
+      
+            {dataUser.roleId === "1" &&
             <button className="btn" onClick={()=>abrirCerrarModalEditar()}>
               Importar PLantilla
-            </button>
+            </button>}
             <div>
 
               <div className="flex justify-end mt-1 text-gray-400">
 
+              {dataUser.roleId === "1" &&
                 <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
                   Agregar gasto
-                </button>
+                </button>}
               </div>
               <div className="flex justify-end mt-1 text-gray-400">
                 {/* render: data => (data.publicationDate).split(" ")[0].split("-").reverse().join("-") */}

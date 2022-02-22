@@ -575,11 +575,11 @@ useEffect(() => {
             <CircularProgress color="success" size={80} />
           </Box> : null}
           <div className="flex justify-between mt-16">
- 
+          {dataUser.roleId === "1" &&
 
  <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
    Agregar gasto
- </button>
+ </button> }
 <div className="pickFecha">
  <div className="flex">
    <h3>Periodo: </h3> <br />
@@ -598,29 +598,42 @@ useEffect(() => {
  
 </div>
 </div>
+
+{dataUser.roleId === "1" ?
+
+<div className="mt-10"><Table2
+title=""
+columns={customerTableHead}
+data={filteredData}
+actions={[
+
+  {
+    icon: () => <i class="material-icons edit">edit</i>,
+    tooltip: "Editar",
+    onClick: (event, rowData) => seleccionarUser(rowData, "Editar")
+  },
+  {
+    icon: () => <i class="material-icons delete">highlight_off</i>,
+    tooltip: "Eliminar",
+    // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
+    onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
+  }
+
+
+]}
+
+/></div>
+: <div className="mt-10"><Table2
+title=""
+columns={customerTableHead}
+data={filteredData}
+
+
+/></div>
+
+}
    
-          <div className="mt-10"><Table2
-            title=""
-            columns={customerTableHead}
-            data={filteredData}
-            actions={[
-
-              {
-                icon: () => <i class="material-icons edit">edit</i>,
-                tooltip: "Editar",
-                onClick: (event, rowData) => seleccionarUser(rowData, "Editar")
-              },
-              {
-                icon: () => <i class="material-icons delete">highlight_off</i>,
-                tooltip: "Eliminar",
-                // onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")   
-                onClick: (event, rowData) => seleccionarUser(rowData, "Eliminar")
-              }
-
-
-            ]}
-
-          /></div>
+          
                     <div className="flex justify-end mt-5 ">
             <button className='btn btn-2 mr-5'>
               <Link to="/Calculos" style={{ textDecoration: 'none' }}>
@@ -631,12 +644,17 @@ useEffect(() => {
                 </NavLink>
               </Link>
             </button>
+            {dataUser.roleId === "4" && <div>
+
+
             { exito ?         null    :
             <button className='btn btn-2' onClick={actualizarState} >
 
                   <h1 className="title1">Aprobar</h1>
            
-            </button>  }
+            </button>  } 
+            </div>
+            }
 
           </div>
         </div>
