@@ -24,6 +24,9 @@ import Login from "./components/Login"
 import Modal from 'react-modal';
 import Noticias from "./pages/noticias/noticias";
 import Personal from "./pages/personal/Personal";
+import Personal2 from "./pages/personal/Personal2";
+import PersonalProvider from "../src/context/PersonalContext"
+import Proveedores from "./pages/invitados/Proveedores";
 import Prueba from "./pages/gastos/Prueba";
 import Quejas from "./pages/quejas/Quejas";
 import Seguridad from "./pages/seguridad/Seguridad";
@@ -43,11 +46,14 @@ function App() {
     <UserProvider>
       <TotalCondoProvider>
       <CondoProvider>
+      <PersonalProvider>
+
     <Router>
       <Switch>
           <Route exact path="/">
           <Login/>
           </Route>
+
 
       <div className="container">
         <Sidebar/>
@@ -62,6 +68,9 @@ function App() {
           </Route>
           <Route path="/Personal">
           <Personal/>
+          </Route>
+          <Route path="/Personal2">
+          <Personal2/>
           </Route>
           <Route path="/Espacio">
           <Espacio/>
@@ -121,6 +130,9 @@ function App() {
           <Route path="/GastosPrueba">
           <GastosPrueba/>
           </Route>
+          <Route path="/Proveedores">
+          <Proveedores/>
+          </Route>
           </div>
         </Switch>
   
@@ -128,6 +140,7 @@ function App() {
 
       </Switch>
     </Router>
+    </PersonalProvider>
     </CondoProvider>
     </TotalCondoProvider>
     </UserProvider>

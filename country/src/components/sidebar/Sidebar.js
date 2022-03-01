@@ -164,6 +164,15 @@ function Sidebar() {
                                 </NavLink>
                             </li>
                         </Link>
+                        <Link to="/Personal2" style={{ textDecoration: 'none' }}>
+                            <li className='listahover'>
+                            <NavLink className="logoContainter1" exact to="/Personal2" activeClassName="linkactivo">
+                                    <img src={personal} alt="" className='logo1' />
+                                    <h1 className="title1">Personal2</h1>
+                                    {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                                </NavLink>
+                            </li>
+                        </Link>
                         {dataUser.roleId === "1"  ? 
                         <Link to="/Espacio" style={{ textDecoration: 'none' }}>
                             <li className='listahover'>
@@ -210,6 +219,16 @@ function Sidebar() {
                                 <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Invitados">
                                         <img src={seguridad} alt="" className='logo3' />
                                         <h1 className="title1">Invitados</h1>
+                                        {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
+                
+                                    </NavLink>
+                                </li>
+                            </Link>
+                            <Link to="/Proveedores" style={{ textDecoration: 'none' }}>
+                                <li className='submenu'>
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Proveedores">
+                                        <img src={seguridad} alt="" className='logo3' />
+                                        <h1 className="title1">Proveedores</h1>
                                         {/* <a href=""><img src={down} alt="" className='logo2' /></a> */}
                 
                                     </NavLink>

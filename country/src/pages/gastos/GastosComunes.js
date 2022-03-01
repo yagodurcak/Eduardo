@@ -569,6 +569,17 @@ useEffect(() => {
             </button>
       
           </div>
+          {dataUser.roleId === "4" && <div className="flex justify-end">
+
+
+{ exito ?         null    :
+<button className='btn btn-2' onClick={actualizarState} >
+
+      <h1 className="title1">Aprobar</h1>
+
+</button>  } 
+</div>
+}
 
           {loading ? <Box sx={{ position: 'absolute', left: 500, top: 500, zIndex: 100 }}>
 
@@ -580,6 +591,7 @@ useEffect(() => {
  <button className="btn" onClick={() => abrirCerrarModalInsertar()}>
    Agregar gasto
  </button> }
+ 
 <div className="pickFecha">
  <div className="flex">
    <h3>Periodo: </h3> <br />
@@ -644,17 +656,7 @@ data={filteredData}
                 </NavLink>
               </Link>
             </button>
-            {dataUser.roleId === "4" && <div>
-
-
-            { exito ?         null    :
-            <button className='btn btn-2' onClick={actualizarState} >
-
-                  <h1 className="title1">Aprobar</h1>
-           
-            </button>  } 
-            </div>
-            }
+ 
 
           </div>
         </div>
