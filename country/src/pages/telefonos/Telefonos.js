@@ -10,6 +10,7 @@ import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
+import {UtilInfoContext} from '../../context/UtilInfoContext';
 import axios from "axios"
 import down from "../../IMG/down.svg"
 import {makeStyles} from '@material-ui/core/styles';
@@ -66,6 +67,7 @@ function Telefonos() {
     const [showModalEditar, setShowModalEditar] = useState(false);
     const [showModalEliminar, setShowModalEliminar] = useState(false);
     const [loading, setLoading] = useState(false);
+    const { dataUtilInfo, setdataUtilInfo } = useContext(UtilInfoContext);
 
 
     const { dataUser, setdataUser } = useContext(userContext);
@@ -120,15 +122,23 @@ function Telefonos() {
  
           // console.log(rtdo.data.data[0]);
         
-          setdata((rtdo.data.data).filter(artista=>( artista.phone !== "1" && artista.phone !== null)));
+          setdataUtilInfo((rtdo.data.data).filter(artista=>( artista.phone !== "1" && artista.phone !== null)));
 
           setdataUser(JSON.parse(localStorage.getItem('user')))
       }
       useEffect(() => {
-      
-
-        buscarCotizacion()
-  }, []);
+        
+        if (dataUtilInfo.length === 0) {
+  
+            console.log(dataUtilInfo.length);
+            buscarCotizacion()
+            
+        }else{
+            console.log(dataUtilInfo.length);
+            return
+        }
+    }, []);
+  
 
 
 
@@ -337,7 +347,7 @@ const onSubmitEditar = (e) => {
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataUtilInfo}
                  actions= {[
 
             

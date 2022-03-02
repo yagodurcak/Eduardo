@@ -14,6 +14,7 @@ import ModalDetails from '../../components/pageComponents/ModalDetails';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
+import { ProveedoresContext } from '../../context/ProveedoresContext';
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
@@ -85,6 +86,7 @@ function Proveedores() {
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false);
     const [showModalDetails, setShowModalDetails] = useState(false);
+    const { dataProveedores, setdataProveedores } = useContext(ProveedoresContext);
 
     const { dataUser, setdataUser } = useContext(userContext);
     const [info, setInfo] = useState({
@@ -129,18 +131,23 @@ function Proveedores() {
       const rtdo = await axios.get(url, {headers})
 
       console.log(rtdo.data.data);
-      setdata(rtdo.data.data)
+      setdataProveedores(rtdo.data.data)
       setdataUser(JSON.parse(localStorage.getItem('user')))
   }
 // }
 useEffect(() => {
- 
+        
+  if (dataProveedores.length === 0) {
 
-
-  buscarCotizacion()
-  
-  console.log(data);
+      console.log(dataProveedores.length);
+      buscarCotizacion()
+      
+  }else{
+      console.log(dataProveedores.length);
+      return
+  }
 }, []);
+
 
     
 
@@ -386,7 +393,7 @@ useEffect(() => {
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataProveedores}
                  actions= {[  
                     {
                         icon:() => <span class="material-icons find">

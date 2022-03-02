@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import ModalDetails from '../../components/pageComponents/ModalDetails';
 import ModalRespuestaQueja from "../../components/pageComponents/ModalRespuestaQueja"
+import {QuejasContext} from '../../context/QuejasContext';
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
@@ -100,6 +101,7 @@ function Quejas() {
     const [error, setError] = useState(false)
     const [responseId, setResponseId] = useState("");
     const [responseAsco, setResponseAsco] = useState(false);
+    const { dataQuejas, setdataQuejas } = useContext(QuejasContext);
 
 
     const { dataUser, setdataUser } = useContext(userContext);
@@ -169,7 +171,7 @@ function Quejas() {
         const rtdo = await axios.get(url, {headers})
         
         console.log(rtdo.data.data[0]);
-        setdata(rtdo.data.data)
+        setdataQuejas(rtdo.data.data)
       
      
      
@@ -180,8 +182,15 @@ function Quejas() {
       setdataUser(JSON.parse(localStorage.getItem('user')))
     }, []);
     useEffect(() => {
-     buscarCotizacion()
+      if (dataQuejas.length === 0) {
 
+        console.log(dataQuejas.length);
+        buscarCotizacion()
+        
+    }else{
+        console.log(dataQuejas.length);
+        return
+    }
       }, [dataUser]);
 
       const styles= useStyles();
@@ -420,7 +429,7 @@ function Quejas() {
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataQuejas}
                  actions= {[
                     {
                         icon:() => <span class="material-icons find">

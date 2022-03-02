@@ -16,6 +16,7 @@ import Energia from "./pages/gastos/Energia";
 import Espacio from "./pages/espacio/Espacio";
 import EspacioProvider from "../src/context/EspacioContext"
 import GastosComunes from "./pages/gastos/GastosComunes";
+import GastosProvider from "../src/context/GastosContext"
 import GastosPrueba from "./pages/gastos/GastosPrueba";
 import Historial from "./pages/gastos/Historial";
 import HistorialAgua from "./pages/gastos/HistorialAgua";
@@ -25,12 +26,15 @@ import InvitadosProvider from "../src/context/InvitadosContext"
 import Login from "./components/Login"
 import Modal from 'react-modal';
 import Noticias from "./pages/noticias/noticias";
+import NoticiasProvider from "../src/context/NoticiasContext"
 import Personal from "./pages/personal/Personal";
 import Personal2 from "./pages/personal/Personal2";
 import PersonalProvider from "../src/context/PersonalContext"
 import Proveedores from "./pages/invitados/Proveedores";
+import ProveedoresProvider from "../src/context/ProveedoresContext"
 import Prueba from "./pages/gastos/Prueba";
 import Quejas from "./pages/quejas/Quejas";
+import QuejasProvider from "../src/context/QuejasContext"
 import ReglasProvider from "../src/context/ReglasContext"
 import Seguridad from "./pages/seguridad/Seguridad";
 import SeguridadProvider from "../src/context/SeguridadContext"
@@ -39,9 +43,11 @@ import Telefonos from "./pages/telefonos/Telefonos";
 import Topbar from "./components/topbar/Topbar";
 import TotalCondoProvider from "../src/context/TotalCondContext"
 import Tramites from "./pages/tramites/Tramites";
+import TramitesProvider from "../src/context/TramitesContext"
 import UserProvider from "../src/context/UserContext"
 import Users from "./pages/users/Users"
 import UsuariosProvider from "../src/context/UsuariosContext"
+import UtilInfoProvider from "../src/context/UtilInfoContext"
 import Visita from "./pages/visita/Visita";
 
 Modal.setAppElement('#root');
@@ -92,33 +98,43 @@ function App() {
           <Visita/>
           </Route>            
           </ReglasProvider>
+          <NoticiasProvider>
           <Route path="/Noticias">
           <Noticias/>
           </Route>
-          <Route path="/Tramites">
-          <Tramites/>
-          </Route>
+          </NoticiasProvider>
+          <QuejasProvider>
           <Route path="/Quejas">
           <Quejas/>
           </Route>
+          </QuejasProvider>
           <SeguridadProvider>
           <Route path="/Seguridad">
           <Seguridad/>
           </Route>
           </SeguridadProvider>
-    
+          <UtilInfoProvider>
           <Route path="/Archivos">
           <Archivos/>
           </Route>
           <Route path="/Telefonos">
           <Telefonos/>
           </Route>
+          </UtilInfoProvider>
+          <TramitesProvider>
+          <Route path="/Tramites">
+          <Tramites/>
+          </Route>
+
           <Route path="/Tramites/:id">
           <DetalleTramite/>
           </Route>
-          <Route path="/GastosComunes">
-          <GastosComunes/>
-          </Route>
+          </TramitesProvider>
+          <GastosProvider>
+            <Route path="/GastosComunes">
+            <GastosComunes/>
+            </Route>
+          </GastosProvider>
           <Route path="/Calculos">
           <Calculos/>
           </Route>
@@ -148,9 +164,11 @@ function App() {
           <Invitados/>
           </Route>
           </InvitadosProvider>
+          <ProveedoresProvider>
           <Route path="/Proveedores">
           <Proveedores/>
           </Route>
+          </ProveedoresProvider>
           </div>
         </Switch>
   

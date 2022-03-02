@@ -9,6 +9,7 @@ import ModalAdd from '../../components/pageComponents/ModalAdd';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
+import {NoticiasContext} from '../../context/NoticiasContext';
 import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import Table2 from '../../components/Table2';
@@ -84,6 +85,8 @@ function Noticias() {
     const [loading, setLoading] = useState(false);
     // const [showModalAdd, setShowModalAdd] = useState(false);
     const { dataUser, setdataUser } = useContext(userContext);
+    const { dataNoticias, setdataNoticias } = useContext(NoticiasContext);
+
     const [info, setInfo] = useState({
       publicationDate: "",
       typeReleaseId: "",
@@ -147,17 +150,21 @@ function Noticias() {
         const rtdo = await axios.get(url, {headers})
 
         console.log(rtdo.data.data[0]);
-        setdata(rtdo.data.data)
+        setdataNoticias(rtdo.data.data)
         setdataUser(JSON.parse(localStorage.getItem('user')))
     }
     useEffect(() => {
-     
-    
-  
-      buscarCotizacion()
-      
-      console.log(data);
-    }, []);
+        
+      if (dataNoticias.length === 0) {
+
+          console.log(dataNoticias.length);
+          buscarCotizacion()
+          
+      }else{
+          console.log(dataNoticias.length);
+          return
+      }
+  }, []);
 
 
   //  buscar Tipos de noticias y menu desplegable 
@@ -628,7 +635,7 @@ const [infoType, setInfoType] = useState({
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataNoticias}
                  actions= {[
 
                   {

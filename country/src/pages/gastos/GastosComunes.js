@@ -17,6 +17,7 @@ import React,{useContext, useEffect, useState}  from 'react';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import DatePicker from "react-datepicker";
+import {GastosContext} from '../../context/GastosContext';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -98,6 +99,8 @@ function GastosComunes() {
     const [year,setYear]=useState('all') 
     const [filteredData,setFilteredData]=useState([])
     const [startDate, setStartDate] = useState(new Date());
+    const { dataGastos, setdataGastos } = useContext(GastosContext);
+
 const [exito, setExito] = useState(false);
 
     const { totalCondo, setTotalCondo } = useContext(TotalCondoContext);
@@ -172,7 +175,7 @@ const [exito, setExito] = useState(false);
       
      
         
-        setdata(rtdo.data.data)
+        setdataGastos(rtdo.data.data)
       
       console.log(rtdo.data.data);
       
@@ -204,14 +207,24 @@ useEffect(() => {
     
     if (mounted) {
       
-      setdata(rtdo.data.data)
+      setdataGastos(rtdo.data.data)
     }
     console.log(rtdo.data.data);
     
     
     
   }
-  buscarCotizacion()
+  if (dataGastos.length === 0) {
+
+    console.log(dataGastos.length);
+    buscarCotizacion()
+    
+}else{
+    console.log(dataGastos.length);
+    return
+}
+
+
 
   return ()=>{
     mounted= false
@@ -226,9 +239,9 @@ const fechaActual1 = moment(fechaActual).format("YYYY-MM")
 const fechaActual2 = moment(fechaActual).format("YYYY-MM-DD")
 
 useEffect(() => {
-  setFilteredData(data.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
+  setFilteredData(dataGastos.filter(dt=>dt.date.slice(0, 7) === fechaActual1))
   console.log(fechaActual1);
-}, [data])
+}, [dataGastos])
 
 useEffect(() => {
   // console.log("ahora");
@@ -242,7 +255,7 @@ useEffect(() => {
   }, [startDate])
 
   useEffect(()=>{
-    setFilteredData(data.filter(dt=>dt.date.slice(0, 7) === year))
+    setFilteredData(dataGastos.filter(dt=>dt.date.slice(0, 7) === year))
     console.log(year);
     suma = 0
       },[year])
@@ -517,9 +530,9 @@ useEffect(() => {
     
       }
 
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < dataGastos.length; i++) {
           
-        await axios.put("https://back2.tinpad.com.pe/public/api/condominium-expense"+"/"+data[i].id,  {approved:"1"} , {headers: headers})
+        await axios.put("https://back2.tinpad.com.pe/public/api/condominium-expense"+"/"+dataGastos[i].id,  {approved:"1"} , {headers: headers})
         .then(response=>{
 
           console.log("exitoso");

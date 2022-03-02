@@ -10,6 +10,7 @@ import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
+import {UtilInfoContext} from '../../context/UtilInfoContext';
 import axios from "axios"
 import down from "../../IMG/down.svg"
 import {makeStyles} from '@material-ui/core/styles';
@@ -74,6 +75,7 @@ function Archivos() {
     const [loading, setLoading] = useState(false);
     const [pathImg, setPathImg] = useState()
     const { dataUser, setdataUser } = useContext(userContext);
+    const { dataUtilInfo, setdataUtilInfo } = useContext(UtilInfoContext);
 
 
     
@@ -131,14 +133,22 @@ function Archivos() {
  
           // console.log(rtdo.data.data[0]);
         
-          setdata((rtdo.data.data).filter(artista=> (artista.phone === null || artista.phone === "1")));
+          setdataUtilInfo((rtdo.data.data).filter(artista=> (artista.phone === null || artista.phone === "1")));
           setdataUser(JSON.parse(localStorage.getItem('user')))
   
       }
-      useEffect(() => {
-      
+    // }
+    useEffect(() => {
+        
+      if (dataUtilInfo.length === 0) {
 
-        buscarCotizacion()
+          console.log(dataUtilInfo.length);
+          buscarCotizacion()
+          
+      }else{
+          console.log(dataUtilInfo.length);
+          return
+      }
   }, []);
 
   const removeSelectedImage = () => {
@@ -469,7 +479,7 @@ const peticionPost=async()=>{
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataUtilInfo}
                  actions= {[
 
             

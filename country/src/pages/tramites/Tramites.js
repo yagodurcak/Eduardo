@@ -9,6 +9,7 @@ import ModalDetails from '../../components/pageComponents/ModalDetails';
 import ModalRespuestaQueja from "../../components/pageComponents/ModalRespuestaQueja"
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
+import {TramitesContext} from '../../context/TramitesContext';
 import axios from "axios"
 import {makeStyles} from '@material-ui/core/styles';
 import { userContext } from '../../context/UserContext';
@@ -101,6 +102,7 @@ function Tramites() {
     const [infoProject, setInfoProject] = useState({});
     const [infoProperties, setInfoProperties] = useState({});
     const [infoPropertiesUser, setinfoPropertiesUser] = useState({});
+    const { dataTramites, setdataTramites } = useContext(TramitesContext);
 
 
     const { dataUser, setdataUser } = useContext(userContext);
@@ -190,17 +192,23 @@ function Tramites() {
         console.log(rtdo.data.data);
       
         // setdata(rtdo.data.data)
-        setdata(rtdo.data.data)
+        setdataTramites(rtdo.data.data)
         // setdata([rtdo.data.data])
         // setdataUser(JSON.parse(localStorage.getItem('user')))
     }
 
-    useEffect(() => {   
-    
-        buscarCotizacion()
+    useEffect(() => {
         
-  
-      }, []);
+      if (dataTramites.length === 0) {
+
+          console.log(dataTramites.length);
+          buscarCotizacion()
+          
+      }else{
+          console.log(dataTramites.length);
+          return
+      }
+  }, []);
 
 
       
@@ -208,20 +216,20 @@ function Tramites() {
         
         let newData= [];
 
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < dataTramites.length; i++) {
       
           newData.push(
             {
-              fecha: data[i].proyectDate,
-               tipo:  data[i].proyect.project_type.name,
-               Proyecto:  data[i].proyect.name,
-               Descripción:  data[i].proyect.description,
-               Documento: data[i].proyect.property.users[0].document,
-               Propietario: data[i].proyect.property.users[0].name + " "+ data[i].proyect.property.users[0].lastName,
-               file: data[i].attachments[0],
-               Estado:  data[i].state.name,
-               id:  data[i].id,
-               Propiedad:  data[i].proyect.property
+              fecha: dataTramites[i].proyectDate,
+               tipo:  dataTramites[i].proyect.project_type.name,
+               Proyecto:  dataTramites[i].proyect.name,
+               Descripción:  dataTramites[i].proyect.description,
+               Documento: dataTramites[i].proyect.property.users[0].document,
+               Propietario: dataTramites[i].proyect.property.users[0].name + " "+ dataTramites[i].proyect.property.users[0].lastName,
+               file: dataTramites[i].attachments[0],
+               Estado:  dataTramites[i].state.name,
+               id:  dataTramites[i].id,
+               Propiedad:  dataTramites[i].proyect.property
 
               
               })
@@ -234,7 +242,7 @@ function Tramites() {
       }
       useEffect(() => {
         nuevaData()
-      }, [data]);
+      }, [dataTramites]);
       const styles= useStyles();
       const removeSelectedImage = () => {
         setSelectedImage();
@@ -403,10 +411,11 @@ function Tramites() {
                 {/* <h3 >Asunto: <span className="mt-5 detailsInfo">{info.proyect&&info.proyect.description}</span></h3> */}
                 <h3 >Descripción: <span className="mt-5 detailsInfo">{info&&info.Descripción}</span></h3>
                 <h3 >Documentos Adjuntos:</h3>
-                <div className="d-flex justify-content-center mt-5">
+
+                {/* <div className="d-flex justify-content-center mt-5">
                 <a href={"https://back2.tinpad.com.pe/public/" + info.file&&info.file.path} target="_blank"  className="linkdownload" >
                     <i className="material-icons file_download">file_download</i></a>
-              </div>
+              </div> */}
           
 
                 <div className='separaBoton'>
