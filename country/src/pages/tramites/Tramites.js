@@ -135,7 +135,7 @@ function Tramites() {
       const seleccionarUser=(user, caso)=>{
 
         setInfo(user);
-        // console.log(info.property.block);
+        console.log(user);
         abrirCerrarModalDetails()
     
       }
@@ -411,11 +411,12 @@ function Tramites() {
                 {/* <h3 >Asunto: <span className="mt-5 detailsInfo">{info.proyect&&info.proyect.description}</span></h3> */}
                 <h3 >Descripción: <span className="mt-5 detailsInfo">{info&&info.Descripción}</span></h3>
                 <h3 >Documentos Adjuntos:</h3>
-
-                {/* <div className="d-flex justify-content-center mt-5">
+                {info.file === undefined ?  <span className="mt-5 detailsInfo">No hay archivos adjuntos</span>  :  <div className="d-flex justify-content-center mt-5">
                 <a href={"https://back2.tinpad.com.pe/public/" + info.file&&info.file.path} target="_blank"  className="linkdownload" >
                     <i className="material-icons file_download">file_download</i></a>
-              </div> */}
+              </div> }
+
+     
           
 
                 <div className='separaBoton'>

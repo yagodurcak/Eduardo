@@ -5,19 +5,22 @@ import "@fullcalendar/timegrid/main.css";
 import React, {useContext, useEffect, useRef, useState} from 'react';
 
 import AgregarEvento from './AgregarEvento'
+import {CalendarioContext} from '../../context/CalendarioContext';
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import axios from 'axios'
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import esLocale from '@fullcalendar/core/locales/es';
+import interactionPlugin from "@fullcalendar/interaction"; // needed
 import listPlugin from '@fullcalendar/list'; //For List View
 import moment from "moment"
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { userContext } from '../../context/UserContext';
-import interactionPlugin from "@fullcalendar/interaction"; // needed
 
 function Calendario() {
 
     const [data, setdata] = useState([]);
+    const { dataCalendario, setdataCalendario } = useContext(CalendarioContext);
+
     const [data1, setdata1] = useState([{
         id:"21",
         end: "2022-02-11 12:02:00",
@@ -74,15 +77,21 @@ function Calendario() {
         const rtdo = await axios.get(url, {headers})
         setdataUser(JSON.parse(localStorage.getItem('user')))
         console.log(rtdo.data.data);
-        setdata(rtdo.data.data)
+        setdataCalendario(rtdo.data.data)
     }
 
     useEffect(() => {
-        buscarCotizacion()
-        console.log(data);
+        
+        if (dataCalendario.length === 0) {
 
-      
-      }, []);
+            console.log(dataCalendario.length);
+            buscarCotizacion()
+            
+        }else{
+            console.log(dataCalendario.length);
+            return
+        }
+    }, []);
 
      
 

@@ -9,6 +9,7 @@ import {
 import Archivos from "./pages/archivos/Archivos";
 import Calculos from "./pages/gastos/Calculos";
 import Calendar from "./pages/calendar/Calendar";
+import CalendarioProvider from "./context/CalendarioContext"
 import CondoProvider from "../src/context/Condocontext"
 import Configuracion from "./pages/gastos/Configuracion";
 import DetalleTramite from "./pages/tramites/DetalleTramite";
@@ -138,12 +139,17 @@ function App() {
           <Route path="/Calculos">
           <Calculos/>
           </Route>
+          <CalendarioProvider>
+
           <Route path="/Calendario">
           <Calendar/>
           </Route>
+          </CalendarioProvider>
+       
           <Route path="/Energia">
           <Energia/>
           </Route>
+ 
           <Route path="/Prueba">
           <Prueba/>
           </Route>
