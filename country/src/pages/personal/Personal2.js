@@ -104,7 +104,7 @@ function Personal2() {
     })
 
     }
-    
+
         
     const buscarCotizacion = async() => {
 
@@ -124,21 +124,26 @@ function Personal2() {
       const rtdo = await axios.get(url, {headers})
 
       console.log(rtdo.data.data[0]);
-      console.log(localStorage.getItem('user'));
+
       setdataUser(JSON.parse(localStorage.getItem('user')))
       setdataPersonal(rtdo.data.data)
       
     }
     // }
+    useEffect(() => {
+        
+        if (dataPersonal.length === 0) {
 
-    if (dataPersonal.length === 0) {
+            console.log(dataPersonal.length);
+            buscarCotizacion()
+            
+        }else{
+            console.log(dataPersonal.length);
+            return
+        }
+    }, []);
 
-        console.log(dataPersonal.length);
-        // buscarCotizacion()
-      
-    }else{
-        console.log(dataPersonal.length);
-    }
+
 
 
 // useEffect(() => {
@@ -464,7 +469,7 @@ function Personal2() {
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataPersonal}
                  actions= {[                    
                 
                             {

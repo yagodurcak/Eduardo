@@ -12,6 +12,7 @@ import ModalInsertar from "../../components/pageComponents/ModalInsertar"
 import Switch from '@mui/material/Switch';
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
+import {UsuariosContext} from '../../context/UsuariosContext';
 import axios from "axios"
 import excel from "../../IMG/template_owner.xlsx";
 import {makeStyles} from '@material-ui/core/styles';
@@ -66,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
    const { dataUser, setdataUser } = useContext(userContext);
    const [selectedImage, setSelectedImage] = useState();
    const [aprobador, setAprobador] = useState(false);
+   const { dataUsuarios, setdataUsuarios } = useContext(UsuariosContext);
    const nuevoArray = () => {
      
    }
@@ -200,31 +202,42 @@ const useStyles = makeStyles((theme) => ({
         setInfoUserProperty(info.property)
       }, [info]);
 
-    useEffect(() => {
-        const buscarProperty = async() => {
-          
-            const url = `https://back2.tinpad.com.pe/public/api/property-user`;
-  
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-  
-            }
-            const rtdo = await axios.get(url, {headers})
-   
-            // console.log(rtdo.data.data);
-            setdata(rtdo.data.data)
-            // console.log(rtdo.data.data);
-        }
-        setdataUser(JSON.parse(localStorage.getItem('user')))
-    
-        buscarProperty()       
+      const buscarProperty = async() => {
+         
         setLoading(true)
         setTimeout(() => {
           setLoading(false)
         }, 2000);
+        console.log("buscando datapersonal");
+          const url = `https://back2.tinpad.com.pe/public/api/property-user`;
+
+          const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+          }
+          const rtdo = await axios.get(url, {headers})
+ 
+          // console.log(rtdo.data.data);
+          setdataUser(JSON.parse(localStorage.getItem('user')))
+          setdataUsuarios(rtdo.data.data)
+          console.log(rtdo.data.data);
+      }
+      
+    useEffect(() => {
+
+      if (dataUsuarios.length === 0) { 
+        console.log(dataUsuarios.length);
+        buscarProperty()
     
-    }, []);
+    
+    }else{
+      console.log(dataUsuarios.length);
+      return
+  }
+  
+  
+  }, []);
 
     useEffect(() => {
     if (dataUser.roleId === 4) {
@@ -522,8 +535,7 @@ const useStyles = makeStyles((theme) => ({
         }
         const rtdo = await axios.get(url, {headers})
 
-        // console.log(rtdo.data.data);
-        setdata(rtdo.data.data)
+        setdataUsuarios(rtdo.data.data)
 
     }
 
@@ -733,7 +745,7 @@ console.log(dataUser);
                  <div className="mt-5 "><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataUsuarios}
              
                  actions= 
                  {

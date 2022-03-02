@@ -14,6 +14,7 @@ import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEditar2 from '../../components/pageComponents/ModalEditar2';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
+import {SeguridadContext} from '../../context/SeguridadContext';
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
@@ -78,6 +79,7 @@ function Seguridad() {
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState();
+  const { dataSeguridad, setdataSeguridad } = useContext(SeguridadContext);
 
   const { dataUser, setdataUser } = useContext(userContext);
   const [info, setInfo] = useState({
@@ -148,36 +150,6 @@ function Seguridad() {
       abrirCerrarModalEliminar()
   }
 
-  useEffect(() => {
-
-
-    const buscarProperty = async () => {
-
-      const url = `https://back2.tinpad.com.pe/public/api/user`;
-
-      const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('Authorization'),
-
-      }
-
-      const rtdo = await axios.get(url, { headers })
-
-      // console.log(rtdo.data.data[0]);
-
-      setdataUser(JSON.parse(localStorage.getItem('user')))
-      setdata((rtdo.data.data).filter(artista => artista.roleId !== "3"));
-
-
-      console.log(rtdo.data.data);
-    }
-
-    buscarProperty()
-
-  }, []);
-
-
-
   const buscarProperty = async () => {
 
     const url = `https://back2.tinpad.com.pe/public/api/user`;
@@ -192,13 +164,49 @@ function Seguridad() {
 
     // console.log(rtdo.data.data[0]);
 
+    setdataUser(JSON.parse(localStorage.getItem('user')))
+    setdataSeguridad((rtdo.data.data).filter(artista => artista.roleId !== "3"));
 
-    setdata((rtdo.data.data).filter(artista => artista.roleId !== "3"));
 
-
-    console.log("buscar property");
-
+    console.log(rtdo.data.data);
   }
+  useEffect(() => {
+
+    if (dataSeguridad.length === 0) {
+
+      console.log(dataSeguridad.length);
+      buscarProperty()
+      
+  }else{
+      console.log(dataSeguridad.length);
+      return
+  }
+
+  }, []);
+
+
+
+  // const buscarProperty = async () => {
+
+  //   const url = `https://back2.tinpad.com.pe/public/api/user`;
+
+  //   const headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer ' + localStorage.getItem('Authorization'),
+
+  //   }
+
+  //   const rtdo = await axios.get(url, { headers })
+
+  //   // console.log(rtdo.data.data[0]);
+
+
+  //   setdata((rtdo.data.data).filter(artista => artista.roleId !== "3"));
+
+
+  //   console.log("buscar property");
+
+  // }
 
 
 
@@ -501,7 +509,7 @@ function Seguridad() {
           <div className="mt-10"><Table2
             title=""
             columns={customerTableHead}
-            data={data}
+            data={dataSeguridad}
             actions={[
 
               {

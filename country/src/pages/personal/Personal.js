@@ -14,27 +14,13 @@ import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEditar2 from '../../components/pageComponents/ModalEditar2';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
+import {PersonalContext} from '../../context/PersonalContext';
 import Table2 from '../../components/Table2';
 import TitlePage from '../../components/pageComponents/TitlePage';
 import axios from "axios"
 import excel from "../../IMG/template_employe_condominio.xlsx";
 import {makeStyles} from '@material-ui/core/styles';
-import { userContext } from '../../context/UserContext';
-
-// import React,{useEffect, useState}  from 'react';
-
-
-
-
-
-
-
-
-
-
-
-
-// import { Switch } from 'antd';
+import {userContext} from '../../context/UserContext';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -83,6 +69,7 @@ const customerTableHead = [
 
 
 function Personal() {
+    const styles= useStyles();
 
     const [data, setdata] = useState([]);
     const [showModalInsertar, setShowModalInsertar] = useState(false);
@@ -94,6 +81,7 @@ function Personal() {
     const [loading, setLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
     const { dataUser, setdataUser } = useContext(userContext);
+    const { dataPersonal, setdataPersonal } = useContext(PersonalContext);
     
     const [info, setInfo] = useState({
 
@@ -116,7 +104,7 @@ function Personal() {
     })
 
     }
-    
+
         
     const buscarCotizacion = async() => {
 
@@ -124,7 +112,7 @@ function Personal() {
       setTimeout(() => {
         setLoading(false)
       }, 2000);
-        
+        console.log("buscando datapersonal");
       const url = `https://back2.tinpad.com.pe/public/api/employe`;
 
       const headers = {
@@ -136,20 +124,36 @@ function Personal() {
       const rtdo = await axios.get(url, {headers})
 
       console.log(rtdo.data.data[0]);
-      console.log(localStorage.getItem('user'));
+
       setdataUser(JSON.parse(localStorage.getItem('user')))
-      setdata(rtdo.data.data)
+      setdataPersonal(rtdo.data.data)
       
     }
     // }
-useEffect(() => {
+    useEffect(() => {
+        
+        if (dataPersonal.length === 0) {
+
+            console.log(dataPersonal.length);
+            buscarCotizacion()
+            
+        }else{
+            console.log(dataPersonal.length);
+            return
+        }
+    }, []);
+
+
+
+
+// useEffect(() => {
  
 
 
-  buscarCotizacion()
+//   buscarCotizacion()
   
-  console.log(data);
-}, []);
+//   console.log(data);
+// }, []);
 
     
 
@@ -324,7 +328,7 @@ useEffect(() => {
       const abrirCerrarModalEliminar=()=>{
         setShowModalEliminar(!showModalEliminar);
       }
-      const styles= useStyles();
+     
 
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
@@ -465,7 +469,7 @@ useEffect(() => {
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataPersonal}
                  actions= {[                    
                 
                             {

@@ -9,6 +9,7 @@ import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import {EspacioContext} from '../../context/EspacioContext';
 import Input from '@material-ui/core/Input';
 import ModalAdd from '../../components/pageComponents/ModalAdd';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
@@ -70,6 +71,7 @@ function Espacio() {
     const [pathImg, setPathImg] = useState()
     const [infoImg, setInfoImg] = useState()
     const [loading, setLoading] = useState(false);
+    const { dataEspacio, setdataEspacio } = useContext(EspacioContext);
 
     const { dataUser, setdataUser } = useContext(userContext);
     // console.log(data);
@@ -202,14 +204,15 @@ function Espacio() {
 
       useEffect(() => {
   
-      
-     
-    
-  
-      buscarCotizacion()
-      
-      // console.log(data);
-      
+        if (dataEspacio.length === 0) {
+
+          console.log(dataEspacio.length);
+          buscarCotizacion()
+          
+      }else{
+          console.log(dataEspacio.length);
+          return
+      }
     }, []);
 
         
@@ -232,9 +235,9 @@ function Espacio() {
 
       const rtdo = await axios.get(url, {headers})
 
-      // console.log(rtdo.data.data[0]);
+      console.log(rtdo.data.data[0]);
       setdataUser(JSON.parse(localStorage.getItem('user')))
-      setdata(rtdo.data.data)
+      setdataEspacio(rtdo.data.data)
 
 
   }
@@ -970,7 +973,7 @@ console.log("eliminjar todos 2");
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataEspacio}
                  actions= {[
 
                   {

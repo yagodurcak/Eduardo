@@ -15,6 +15,7 @@ import DateMomentUtils from '@date-io/moment';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
+import { ReglasContext } from '../../context/ReglasContext';
 import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import Table2 from '../../components/Table2';
@@ -96,6 +97,7 @@ function Visita() {
     const [horaFinal, setHoraFinal] = useState(new Date());
     const [ visitTypes, setVisitTypes] = useState([])
     const [loading, setLoading] = useState(false);
+    const { dataReglas, setdataReglas } = useContext(ReglasContext);
 
     const { dataUser, setdataUser } = useContext(userContext);
     const [info, setInfo] = useState({
@@ -200,17 +202,20 @@ function Visita() {
           const rtdo = await axios.get(url, {headers})
  
           console.log(rtdo.data.data);
-          setdata(rtdo.data.data)
+          setdataReglas(rtdo.data.data)
           setdataUser(JSON.parse(localStorage.getItem('user')))
       }
     // }
     useEffect(() => {
-     
+
+      if (dataReglas.length === 0) {
+        console.log(dataReglas.length);
       buscarTipo()
   
       buscarCotizacion()
-      
-      console.log(data);
+    }else{
+      console.log(dataReglas.length);
+      return}
     }, []);
 
 
@@ -553,7 +558,7 @@ function Visita() {
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataReglas}
                  actions= {[
 
                     {

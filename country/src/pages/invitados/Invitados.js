@@ -10,6 +10,7 @@ import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import {InvitadosContext} from '../../context/InvitadosContext';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -87,6 +88,8 @@ function Invitados() {
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false);
     const { dataUser, setdataUser } = useContext(userContext);
+    const { dataInvitados, setdataInvitados } = useContext(InvitadosContext);
+
     const [info, setInfo] = useState({
 
       name: "",
@@ -129,17 +132,21 @@ function Invitados() {
       const rtdo = await axios.get(url, {headers})
 
       console.log(rtdo.data.data);
-      setdata(rtdo.data.data)
+      setdataInvitados(rtdo.data.data)
       setdataUser(JSON.parse(localStorage.getItem('user')))
   }
 // }
 useEffect(() => {
- 
+        
+  if (dataInvitados.length === 0) {
 
-
-  buscarCotizacion()
-  
-  console.log(data);
+      console.log(dataInvitados.length);
+      buscarCotizacion()
+      
+  }else{
+      console.log(dataInvitados.length);
+      return
+  }
 }, []);
 
     
@@ -348,7 +355,7 @@ useEffect(() => {
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={data}
+                 data={dataInvitados}
                  actions= {[                    
                 
                             {
