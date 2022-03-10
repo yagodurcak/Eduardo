@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Archivos from "./pages/archivos/Archivos";
+import BankAccount from "./pages/gastos/BankAccount";
 import Calculos from "./pages/gastos/Calculos";
 import Calendar from "./pages/calendar/Calendar";
 import CalendarioProvider from "./context/CalendarioContext"
@@ -148,6 +149,9 @@ function App() {
        
           <Route path="/Energia">
           <Energia/>
+          </Route>
+          <Route path="/BankAccount">
+          <BankAccount/>
           </Route>
  
           <Route path="/Prueba">

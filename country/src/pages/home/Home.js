@@ -36,7 +36,7 @@ function Home() {
             <TitlePage titulo="Dashboards"/>
             <Featured/>            
             <Table/>
-            {/* <h1>{dataUser.id}</h1> */}
+            <h1>{dataUser.id}</h1>
         </div>
     )
 }

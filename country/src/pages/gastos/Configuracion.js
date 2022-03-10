@@ -302,7 +302,7 @@ function Configuracion() {
     return (
         <div>
             <div>
-                <TitlePage titulo="Personal de Configuracion" />
+                <TitlePage titulo="Gastos de Cobranza" />
                 <div className="flex justify-end ">
                 {dataUser.roleId === "1" &&
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>

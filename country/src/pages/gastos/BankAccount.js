@@ -1,8 +1,3 @@
-
-
-
-// falta loi de mail en editar
-
 import "../users/Users.css"
 
 import {Button, Modal, TextField} from '@material-ui/core';
@@ -10,7 +5,6 @@ import React, {useContext, useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import {InvitadosContext} from '../../context/InvitadosContext';
 import ModalEditar from '../../components/pageComponents/ModalEditar';
 import ModalEliminar from '../../components/pageComponents/ModalEliminar';
 import ModalInsertar from "../../components/pageComponents/ModalInsertar"
@@ -46,46 +40,22 @@ const useStyles = makeStyles((theme) => ({
 const customerTableHead = [
 
 {
-    title:"Fecha",
-    // field: "date",
-    render: data => (data.date).split(" ")[0].split("-").reverse().join("-")
-
+    title:"Banco",
+    field: "title"
 },
 {
-    title:"Nombre",
-    field: "name"
-},
+    title:"Cuenta",
+    field: "accountNumber"
+}   ,
 {
-    title:"Apellido",
-    field: "lastName"
-},
-{
-    title:"Documento",
-    field: "document"
-}
-,
-{
-    title:"Placa",
-    field: "licensePlate"
-}
-,
-{
-    title:"Manzana",
-    // render: data => data.property.users[0].name  + " " +  data.property.users[0].lastName
-    render: data => data.property.block
-},
-{
-    title:"Lote",
-    // render: data => data.property.users[0].name  + " " +  data.property.users[0].lastName
-    render: data => data.property.block
-},
-
-
+    title:"CCI",
+    field: "cci"
+}   
 ]
 
 
 
-function Invitados() {
+function BankAccount() {
 
     const [data, setdata] = useState([]);
     const [showModalInsertar, setShowModalInsertar] = useState(false);
@@ -94,23 +64,19 @@ function Invitados() {
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false);
     const { dataUser, setdataUser } = useContext(userContext);
-    const { dataInvitados, setdataInvitados } = useContext(InvitadosContext);
-
+    
     const [info, setInfo] = useState({
+      title: "",
+      accountNumber: "",
+      cci: ""
 
-      name: "",
-      lastName: "",
-      document:"",
-      licensePlate:"",
-      quantity: "10"
-      
     })
 
    
 
-    const{document, lastName,  name, licensePlate } = info;
+    const{title, accountNumber } = info;
   
-    const baseUrl="https://back2.tinpad.com.pe/public/api/guest";
+    const baseUrl="https://back2.tinpad.com.pe/public/api/account-bank";
     const handleChangeInsert = (e) => {
       setInfo({
         ...info,
@@ -118,42 +84,7 @@ function Invitados() {
     })
 
     }
-    
-        
-    const buscarCotizacion = async() => {
 
-      setLoading(true)
-      setTimeout(() => {
-        setLoading(false)
-      }, 2000);
-        
-      const url = `https://back2.tinpad.com.pe/public/api/guest`;
-
-      const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-      }
-
-
-      const rtdo = await axios.get(url, {headers})
-
-      console.log(rtdo.data.data);
-      setdataInvitados(rtdo.data.data)
-      setdataUser(JSON.parse(localStorage.getItem('user')))
-  }
-// }
-useEffect(() => {
-        
-  if (dataInvitados.length === 0) {
-
-      console.log(dataInvitados.length);
-      buscarCotizacion()
-      
-  }else{
-      console.log(dataInvitados.length);
-      return
-  }
-}, []);
 
     
 
@@ -165,6 +96,36 @@ useEffect(() => {
         abrirCerrarModalEliminar() 
       }
 
+      useEffect(() => {
+     
+    
+        buscarProperty()
+        
+      }, []);
+
+      const buscarProperty = async() => {
+          
+        const url = `https://back2.tinpad.com.pe/public/api/account-bank`;
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+
+        }    
+
+        const rtdo = await axios.get(url, {headers})
+
+        // console.log(rtdo.data.data[0]);
+
+        setdataUser(JSON.parse(localStorage.getItem('user')))
+        setdata((rtdo.data.data));
+  
+        
+        console.log(rtdo);
+
+    }
+  
+
 
       const peticionPost=async()=>{
         const headers = {
@@ -172,16 +133,14 @@ useEffect(() => {
           'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
     
       }
-          await axios.post("https://back2.tinpad.com.pe/public/api/guest", info, {headers})
+          await axios.post("https://back2.tinpad.com.pe/public/api/account-bank", info, {headers})
           .then(response=>{
             // setdata(data.concat(response.data));
             abrirCerrarModalInsertar();
           }).catch(error=>{
             console.log(error);
           })
-
-          buscarCotizacion()
-      
+          buscarProperty()
         }
 
 
@@ -198,7 +157,11 @@ useEffect(() => {
           }).catch(error=>{ 
             console.log(error);
           })
-         buscarCotizacion()
+          buscarProperty()
+          setLoading(true)
+          setTimeout(() => {
+            setLoading(false)
+          }, 2000);
         }
 
         const peticionPut=async()=>{       
@@ -208,7 +171,7 @@ useEffect(() => {
             'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
       
         }
-          await axios.put("https://back2.tinpad.com.pe/public/api/guest"+"/"+info.id,  info , {headers: headers})
+          await axios.put("https://back2.tinpad.com.pe/public/api/account-bank"+"/"+info.id,  info , {headers: headers})
           .then(response=>{
 
             abrirCerrarModalEditar();
@@ -216,17 +179,17 @@ useEffect(() => {
           }).catch(error=>{
             console.log(error);
           })
-         buscarCotizacion()
+          buscarProperty()
         }
       
 
- 
+        
 
     const onSubmitInsertar = (e) => {
 
         e.preventDefault();
 
-        if (document.trim() === "" || lastName.trim() === "" ||name.trim() === "") {
+        if (title.trim() === "" || accountNumber.trim() === ""  ) {
         
          setError(true);
          return
@@ -235,11 +198,9 @@ useEffect(() => {
 
             peticionPost()
             setInfo({
-   
-              name: "",
-              lastName: "",
-              document:"",
-              licensePlate:"",
+                title: "",
+                accountNumber: "",
+                cci: ""
         
             });
 
@@ -249,6 +210,10 @@ useEffect(() => {
             // }, 1000);
             // abrirCerrarModalInsertar()
         }
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+        }, 2000);
         
     }
     const onSubmitEditar = (e) => {
@@ -259,6 +224,10 @@ useEffect(() => {
             // setTimeout(() => {
             //   window.location.reload();
             // }, 2000);
+            setLoading(true)
+            setTimeout(() => {
+              setLoading(false)
+            }, 2000);
         }
 
     
@@ -278,16 +247,15 @@ useEffect(() => {
       const bodyInsertar=(
         <form action="" onSubmit={onSubmitInsertar}>
           <div className={styles.modal}>
-            <h3 className="my-5">Agregar Nueva Visita</h3>
+            <h3 className="my-5">Agregar Nuevo Banco</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos (*) del formulario</h4> : null }
-            <TextField className={styles.inputMaterial} name="name" onChange={handleChangeInsert} label="Nombres*"  />
+            <TextField className={styles.inputMaterial} name="title" onChange={handleChangeInsert} label="Nombre del Banco*"  />
             <br />
-            <TextField className={styles.inputMaterial} name="lastName" onChange={handleChangeInsert}  label="Apellidos*" />          
-              <br />
-              <TextField className={styles.inputMaterial} name="document" onChange={handleChangeInsert}  label="Doc. de Identidad*" />
+            <TextField className={styles.inputMaterial} name="accountNumber" onChange={handleChangeInsert}  label="Número de Cuenta*" />          
+
             <br />
-              <TextField className={styles.inputMaterial} name="licensePlate" onChange={handleChangeInsert}  label="Patente*" />
-              {/* <TextField className={styles.inputMaterial} name="phone" onChange={handleChangeInsert}  label="Telefono*" /> */}
+            <TextField className={styles.inputMaterial} name="cci" onChange={handleChangeInsert}  label="CCI*" />          
+
             <br />
             {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
             {/* <input type="text" className={styles.inputMaterial} name="role" value="2" className="hide" onChange={handleChangeInsert}/> */}
@@ -308,14 +276,14 @@ useEffect(() => {
           <div className={styles.modal}>
             <h3 className="my-5">Registrar usuario nuevo</h3>
             { error ? <h4 className=" text-red-700">Completar todos los campos del formulario</h4> : null }
-            <TextField className={styles.inputMaterial} name="name" onChange={handleChangeInsert} value= {info&&info.name} label="Nombre" />
+            <TextField className={styles.inputMaterial} name="title" onChange={handleChangeInsert} value= {info&&info.title} label="Nombre del Banco" />
             <br />
-            <TextField className={styles.inputMaterial} name="lastName" onChange={handleChangeInsert} value= {info&&info.lastName} label="Apellido" />          
-              <br />
-              <TextField className={styles.inputMaterial} name="document" onChange={handleChangeInsert} value= {info&&info.document} label="Doc. de Identidad" />
+            <TextField className={styles.inputMaterial} name="accountNumber" onChange={handleChangeInsert} value= {info&&info.accountNumber} label="Número de Cuenta" />
             <br />
-              <TextField className={styles.inputMaterial} name="licensePlate" onChange={handleChangeInsert} value= {info&&info.licensePlate} label="Patente" />
+            <TextField className={styles.inputMaterial} name="cci" onChange={handleChangeInsert} value= {info&&info.cci} label="CCI" />
             <br />
+            {/* <TextField className={styles.inputMaterial} name="concept" onChange={handleChangeInsert} value= {info&&info.concept} label="Concepto" />           */}
+    
      
             <br /><br />
             <div align="right">
@@ -328,7 +296,7 @@ useEffect(() => {
 
       const bodyEliminar=(
         <div className={styles.modal}>
-          <p>Estás seguro que deseas eliminar  <b>{info&&info.name}</b>? </p>
+          <p>Estás seguro que deseas eliminar  <b>{info&&info.concept}</b>? </p>
           <div align="right">
             <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
             <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
@@ -341,27 +309,25 @@ useEffect(() => {
     return (
         <div>
             <div>
-                <TitlePage titulo="Invitados" />
-                {/* { dataUser.roleId === "1" ?
+                <TitlePage titulo="Cuentas Bancarias" />
                 <div className="flex justify-end ">
+                {dataUser.roleId === "1" &&
                     <button className="btn" onClick={()=>abrirCerrarModalInsertar()}>
                         Agregar
-                    </button>
+                    </button>}
                    
                 </div>
-                :null} */}
                 { loading ?  <Box sx={{ position: 'absolute' , left: 500, top:500, zIndex:1}}>
            
            <CircularProgress color="success" size={80}/>
            </Box> : null}
 
-           {dataUser.roleId === "1" ? 
-
-
+          {dataUser.roleId === "1" ?
+               
                  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
-                 data={dataInvitados}
+                 data={data}
                  actions= {[                    
                 
                             {
@@ -378,12 +344,11 @@ useEffect(() => {
           
                 ] }
 
-                 /></div>
-                 :  <div className="mt-10"><Table2 
+                 /></div> :  <div className="mt-10"><Table2 
                  title="" 
                  columns={customerTableHead} 
                  data={data}
-              
+                
 
                  /></div>}
             </div>
@@ -397,7 +362,6 @@ useEffect(() => {
            
             
             />
-              { dataUser.roleId === "1" ?
             <ModalEditar
             showModalEditar={showModalEditar}
             functionShow= {abrirCerrarModalEditar}
@@ -406,8 +370,6 @@ useEffect(() => {
             info={info}
             bodyEditar={bodyEditar}
             />
-            :null}
-            { dataUser.roleId === "1" ?
             <ModalEliminar
             showModalEliminar={showModalEliminar}
             abrirCerrarModalEliminar= {abrirCerrarModalEliminar}
@@ -416,9 +378,8 @@ useEffect(() => {
             peticionDelete={peticionDelete}
             bodyEliminar={bodyEliminar}
             />
-            :null}
         </div>
     )
 }
 
-export default Invitados
+export default BankAccount

@@ -365,15 +365,15 @@ function Sidebar() {
                                     </NavLink>
                                 </li>
                             </Link>
-                            {/* <Link to="/Historial" style={{ textDecoration: 'none' }}>
+                            <Link to="/BankAccount" style={{ textDecoration: 'none' }}>
                                 <li className='submenu'>
-                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/Historial">
+                                <NavLink className="logoContainter1" activeClassName="linkactivo1" to="/BankAccount">
                                 <i class="material-icons">fact_check</i>
-                                        <h1 className="title1">Historial</h1>
+                                        <h1 className="title1">Cuentas Bancarias</h1>
                 
                                     </NavLink>
                                 </li>
-                            </Link> */}
+                            </Link>
 
                             <Link to="/Configuracion" style={{ textDecoration: 'none' }}>
                                 <li className='submenu'>

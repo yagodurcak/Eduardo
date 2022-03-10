@@ -71,8 +71,18 @@ const customerTableHead = [
 {
     title:"Cantidad",
     field: "quantity"},
-
-
+    
+    
+    {
+        title:"Manzana",    
+        render: data => data.user.properties[0].block
+    
+      },
+    {
+        title:"Lote",    
+        render: data => data.user.properties[0].lot
+    
+      }
 ]
 
 

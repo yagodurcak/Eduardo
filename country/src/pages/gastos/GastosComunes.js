@@ -521,6 +521,31 @@ useEffect(() => {
 
       let fechasss= new Date().getFullYear();
 
+      const peticionPostTotal=async()=>{
+
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
+    
+      }
+       
+       
+
+
+    
+      
+          await axios.post("https://back2.tinpad.com.pe/public/api/invoice", {propertyId:1, stateId:1}, {headers})
+          .then(response=>{
+            // setdata(data.concat(response.data));
+            abrirCerrarModalInsertar();
+          }).catch(error=>{
+            console.log(error);
+          })
+
+          // buscarCotizacion()
+      
+        }
+
 
       const actualizarState = async() => {
 
