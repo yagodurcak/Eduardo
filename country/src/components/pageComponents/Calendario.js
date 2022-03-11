@@ -41,29 +41,6 @@ function Calendario() {
 
 
 
-    // const onEventAdded = event => {
-    //     let calendarApi = calendarRef.current.getApi()
-    //     calendarApi.addEvent({
-    //         start: moment(event.start).toDate(),
-    //         end: moment(event.end).toDate(),
-    //         title: event.title
-    //     }
-    //     )
-    // }
-
-    // const handleEventAdd = async (data) => {
-    //     console.log((data.event));
-    //     const headers = {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': 'Bearer ' +  localStorage.getItem('Authorization'),
-      
-    //     }
-    //     axios.post("https://back2.tinpad.com.pe/public/api/reservation", {
-    //         start: moment(data.event.start).format('YYYY-MM-DD HH:MM:SS'),
-    //         end: moment(data.event.end).format('YYYY-MM-DD HH:MM:SS'),
-    //         title: data.event.title}, {headers})
-    // }
-
     const buscarCotizacion = async() => {
 
               
@@ -102,7 +79,7 @@ function Calendario() {
                 <FullCalendar 
                 locale={esLocale}
                 ref={calendarRef}
-                events={data}
+                events={dataCalendario}
    
                 eventClick={
                     function(arg){
